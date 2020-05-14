@@ -5,14 +5,16 @@
         {% comment %} Filled in via JS {% endcomment %}
       </div>
       <div class="ajax-cart__footer" data-ajax-cart-footer>
-        <div class="ajax-cart__footer-top" data-ajax-cart-footer-top>
-          {% comment %} Filled in via JS {% endcomment %}
-        </div>
-        <div class="ajax-cart__footer-bottom">
-          <div class="ajax-cart__footer-row">
-            <button type="submit" name="checkout" class="btn btn-alt">
-              {{ 'cart.general.proceed_to_checkout' | t }}
-            </button>
+        <div class="container-fluid">
+          <div class="ajax-cart__footer-top" data-ajax-cart-footer-top>
+            {% comment %} Filled in via JS {% endcomment %}
+          </div>
+          <div class="ajax-cart__footer-bottom">
+            <div class="ajax-cart__footer-row">
+              <button type="submit" name="checkout" class="btn btn-alt">
+                {{ 'cart.general.proceed_to_checkout' | t }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -23,36 +25,43 @@
 {% raw %}
   <script type="text/x-handlebars-template" data-ajax-cart-body-template>
     {{#if items}}
-      <ul class="ajax-cart__list">
-      {{#each items}}
-        <li class="ajax-cart__item" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
-          <img src="{{ image }}" class="ajax-cart__item-image">
-          <div class="ajax-cart__item-info">
-            <h3>{{ product_title }}</h3>
-            <div>{{ price }}</div>
-            <div>SKU{{ sku }}</div>
-            <div>{{ variant_title }}</div>
-            <a href="#" class="btn btn-alt" data-ajax-cart-item-remove>Remove</a>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
-  {{else}}
-    <div class="ajax-cart__empty-message">
-      {% endraw %}
-      {% if section.settings.empty_text != blank %}
-        {{ section.settings.empty_text }}
-      {% else %}
-        {{ 'cart.general.empty' | t }}
-      {% endif %}
-      {% raw %}
-    </div>
-  {{/if}}
+      <div class="container-fluid">
+        <ul class="ajax-cart__list">
+          {{#each items}}
+            <li class="ajax-cart__item" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
+              <img src="{{ image }}" class="ajax-cart__item-image">
+              <div class="ajax-cart__item-info">
+                <h3>{{ product_title }}</h3>
+                <div>{{ price }}</div>
+                <div>SKU{{ sku }}</div>
+                <div>{{ variant_title }}</div>
+                {{#if multiple_quantities}}
+                <div>QTY{{ quantity }}</div>
+                {{/if}}
+                <a href="#" class="btn btn-alt" data-ajax-cart-item-remove>Remove</a>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    {{else}}
+      <div class="ajax-cart__empty-message">
+        {% endraw %}
+        {% if section.settings.empty_text != blank %}
+          {{ section.settings.empty_text }}
+        {% else %}
+          {{ 'cart.general.empty' | t }}
+        {% endif %}
+        {% raw %}
+        <br />
+        <a href="#" class="btn btn-alt" data-ajax-cart-close>Close cart</a>
+      </div>
+    {{/if}}
   </script>
 
   <script type="text/x-handlebars-template" data-ajax-cart-footer-top-template>
     <div class="ajax-cart__footer-row">
-      <p class="clearfix u-fw-bold">Total: <span style="float: right">{{ total_price }}</span></p>  
+      Total: <span>{{ total_price }}</span>
     </div>
   </script>
 {% endraw %}

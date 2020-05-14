@@ -1,6 +1,7 @@
 // stylelint-disable selector-no-qualifying-type
 
 .btn {
+  position: relative;
   display: inline-block;
   text-transform: uppercase;
   user-select: none;
@@ -8,23 +9,35 @@
   vertical-align: middle;
   user-select: none;
   background-color: transparent;
-  padding: 0;
+  padding: 0 8px 2px;
   border-radius: 0;
   border: none;
   cursor: pointer;
 
+  &:before,
+  &:after {
+    position: absolute;
+    top: 0;
+  }
+
   &:before {
     content: '[';
+    left: 0;
   }
 
   &:after {
     content: ']';
+    right: 0;
   }
 
-  &:hover,
-  &.active {
+  &:hover {
     background-color: $white;
     color: $black;
+  }
+
+  &.is-active {
+    background-color: $black;
+    color: $white;
   }
 
   // Disabled comes first so active can properly restyle

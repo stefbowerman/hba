@@ -730,11 +730,10 @@ $form-validation-states: map-merge(
 $zindex-dropdown:                   1000 !default;
 $zindex-sticky:                     1500 !default;
 $zindex-fixed:                      2000 !default;
+$zindex-ajax-cart:                  2006 !default;
 $zindex-header:                     2100 !default;
 $zindex-drawer-backdrop:            2200 !default;
 $zindex-drawer:                     2201 !default;
-$zindex-ajax-cart-backdrop:         2300 !default;
-$zindex-ajax-cart:                  2301 !default;
 $zindex-overlay:                    2400 !default;
 $zindex-modal-backdrop:             2500 !default;
 $zindex-modal:                      3000 !default;
@@ -996,13 +995,8 @@ $drawer-header-border-color:            $black;
 
 // AJAX Cart
 
-$ajax-cart-width:                       400px;
 $ajax-cart-bg:                          $white;
 $ajax-cart-color:                       $black;
-$ajax-cart-padding-vertical:            $grid-gutter-width;
-$ajax-cart-padding-horizontal:          $grid-gutter-width;
-$ajax-cart-backdrop-color:              $drawer-backdrop-color;
-$ajax-cart-backdrop-opacity:            $drawer-backdrop-opacity;
 
 
 // Page Hero

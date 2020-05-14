@@ -5,7 +5,6 @@ import {
   isThemeEditor
 } from '../core/utils';
 import CartAPI from '../core/cartAPI';
-import QuantityAdjuster from './quantityAdjuster';
 
 const $window = $(window);
 const $body = $(document.body);
@@ -21,20 +20,17 @@ const selectors = {
   footerTop: '[data-ajax-cart-footer-top]',
   item: '[data-ajax-item][data-key][data-qty]',
   itemRemove: '[data-ajax-cart-item-remove]',
-  itemQuantityInput: '[data-ajax-cart-body] input[type="number"]',
-  quantityAdjuster: '[data-quantity-adjuster]',
   cartBadge: '[data-cart-badge]',
   cartBadgeCount: '[data-cart-badge-count]'
 };
 
 const classes = {
   bodyCartOpen: 'ajax-cart-open',
-  backdrop: 'ajax-cart-backdrop',
-  backdropVisible: 'is-visible',
   cartOpen: 'is-open',
   cartBadgeHasItems: 'has-items',
   cartIsEmpty: 'is-empty',
-  lockUI: 'lock-ui'
+  lockUI: 'lock-ui',
+  triggerActive: 'is-active'
 };
 
 export default class AJAXCart {
@@ -58,10 +54,6 @@ export default class AJAXCart {
       UPDATE_AND_OPEN: `updateAndOpen${this.namespace}`
     };
 
-    this.settings = {
-      backdrop: true
-    };
-
     this.templateData = templateData;
     
     this.$el                = $(selectors.container);
@@ -73,11 +65,8 @@ export default class AJAXCart {
     this.$cartBadge         = $(selectors.cartBadge);
     this.$cartBadgeCount    = $(selectors.cartBadgeCount);
 
-    this.$backdrop            = null;
     this.stateIsOpen          = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
     this.hasBeenRendered      = false; // Lock to prevent displaying the cart before anything has been rendered
-    this.qaInteractionTimeout = null;
-    this.qaInteractionDelay   = 350; // Delay before triggering the quantityadjuster change event (allows user to increment / decrement quickly)
     this.transitionEndEvent   = whichTransitionEnd();
     this.rendered             = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
 
@@ -97,14 +86,12 @@ export default class AJAXCart {
     $body.on(this.events.CLICK, selectors.trigger, this.onTriggerClick.bind(this));
     $body.on(this.events.CLICK, selectors.close, this.onCloseClick.bind(this));
     $body.on(this.events.CLICK, selectors.itemRemove, this.onItemRemoveClick.bind(this));
-    $body.on(this.events.CHANGE, selectors.itemQuantityInput, this.onItemQuantityInputChange.bind(this));
     $window.on(this.events.RENDER, this.onRender.bind(this));
     $window.on(this.events.DESTROY, this.onDestroy.bind(this));
     $window.on(this.events.UPDATE_AND_OPEN, this.onUpdateAndOpen.bind(this));
   }
 
   destroy() {
-    this.$backdrop && this.$backdrop.remove(); // Don't use this.removeBackdrop because we can't wait for the animation to complete
     $body.off(this.events.CLICK);
     $body.off(this.events.CLICK);
     $window.off(this.events.RENDER);
@@ -198,55 +185,9 @@ export default class AJAXCart {
    */
   updateCartCount(cart) {
     this.$cartBadgeCount.html(cart.item_count);
-
-    if (cart.item_count) {
-      this.$cartBadge.addClass(classes.cartBadgeHasItems);
-    }
-    else {
-      this.$cartBadge.removeClass(classes.cartBadgeHasItems);
-    }
+    this.$cartBadge.toggleClass(classes.cartBadgeHasItems, cart.item_count > 0);
 
     return this;
-  }
-
-  addBackdrop(callback) {
-    const cb = callback || $.noop;
-
-    if (this.stateIsOpen) {
-      this.$backdrop = $(document.createElement('div'));
-
-      this.$backdrop.addClass(classes.backdrop).appendTo($body);
-
-      this.$backdrop.one(this.transitionEndEvent, cb);
-      this.$backdrop.one('click', this.close.bind(this));
-
-      // debug this...
-      setTimeout(() => {
-        this.$backdrop.addClass(classes.backdropVisible);
-      }, 10);
-    }
-    else {
-      cb();
-    }
-  }
-
-  removeBackdrop(callback) {
-    const cb = callback || $.noop;
-
-    if (!this.stateIsOpen && this.$backdrop) {
-      this.$backdrop.one(this.transitionEndEvent, () => {
-        this.$backdrop && this.$backdrop.remove();
-        this.$backdrop = null;
-        cb();
-      });
-
-      setTimeout(() => {
-        this.$backdrop.removeClass(classes.backdropVisible);
-      }, 10);
-    }
-    else {
-      cb();
-    }
   }
 
   /**
@@ -288,16 +229,8 @@ export default class AJAXCart {
   onRender(e) {
     if (e.cart) {
       this.updateCartCount(e.cart);
-
-      if (e.cart.item_count === 0) {
-        this.$el.addClass(classes.cartIsEmpty);
-      }
-      else {
-        this.$el.removeClass(classes.cartIsEmpty);
-      }
+      this.$el.toggleClass(classes.cartIsEmpty, e.cart.item_count === 0);
     }
-
-    QuantityAdjuster.refresh(this.$el);
 
     // Just in case
     this.unlockUI();
@@ -345,43 +278,6 @@ export default class AJAXCart {
   }
 
   /**
-   * Triggered when someone changes the value of the quantity input through the quantity adjuster
-   * We tap into the quantityAdjuster instastance through the data attribute to retrieve the normalized max / min 
-   * (in case they don't exist as html attributes) and adjust the interaction timeout accordingly
-   *
-   * @param {event} e - Change event
-   */
-  onItemQuantityInputChange(e) {
-    const attrs      = this.getItemRowAttributes(e.target);
-    const $input     = $(e.currentTarget);
-    const $qa        = $input.closest(selectors.quantityAdjuster);
-    const qaInstance = $qa.data(QuantityAdjuster.getDataKey());
-    const qty        = $input.val();
-
-    let d = this.qaInteractionDelay;
-
-    // If we hit the max or min on the input, trigger the quantity update request immediately;
-    if (qaInstance && (qaInstance.getMax() === qty || qaInstance.getMin() === qty)) {
-      d = 0;
-    }
-
-    clearTimeout(this.qaInteractionTimeout);
-    this.qaInteractionTimeout = setTimeout(() => {
-      this.lockUI();
-
-      CartAPI.changeLineItemQuantityByKey(attrs.key, qty).then((cart) => {
-        this.render(cart);
-      })
-        .fail(() => {
-          console.warn('something went wrong...');
-        })
-        .always(() => {
-          this.unlockUI();
-        });
-    }, d);
-  }
-
-  /**
    * Click the 'ajaxCart - trigger' selector
    *
    * @param {event} e - Click event
@@ -416,37 +312,28 @@ export default class AJAXCart {
   }
 
   /**
-   * Opens the cart and adds the backdrop if necessary
+   * Opens the cart
    *
    */
   open() {
     if (this.stateIsOpen || !this.rendered) return;
 
-    this.stateIsOpen = true;
-
-    if (this.settings.backdrop) {
-      $body.addClass(classes.bodyCartOpen);
-      this.addBackdrop();
-    }
-
+    $body.addClass(classes.bodyCartOpen);
     this.$el.addClass(classes.cartOpen);
+    $(selectors.trigger).addClass(classes.triggerActive);
+    this.stateIsOpen = true;
   }
 
   /**
-   * Closes the cart and removes the backdrop if necessary
+   * Closes the cart
    *
    */
   close() {
     if (!this.stateIsOpen) return;
 
-    this.stateIsOpen = false;
-
     this.$el.removeClass(classes.cartOpen);
-
-    if (this.settings.backdrop) {
-      this.removeBackdrop(() => {
-        $body.removeClass(classes.bodyCartOpen);
-      });
-    }
+    $(selectors.trigger).removeClass(classes.triggerActive);
+    $body.removeClass(classes.bodyCartOpen);
+    this.stateIsOpen = false;
   }
 }

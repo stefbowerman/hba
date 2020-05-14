@@ -28,8 +28,9 @@ class CartAPI {
     cart.total_price = formatMoney(cart.total_price, theme.moneyFormat);
 
     cart.items.map((item) => {
-      item.image = getSizedImageUrl(item.image, '200x');
+      item.image = getSizedImageUrl(item.image, '500x');
       item.price = formatMoney(item.price, theme.moneyFormat);
+      item.multiple_quantities = item.quantity > 1
 
       // Adjust the item's variant options to add "name" and "value" properties
       if (item.hasOwnProperty('product')) {
