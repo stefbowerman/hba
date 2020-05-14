@@ -31,7 +31,6 @@ import './ui/quantityAdjuster';
 import SectionManager                from './sections/sectionManager';
 import HeaderSection                 from './sections/header';
 import FooterSection                 from './sections/footer';
-import MobileMenuSection             from './sections/mobileMenu';
 import ProductSection                from './sections/product';
 import CartSection                   from './sections/cart';
 import AJAXCartSection               from './sections/ajaxCart';
@@ -64,7 +63,6 @@ Breakpoints.initialize();
 
   sectionManager.register('header', HeaderSection);
   sectionManager.register('footer', FooterSection);
-  sectionManager.register('mobile-menu', MobileMenuSection);
   sectionManager.register('product', ProductSection);
   sectionManager.register('cart', CartSection);
   sectionManager.register('ajax-cart', AJAXCartSection);
