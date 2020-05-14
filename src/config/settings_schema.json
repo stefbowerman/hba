@@ -1,0 +1,70 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Hood By Air",
+    "theme_version": "1.0.0",
+    "theme_author": "Stefan Bowerman",
+    "theme_documentation_url": "https://github.com/stefbowerman/hba/wiki",
+    "theme_support_url": "https://github.com/stefbowerman/hba"
+  },
+  {
+    "name": "Social",
+    "settings": [  
+      {
+        "type": "header",
+        "content": "Accounts"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_handle",
+        "label": "Twitter Handle"
+      }
+    ]
+  },
+  {
+    "name": "Sharing",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Sharing Images",
+        "info": "These will appear as options when someone shares the website."
+      },
+      {
+        "type": "image_picker",
+        "id": "sharing_image_1",
+        "label": "Image #1"
+      },
+      {
+        "type": "image_picker",
+        "id": "sharing_image_2",
+        "label": "Image #2"
+      },
+      {
+        "type": "image_picker",
+        "id": "sharing_image_3",
+        "label": "Image #3"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Should be at least 180px x 180px"
+      }
+    ]
+  }, 
+  {
+    "name": "Mailing List",
+    "settings": [
+      {
+        "type": "text",
+        "id": "newsletter_form_action",
+        "label": "Newsletter Form Action URL"
+      }
+    ]
+  }
+]

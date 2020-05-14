@@ -1,0 +1,26 @@
+{%- capture seo_title -%}
+  {% if template.name == "search" %}
+    Search
+    {% if search.performed %}
+      - "{{ search.terms | escape }}"
+    {% endif %}
+  {% elsif template.name == "cart" %}
+    Cart
+  {% else %}
+    {{ page_title }}
+  {% endif %}
+
+  {% if current_tags %}
+    {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+  {% endif %}
+  {% if current_page != 1 %}
+    &ndash; {{ 'general.meta.page' | t: page: current_page }}
+  {% endif %}
+  {% unless template.name == "index" %}
+    {% unless page_title contains shop.name %}
+      &ndash; {{ shop.name }}
+    {% endunless %}
+  {% endunless %}
+{%- endcapture -%}
+  
+{{ seo_title | strip | strip_newlines }}

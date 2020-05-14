@@ -1,0 +1,91 @@
+{%- comment %}
+
+  Collection Section
+  ------------------------------------------------------------------------------
+
+{% endcomment -%}
+
+{% paginate collection.products by 6 %}
+
+<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
+  <div class="container">
+
+    {% include 'page-header',
+                ph_title: collection.title,
+                ph_subtitle: collection.description
+    %}
+
+    {% if collection.products.size > 0 %}
+      <div class="collection-filter-bar">
+        <div class="collection-filter-bar__grouping">
+          {% if section.settings.enable_sort %}
+            {% include 'collection-sort' %}
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="d-none d-md-block">
+        <small>Showing {{ collection.products.size }} {{ collection.products.size | pluralize: 'Item', 'Items' }}</small>
+      </p>      
+
+      <div class="content-grid">
+        {% for product in collection.products %}
+
+          {% comment %} Lazy load all product images below the fold.  Adjust the limit as needed {% endcomment %}
+          {% assign lazy_load = false %}
+          {% if forloop.index > 10 %}
+            {% assign lazy_load = true %}
+          {% endif %}
+
+          <div class="content-grid__item">
+            {% include 'product-card',
+                        product: product,
+                        lazy_load: lazy_load
+            %}
+          </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <p>{{ 'collections.general.no_matches' | t }}</p>
+
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      {% include 'pagination' %}
+    {% endif %}
+  </div>
+
+  {% comment %} This JSON is required for filtering and sorting {% endcomment %}
+  {% capture collection_url %}
+    {% if collection.handle == "all" %}
+      /collections/all
+    {% else %}
+      {{ collection.url }}
+    {% endif %}
+  {% endcapture %}
+
+  <script type="application/json" data-collection-json>
+    {
+      "url": {{ collection_url | strip | json }},
+      "sortDefault": {{ collection.default_sort_by | json }},
+      "sortApplied": {{ collection.sort_by | json }}
+    }
+  </script>
+</div>
+
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Collection",
+    "settings": [
+      {
+        "id": "enable_sort",
+        "type": "checkbox",
+        "label": "Enable Sort",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

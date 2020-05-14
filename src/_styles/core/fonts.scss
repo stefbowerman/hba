@@ -1,0 +1,11 @@
+// --------------------------------------------------------
+// Fonts
+// --------------------------------------------------------
+
+// Import your fonts using the font-face mixin built for shopify assets
+// Make sure to set the font-weight / font-style correctly for each one that you include.
+// The second argument is the filename *excluding* the file extension.  This allows us to generate all the extensions inside the mixin.
+
+@include font-face('Bebas', 'bebas-regular', $font-weight-normal);
+@include font-face('HBA Mono', 'hbamono-regular', $font-weight-normal);
+@include font-face('HBA Mono', 'hbamono-bold', $font-weight-bold);

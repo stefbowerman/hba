@@ -1,0 +1,56 @@
+// -------------------------
+// Footer
+// -------------------------
+
+.footer {
+  padding-top: $footer-padding-top;
+  padding-bottom: $footer-padding-bottom;
+  text-transform: uppercase;
+  font-size: $footer-font-size;
+}
+
+.footer-blocks {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-block {
+  flex: 1;
+}
+
+.footer-block__title {
+  margin-bottom: 3px;
+}
+
+.footer-menu {
+
+  // @media (min-width: $footer-bp-min) {
+  //   display: inline-block;
+  //   vertical-align: top;
+  // }
+
+  // Add extra horizontal spacing between menus on large screens
+  // @media (min-width: $screen-lg-min) {
+  //   & + & {
+  //     margin-left: 80px;
+  //   }
+  // }
+}
+
+.footer-menu__list {
+  @extend .list-unstyled;
+
+  li:not(:last-child) {
+    margin-bottom: 3px;
+  }
+}
+
+.footer-info {
+  p {
+    margin-bottom: 3px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

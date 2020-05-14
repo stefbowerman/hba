@@ -1,0 +1,143 @@
+<!--
+{% comment %} Newsletter messaging {% endcomment %}
+{% assign message_already_subscribed = section.settings.subscribe_already_subscribed_text %}
+{% if message_already_subscribed == blank %}
+  {% assign message_already_subscribed = 'general.newsletter.already_subscribed' | t %}
+{% endif %}
+
+{% assign message_success = section.settings.subscribe_success_text %}
+{% if message_success == blank %}
+  {% assign message_success = 'general.newsletter.subscribe_success' | t %}
+{% endif %}            
+
+{% assign message_fail = 'general.newsletter.subscribe_fail' | t %}
+-->
+
+{%- capture footer_blocks_html -%}
+  {% for block in section.blocks %}
+    <div class="footer-block">
+      <h6 class="footer-block__title">
+        {{ block.settings.title }}
+      </h6>
+
+      {% if block.type == 'menu' %}
+        {% if block.settings.link_list != blank %}
+          <div class="footer-menu">
+            {% if block.settings.link_list and linklists[block.settings.link_list].links.size > 0 %}
+              <ul class="footer-menu__list">
+                {% for link in linklists[block.settings.link_list].links %}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% elsif block.type == 'info' %}
+        {% assign year = 'now' | date: "%Y" %}
+        <div class="footer-info">
+          {{ block.settings.info | replace: '$year$', year }}
+        </div>
+      {% elsif block.type == 'mailing_list' %}
+        <div class="footer-mailing-list">
+          Sign up
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+{%- endcapture -%}
+
+<footer class="footer" data-section-id="{{ section.id }}" data-section-type="footer">
+  <div class="container-fluid-max">
+    <div class="footer-blocks">
+      {{ footer_blocks_html }}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "max_blocks": 5,
+    "settings": [   
+      {
+        "type": "header",
+        "content": "Mailing List"
+      },
+      {
+        "type": "text",
+        "id": "subscribe_heading",
+        "label": "Heading"
+      },
+      {
+        "type": "textarea",
+        "id": "subscribe_text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "placeholder_text",
+        "label": "Placeholder Text",
+        "default": "Enter your email"
+      },
+      {
+        "type": "textarea",
+        "id": "subscribe_success_text",
+        "label": "Success Message",
+        "info": "Displays when someone signs up successfully.  Leave blank for a generic message."
+      },
+      {
+        "type": "textarea",
+        "id": "subscribe_already_subscribed_text",
+        "label": "Already Subscribed Message",
+        "info": "Displays if someone is already signed up to the mailing list.  Leave blank for a generic message."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "menu",
+        "name": "Menu",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "link_list",
+            "id": "link_list",
+            "label": "Menu"
+          }
+        ]
+      },
+      {
+        "type": "info",
+        "name": "Info",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "info",
+            "label": "Info",
+            "info": "Use '$year$' to include the current year."
+          }
+        ]
+      },
+      {
+        "type": "mailing_list",
+        "name": "Mailing List",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Mailing List"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
