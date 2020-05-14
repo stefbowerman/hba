@@ -1,6 +1,3 @@
-{% comment %} Changing this will turn on / off the fixed header behavior {% endcomment %}
-{% assign FIXED_HEADER = true %}
-
 <!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
@@ -53,19 +50,15 @@
   {% if template.suffix != blank %}
     template-{{ template.name | append: '-' | append: template.suffix | handle }}
   {% endif %}
-  {% if FIXED_HEADER == true %}
-    site-fixed-header
-  {% endif %}
 {% endcapture %}
 
 <body id="{{ page_title | handle }}" class="{{ body_class | strip | strip_newlines }}">
-
   <a class="in-page-link visually-hidden skip-link" href="#MainContent">
     {{ 'general.accessibility.skip_to_content' | t }}
   </a>  
 
   <div class="layout-wrapper">
-    {% section 'header-logo-left' %}
+    {% section 'header' %}
 
     <main role="main" id="MainContent" role="main">
       <div class="layout-main-content">

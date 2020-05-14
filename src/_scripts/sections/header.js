@@ -1,10 +1,6 @@
 import $ from 'jquery';
-import { throttle } from 'throttle-debounce';
 import BaseSection from './base';
 import DropdownManager from '../managers/dropdown';
-
-const $window = $(window);
-const $body   = $(document.body);
 
 const selectors = {
   header: '[data-header]',
@@ -14,7 +10,6 @@ const selectors = {
 
 const classes = {
   headerFixed: 'is-fixed',
-  siteHasFixedHeader: 'site-fixed-header',
   logoStrobe: 'is-strobing'
 };
 
@@ -32,12 +27,6 @@ export default class HeaderSection extends BaseSection {
       DropdownManager.register($(trigger));
     });
 
-    // We pass in the fixed behavior as a class on the body of the site
-    if ($body.hasClass(classes.siteHasFixedHeader)) {
-      $window.on(this.events.SCROLL, throttle(20, this.onScroll.bind(this)));
-      this.onScroll(); // hit this one time on init to make sure everything is good
-    }
-
     this.strobeLogo();
   }
 
@@ -48,26 +37,6 @@ export default class HeaderSection extends BaseSection {
     const max = 20;
     const rand = Math.floor(Math.random() * (max - min + 1) + min);
     setTimeout(this.strobeLogo.bind(this), rand*100);
-  }
-
-  scrollCheck() {
-    // Do measurements outside of rAF.
-    const scrollTop = $window.scrollTop();
-    const actualOffset = this.$container.offset().top - this.$el.outerHeight();
-
-    // Do DOM updates inside.
-    requestAnimationFrame(() => {
-      if (scrollTop < actualOffset) {
-        this.$el.removeClass(classes.headerFixed);
-      }
-      else {
-        this.$el.addClass(classes.headerFixed);
-      }
-    });
-  }
-
-  onScroll() {
-    this.scrollCheck();
   }
 
   onMouseLeave() {

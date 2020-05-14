@@ -1,0 +1,42 @@
+<div data-section-id="{{ section.id }}" data-section-type="header">
+  <header class="header" role="banner" data-header>
+    {% include 'header-logo' %}
+
+    <a href="/cart" class="header-cart btn" data-ajax-cart-trigger>
+      <div class="header-cart__badge{% if cart.item_count > 0 %} has-items{% endif %}" data-cart-badge>
+        Cart <span data-cart-badge-count>{{ cart.item_count }}</span>
+      </div>
+    </a>
+  </header>
+
+  <nav class="header-nav">
+    {% assign ll = linklists[section.settings.main_menu] %}
+    {% if ll and ll.links.size > 0 %}
+      {% for link in ll.links %}
+        <div><a href="{{ link.url }}">{{ link.title }}</a></div>
+        {% if link.links.size > 0 %}
+          <div style="margin-left: 30px">
+            {% for sublink in link.links %}
+              <div>
+                <a href="{{ sublink.url }}">{{ sublink.title }}</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </nav>  
+</div>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "main_menu",
+        "label": "Main Menu"
+      }
+    ]
+  }
+{% endschema %}
