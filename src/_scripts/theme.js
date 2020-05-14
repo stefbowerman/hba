@@ -18,45 +18,25 @@ import {
   wrapIframe
 } from './core/rte';
 import { pageLinkFocus } from './core/a11y';
-import * as Animations  from './core/animations';
-import * as Breakpoints from './core/breakpoints';
-
-// UI - Import all to enable data API
-import './ui/drawer';
-import './ui/overlay';
-import './ui/tabs';
-import './ui/quantityAdjuster';
+import * as Animations   from './core/animations';
+import * as Breakpoints  from './core/breakpoints';
 
 // Sections
-import SectionManager                from './sections/sectionManager';
-import HeaderSection                 from './sections/header';
-import FooterSection                 from './sections/footer';
-import ProductSection                from './sections/product';
-import CartSection                   from './sections/cart';
-import AJAXCartSection               from './sections/ajaxCart';
-import CollectionSection             from './sections/collection';
-import BlogSection                   from './sections/blog';
-import ArticleSection                from './sections/article';
-import NewsletterModalSection        from './sections/newsletterModal';
-import SlideshowSection              from './sections/slideshow';
-import VideoSection                  from './sections/video';
-import CMSPageSection                from './sections/cmsPage';
-import CustomersLoginSection         from './sections/customersLogin';
-import CustomersAccountSection       from './sections/customersAccount';
-import CustomersAccountOrdersSection from './sections/customersAccountOrders';
-import CustomersAddressesSection     from './sections/customersAddresses';
-import CustomersOrderSection         from './sections/customersOrder';
-
-// Templates
-import './templates/pageStyles';
-import './templates/pageComponents';
+import SectionManager    from './sections/sectionManager';
+import HeaderSection     from './sections/header';
+import FooterSection     from './sections/footer';
+import ProductSection    from './sections/product';
+import CartSection       from './sections/cart';
+import AJAXCartSection   from './sections/ajaxCart';
+import CollectionSection from './sections/collection';
+import BlogSection       from './sections/blog';
+import ArticleSection    from './sections/article';
 
 // Do this ASAP
 Animations.initialize();
 Breakpoints.initialize();
 
 ((Modernizr) => {
-  const $document = $(document);
   const $body = $(document.body);
 
   const sectionManager = new SectionManager();
@@ -69,15 +49,6 @@ Breakpoints.initialize();
   sectionManager.register('collection', CollectionSection);
   sectionManager.register('blog', BlogSection);
   sectionManager.register('article', ArticleSection);
-  sectionManager.register('newsletter-modal', NewsletterModalSection);
-  sectionManager.register('slideshow', SlideshowSection);
-  sectionManager.register('video', VideoSection);
-  sectionManager.register('cms-page', CMSPageSection);
-  sectionManager.register('customers-login', CustomersLoginSection);
-  sectionManager.register('customers-account', CustomersAccountSection);
-  sectionManager.register('customers-account-orders', CustomersAccountOrdersSection);
-  sectionManager.register('customers-addresses', CustomersAddressesSection);
-  sectionManager.register('customers-order', CustomersOrderSection);
 
   $('.in-page-link').on('click', evt => pageLinkFocus($(evt.currentTarget.hash)));
 
@@ -110,22 +81,6 @@ Breakpoints.initialize();
   $body.on('change keydown', '.form-control', (e) => {
     $(e.currentTarget).removeClass('is-invalid');
   });
-
-  // START - Global handler for collapse plugin to add state class for open expandable lists
-  const isOpenClass = 'is-open';
-
-  $document.on('show.bs.collapse', '.collapse', (e) => {
-    $(e.currentTarget).parents('.expandable-list').addClass(isOpenClass);
-  });
-
-  $document.on('hide.bs.collapse', '.collapse', (e) => {
-    $(e.currentTarget).parents('.expandable-list').removeClass(isOpenClass);
-  });
-
-  $('.collapse.show').each(function() {
-    $(this).parents('.expandable-list').addClass(isOpenClass);
-  });
-  // END - Global handler for collapse plugin to add state class for open expandable lists
 
   // Add "development mode" class for CSS hook
   $body.addClass('development-mode');

@@ -2,14 +2,12 @@ import $ from 'jquery';
 import Swiper from 'swiper';
 
 const selectors = {
-  productGallery: '[data-product-gallery]',
   productGallerySlideshow: '[data-product-gallery-slideshow]',
   productGalleryThumbnailsSlide: '[data-product-gallery-thumbnails-slide]',
   initialSlide: '[data-initial-slide]'
 };
 
 const classes = {
-  hide: 'hide',
   zoomReady: 'is-zoomable',
   zoomedIn: 'is-zoomed',
   thumbnailSlideActive: 'is-active'
@@ -18,8 +16,8 @@ const classes = {
 export default class ProductDetailGallery {
   /**
    * Product Detail Gallery Constructor
-   * Handles the interaction between a single gallery and set of thumbnails
-   * See: snippets/product-detail-galleries.liquid
+   * Handles the interaction between the gallery and the set of thumbnails
+   * See: snippets/product-detail-gallery.liquid
    *
    * @param {HTMLElement | jQuery} el - gallery element containing elements matching the slideshow and thumbnails selectors
    */  
@@ -27,15 +25,13 @@ export default class ProductDetailGallery {
     this.$el = $(el);
     this.$slideshow  = this.$el.find(selectors.productGallerySlideshow);
     this.$thumbnailSlides = this.$el.find(selectors.productGalleryThumbnailsSlide);
-    this.optionValue = this.$el.data('option-value');
 
-    // Look for element with the initialSlide selector.
-    const initialSlide = this.$slideshow.find(selectors.initialSlide).length ? this.$slideshow.find(selectors.initialSlide).index() : 0;
-
+    const initialSlide = $(selectors.initialSlide, this.$slideshow).index();
+    
     this.swiper = new Swiper(this.$slideshow.get(0), {
       init: false,
       loop: true,
-      initialSlide: initialSlide,
+      initialSlide: (initialSlide === -1 ? 0 : initialSlide), // If the initial slide doesn't exist, jQuery will return -1
       speed: 0,
       on: {
         init: this.onSlideShowInit.bind(this),
@@ -70,8 +66,8 @@ export default class ProductDetailGallery {
     });
   }
 
-  destroyHoverZoom($zoomTarget) {
-    $zoomTarget.trigger('zoom.destroy');
+  destroyHoverZoom($el) {
+    $el.trigger('zoom.destroy');
   }
 
   onSlideShowInit() {

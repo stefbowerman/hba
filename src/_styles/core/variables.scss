@@ -733,9 +733,6 @@ $zindex-sticky:                     1500 !default;
 $zindex-fixed:                      2000 !default;
 $zindex-ajax-cart:                  2006 !default;
 $zindex-header:                     2100 !default;
-$zindex-drawer-backdrop:            2200 !default;
-$zindex-drawer:                     2201 !default;
-$zindex-overlay:                    2400 !default;
 $zindex-modal-backdrop:             2500 !default;
 $zindex-modal:                      3000 !default;
 $zindex-popover:                    3500 !default;
@@ -787,11 +784,6 @@ $transition-duration-slide:               $transition-duration-medium !default;
 $transition-timing-function-slide-in:     cubic-bezier(0.34, 0.75, 0.6, 1) !default;
 $transition-timing-function-slide-out:    cubic-bezier(0.4, 0.5, 0.5, 1) !default;
 
-$transition-duration-overlay:             $transition-duration-slow !default;
-$transition-timing-function-overlay-in:   cubic-bezier(0, 0, 0.23, 1.43) !default;
-$transition-timing-function-overlay-out:  $transition-timing-function-out !default;
-$transition-timing-function-overlay-opacity-in: $transition-timing-function-hard-in !default;
-$transition-timing-function-overlay-opacity-out: $transition-timing-function-hard-out !default;
 
 // Cards
 
@@ -936,43 +928,13 @@ $header-bp-min:                         map-get($grid-breakpoints, "md") !defaul
 $header-height-small:                   65px !default;
 $header-height-base:                    75px !default;
 $header-logo-width:                     120px !default;
-$header-dropdown-bg:                    red !default;
-$header-dropdown-box-shadow:            0 8px 15px -10px transparentize($black, 0.85) !default;
-$header-dropdown-menu-spacing:          25px !default; // Horizontal spacing between dropdown menus
 
 
 // Footer
 
-$footer-bp-min:                         map-get($grid-breakpoints, "md") !default;
 $footer-padding-top:                    79px;
 $footer-padding-bottom:                 15px;
 $footer-font-size:                      $font-size-xs;
-
-
-// Content Card
-
-$content-card-padding-vertical:         $grid-gutter-width * 2;
-$content-card-padding-horizontal:       $grid-gutter-width;
-
-
-// Overlay Card
-
-$overlay-card-padding-vertical:         $grid-gutter-width;
-$overlay-card-padding-horizontal:       $grid-gutter-width;
-$overlay-card-border-radius:            0;
-$overlay-card-bg-overlay-light-color:   transparentize($white, 0.6);
-$overlay-card-bg-overlay-dark-color:    transparentize($black, 0.7);
-$overlay-card-light-text-color:         $white;
-$overlay-card-content-max-width:        30em;
-
-
-// #Banner Panel
-
-$banner-panel-padding-vertical:         150px; // Default vertical padding.  Can be overwritten via snippet options
-$banner-panel-padding-vertical-small:   50px;
-$banner-panel-padding-vertical-large:   $banner-panel-padding-vertical * 2;
-$banner-panel-overlay-light-color:      transparentize($white, 0.7);
-$banner-panel-overlay-dark-color:       transparentize($black, 0.5);
 
 
 // Minimal Input
@@ -981,31 +943,10 @@ $minimal-input-height:                  33px;
 $minimal-input-height-large:            60px;
 
 
-// Drawer
-
-$drawer-max-width:                      400px;
-$drawer-bg:                             $white;
-$drawer-border-color:                   darken($drawer-bg, 5%);
-$drawer-padding-vertical:               $grid-gutter-width;
-$drawer-padding-horizontal:             $grid-gutter-width;
-$drawer-backdrop-color:                 #888;
-$drawer-backdrop-opacity:               0.6;
-$drawer-header-font-size:               $h5-font-size;
-$drawer-header-border-color:            $black;
-
-
 // AJAX Cart
 
 $ajax-cart-bg:                          $white;
 $ajax-cart-color:                       $black;
-
-
-// Page Hero
-
-$page-hero-padding-vertical:            150px;
-$page-hero-padding-small-vertical:      120px;
-$page-hero-margin-bottom:               $grid-gutter-width;
-$page-hero-light-text-color:            $white;
 
 
 // Arrows
@@ -1028,53 +969,3 @@ $slideshow-dot-size:                    10px;
 $slideshow-dot-color:                   $white;
 $slideshow-dot-active-color:            #f00;
 
-
-// Panel
-
-$panel-padding-vertical:                $grid-gutter-width/2;
-$panel-padding-horizontal:              $grid-gutter-width;
-$panel-margin-vertical:                 $grid-gutter-width;
-$panel-border:                          1px solid #efefef;
-$panel-expand-icon-size:                20px;
-$panel-expand-icon-stroke-width:        2px;
-
-
-// Expandable List
-
-$expandable-list-item-padding-vertical: 12px;
-$expandable-list-item-border:           1px solid #efefef;
-
-
-// Overlays
-
-$overlay-bg-color:                     $body-bg;
-$overlay-transition-duration:          $transition-duration-base;
-
-
-// Dots
-
-$dot-border-width:                      1px;
-$dot-border-radius:                     0;
-$dot-border-color:                      transparent;
-$dot-active-border-color:               $black;
-$dot-size:                              30px;
-$dot-spacing:                           6px;
-$dot-padding:                           2px;
-$dot-bottom-margin:                     $dot-spacing;
-$dot-small-font-size:                   $font-size-sm;
-$dot-small-border-width:                1px;
-$dot-small-border-radius:               0;
-$dot-small-border-color:                $dot-border-color;
-$dot-small-active-border-color:         $black;
-$dot-small-size:                        22px;
-$dot-small-spacing:                     0;
-$dot-small-padding:                     0;
-$dot-small-bottom-margin:               $dot-spacing;
-$dot-small-font-size:                   $font-size-xs;
-
-// #Quantity Adjuster
-$quantity-adjuster-height:             40px;
-$quantity-adjuster-font-size:          $font-size-base;
-$quantity-adjuster-border-width:       1px;
-$quantity-adjuster-border-color:       $gray;
-$quantity-adjuster-inner-height:       $quantity-adjuster-height - (2*$quantity-adjuster-border-width);

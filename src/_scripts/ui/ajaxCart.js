@@ -44,7 +44,7 @@ export default class AJAXCart {
     this.namespace = `.${this.name}`;
 
     // UPDATE_AND_OPEN is the only event that isn't emitted, we just listen for it.
-    // It allows other parts of the application to trigger the drawer to open
+    // It allows other parts of the application to trigger cart to open
 
     this.events = {
       CLICK:   `click${this.namespace}`,
