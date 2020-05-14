@@ -5,29 +5,13 @@
 
 {% endcomment -%}
 
-{% paginate collection.products by 6 %}
+{% paginate collection.products by 600 %}
 
 <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
   <div class="container">
-
-    {% include 'page-header',
-                ph_title: collection.title,
-                ph_subtitle: collection.description
-    %}
+    {% render 'page-title' with collection.title %}
 
     {% if collection.products.size > 0 %}
-      <div class="collection-filter-bar">
-        <div class="collection-filter-bar__grouping">
-          {% if section.settings.enable_sort %}
-            {% include 'collection-sort' %}
-          {% endif %}
-        </div>
-      </div>
-
-      <p class="d-none d-md-block">
-        <small>Showing {{ collection.products.size }} {{ collection.products.size | pluralize: 'Item', 'Items' }}</small>
-      </p>      
-
       <div class="content-grid">
         {% for product in collection.products %}
 
@@ -49,10 +33,6 @@
     {% else %}
       <p>{{ 'collections.general.no_matches' | t }}</p>
 
-    {% endif %}
-
-    {% if paginate.pages > 1 %}
-      {% include 'pagination' %}
     {% endif %}
   </div>
 
@@ -79,13 +59,6 @@
 {% schema %}
   {
     "name": "Collection",
-    "settings": [
-      {
-        "id": "enable_sort",
-        "type": "checkbox",
-        "label": "Enable Sort",
-        "default": true
-      }
-    ]
+    "settings": []
   }
 {% endschema %}

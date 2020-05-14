@@ -24,9 +24,7 @@ export default class AJAXCartSection extends BaseSection {
 
     // Create a new instance of the cart UI.
     // Pass in any variables used by the Handlebars template that aren't part of the cart object
-    this.ajaxCartUI = new AJAXCartUI({
-      footer_text: this.$container.data('footer-text')
-    });
+    this.ajaxCartUI = new AJAXCartUI();
 
     // Store callbacks so we can remove them later
     this.callbacks = {

@@ -278,7 +278,7 @@ $embed-responsive-aspect-ratios: join(
 // $font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 // $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 
-$font-family-sans-serif:      'Bebas', -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
+$font-family-sans-serif:      Helvetica, -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
 $font-family-monospace:       'HBA Mono', monospace;
 $font-family-base:            $font-family-monospace !default;
 // stylelint-enable value-keyword-case
@@ -287,7 +287,7 @@ $font-size-base:              (13/16) * 1rem !default; // Assumes the browser de
 $font-size-lg:                $font-size-base * 1.25 !default;
 $font-size-md:                $font-size-base * 1.125 !default;
 $font-size-sm:                $font-size-base * .875 !default;
-$font-size-xs:                $font-size-base * 0.75 !default;
+$font-size-xs:                (10/16) * 1rem !default;
 
 $font-weight-lighter:         lighter !default;
 $font-weight-light:           300 !default;
@@ -297,15 +297,14 @@ $font-weight-bolder:          bolder !default;
 
 $font-weight-base:            $font-weight-normal !default;
 $line-height-base:            1.23 !default;
-$letter-spacing-base:         0.01em !default;
 
 // Headings
-$h1-font-size:                $font-size-base * 2.5 !default;
-$h2-font-size:                $font-size-base * 2 !default;
-$h3-font-size:                $font-size-base * 1.75 !default;
-$h4-font-size:                $font-size-base * 1.5 !default;
-$h5-font-size:                $font-size-base * 1.25 !default;
-$h6-font-size:                $font-size-base !default;
+$h1-font-size:                (12/16) * 1rem !default;
+$h2-font-size:                (12/16) * 1rem !default;
+$h3-font-size:                (12/16) * 1rem !default;
+$h4-font-size:                (12/16) * 1rem !default;
+$h5-font-size:                (11/16) * 1rem !default;
+$h6-font-size:                (10/16) * 1rem !default;
 
 $h1-letter-spacing:           0 !default;
 $h2-letter-spacing:           0 !default;
@@ -947,14 +946,7 @@ $header-dropdown-menu-spacing:          25px !default; // Horizontal spacing bet
 $footer-bp-min:                         map-get($grid-breakpoints, "md") !default;
 $footer-padding-top:                    50px;
 $footer-padding-bottom:                 15px;
-$footer-font-size:                      $font-size-sm;
-
-
-// Product Card
-
-$product-card-title-size:               $font-size-lg;
-$product-card-price-size:               $font-size-sm;
-$product-card-text-align:               center;
+$footer-font-size:                      $font-size-xs;
 
 
 // Content Card
@@ -1006,7 +998,7 @@ $drawer-header-border-color:            $black;
 
 $ajax-cart-width:                       400px;
 $ajax-cart-bg:                          $white;
-$ajax-cart-border-color:                darken($ajax-cart-bg, 5%);
+$ajax-cart-color:                       $black;
 $ajax-cart-padding-vertical:            $grid-gutter-width;
 $ajax-cart-padding-horizontal:          $grid-gutter-width;
 $ajax-cart-backdrop-color:              $drawer-backdrop-color;

@@ -1,7 +1,6 @@
 // jQuery
 import $ from 'jquery';
 import 'jquery-zoom';
-import 'chosen-js';
 import 'jquery-unveil';
 
 // Bootstrap JS
@@ -12,7 +11,6 @@ import 'bootstrap/js/dist/modal';
 import {
   userAgentBodyClass,
   cookiesEnabled,
-  chosenSelects,
   credits
 } from './core/utils';
 import {
@@ -109,9 +107,6 @@ Breakpoints.initialize();
   if (cookiesEnabled()) {
     document.documentElement.className = document.documentElement.className.replace('supports-no-cookies', 'supports-cookies');
   }
-
-  // Chosen JS plugin for select boxes
-  chosenSelects();
 
   // Form event handling / validation
   $body.on('change keydown', '.form-control', (e) => {

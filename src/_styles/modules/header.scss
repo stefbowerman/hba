@@ -148,22 +148,10 @@
 
 // Cart Icon + Quantity
 .header-cart__badge {
-  display: inline-block;
-  position: relative;
+  display: none;
 
   &.has-items {
-
-  }
-}
-
-.header-cart__badge-count {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-
-  .has-items & {
-    opacity: 1;
+    display: inline-block;
   }
 }
 

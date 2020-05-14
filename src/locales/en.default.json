@@ -92,6 +92,7 @@
       "shipping_at_checkout": "Shipping & taxes calculated at checkout",
       "update": "Update Cart",
       "checkout": "Check Out",
+      "proceed_to_checkout": "Proceed to checkout",
       "view": "View Cart",
       "empty": "Your cart is currently empty.",
       "cookies_required": "Enable cookies to use the shopping cart",

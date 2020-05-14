@@ -5,6 +5,7 @@ const sass = require('gulp-sass');
 const size = require('gulp-size');
 const postcss = require('gulp-postcss');
 const debug = require('gulp-debug');
+const rename = require('gulp-rename');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const mergeStream = require('merge-stream');
@@ -39,6 +40,9 @@ const stylePipeline = (src) => {
       this.emit('end');
     })
     .pipe(postcss(postcssPlugins))
+    .pipe(rename({
+      extname: '.scss.liquid'
+    }))    
     .pipe(gulp.dest(paths.dest))
     .pipe(debug())
     .pipe(size({showFiles: true, title: 'CSS: size of'}));

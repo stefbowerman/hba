@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import { chosenSelects } from '../../core/utils';
 import { formatMoney } from '../../core/currency';
 import Variants from './variants';
 
@@ -14,8 +13,7 @@ const selectors = {
   productPrice: '[data-product-price]',
   singleOptionSelector: '[data-single-option-selector]',
   variantOptionValueList: '[data-variant-option-value-list][data-option-position]',
-  variantOptionValue: '[data-variant-option-value]',
-  quantitySelect: '[data-product-quantity-select]'
+  variantOptionValue: '[data-variant-option-value]'
 };
 
 const classes = {
@@ -58,7 +56,6 @@ export default class ProductDetailForm {
     /* eslint-disable */
     /* temporarily disable to allow long lines for element descriptions */
     this.$container              = this.settings.$container; // Scoping element for all DOM lookups
-    this.$quantitySelect         = $(selectors.quantitySelect, this.$container); // Quantity dropdown
     this.$addToCartBtn           = $(selectors.addToCart, this.$container);
     this.$addToCartBtnText       = $(selectors.addToCartText, this.$container); // Text inside the add to cart button
     this.$priceWrapper           = $(selectors.priceWrapper, this.$container); // Contains all price elements
@@ -81,8 +78,6 @@ export default class ProductDetailForm {
 
     this.$container.on('variantChange', this.onVariantChange.bind(this));
     this.$container.on(this.events.CLICK, selectors.variantOptionValue, this.onVariantOptionValueClick.bind(this));
-
-    chosenSelects(this.$container);
   }
 
   onVariantChange(evt) {
@@ -90,10 +85,7 @@ export default class ProductDetailForm {
 
     this.updateProductPrices(variant);
     this.updateAddToCartState(variant);
-    this.updateQuantitySelect(variant);
     this.updateVariantOptionValues(variant);
-
-    this.$singleOptionSelectors.trigger('chosen:updated');
 
     this.settings.onVariantChange(variant);
   }
@@ -122,20 +114,6 @@ export default class ProductDetailForm {
       this.$addToCartBtn.prop('disabled', true);
       this.$addToCartBtnText.html(theme.strings.soldOut);
     }
-  }
-
-  /**
-   * Updates the disabled property of the quantity select based on the availability of the selected variant
-   *
-   * @param {Object} variant - Shopify variant object
-   */
-  updateQuantitySelect(variant) {
-    // Close the select while we make changes to it
-    this.$quantitySelect.trigger('chosen:close');
-
-    this.$quantitySelect.prop('disabled', !(variant && variant.available));
-
-    this.$quantitySelect.trigger('chosen:updated');
   }
 
   /**
