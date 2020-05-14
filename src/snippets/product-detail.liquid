@@ -16,18 +16,16 @@
 <div data-product-detail>
   <div class="container">
     <div class="row">
-      <div class="col-md-6 col-lg-7">
-        {% include 'product-detail-galleries',
+      <div class="col-md-7"></div>
+      <div class="col-md-5">
+        {% include 'product-detail-gallery',
                     product: product,
                     current_variant: current_variant
         %}
-      </div>
-
-      <div class="col-md-6 col-lg-5">
         {% include 'product-detail-form',
                     product: product,
                     current_variant: current_variant
-        %}  
+        %} 
       </div>
     </div>
   </div>

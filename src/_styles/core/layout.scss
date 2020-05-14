@@ -38,13 +38,8 @@
 // Or use the modifier classes to get flush on top or bottom
 .layout-content-wrapper {
   margin-top: $grid-gutter-width * 1.5;
-  margin-bottom: $grid-gutter-width * 1.5;
 
   &.flush-top {
     margin-top: 0;
-  }
-
-  &.flush-bottom {
-    margin-bottom: 0;
   }
 }

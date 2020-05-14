@@ -5,12 +5,10 @@
 // Slideshow / Zoom
 // --------------------------------------------------------
 
-.product-galleries {
-  position: relative;
-}
-
-// Make these go flush on mobile
 .product-gallery {
+  margin-bottom: 50px;
+
+  // Make these go flush on mobile
   margin-left: -($grid-gutter-width / 2);
   margin-right: -($grid-gutter-width / 2);
 
@@ -65,9 +63,20 @@
 }
 
 .product-gallery__thumbnails {
-  margin-top: $spacer;
+  margin-top: 19px;
 }
 
 .product-gallery__thumbnails-slide {
   display: inline-block;
+  cursor: pointer;
+  width: 72px;
+  margin-right: 7px; // @TODO ? or is it flex and we fit a certain number per row?
+
+  &:hover {
+    filter: invert(1);
+  }
+
+  &.is-active {
+    filter: grayscale(1);
+  }
 }

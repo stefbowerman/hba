@@ -9,6 +9,17 @@
     <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
     <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
 
+    <div class="container-fluid" style="text-transform: uppercase">
+      {% if product.collections.size %}
+        {% assign c = product.collections | first %}
+        <div>{{ c.url }}</div>
+
+        {% for p in c.products %}
+          <div>{{ p.type }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
     {% include 'product-detail', product: product %}
   </div>
 </div>

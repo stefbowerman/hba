@@ -1,10 +1,10 @@
 import $ from 'jquery';
 import ProductDetailForm from './productDetailForm';
-import ProductDetailGalleries from './productDetailGalleries';
+import ProductDetailGallery from './productDetailGallery';
 
 const selectors = {
   productDetailForm: '[data-product-detail-form]',
-  productDetailGalleries: '[data-product-detail-galleries]'
+  productGallery: '[data-product-gallery]'
 };
 
 export default class ProductDetail {
@@ -26,21 +26,13 @@ export default class ProductDetail {
       return;
     }
 
-    this.$pdg = $(selectors.productDetailGalleries, this.$el);
+    this.$pg  = $(selectors.productGallery, this.$el);
     this.$pdf = $(selectors.productDetailForm, this.$el);
     
-    this.galleries = new ProductDetailGalleries({
-      $container: this.$pdg
-    });
-
-    this.form = new ProductDetailForm({
+    this.gallery = new ProductDetailGallery(this.$pg);
+    this.form    = new ProductDetailForm({
       $container: this.$pdf,
-      onVariantChange: this.onVariantChange.bind(this),
       enableHistoryState: enableHistoryState
     });
-  }
-
-  onVariantChange(variant) {
-    this.galleries.updateForVariant(variant);
   }
 }
