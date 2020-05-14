@@ -1,8 +1,5 @@
 import $ from 'jquery';
-import {
-  formatMoney,
-  stripZeroCents
-} from './currency';
+import { formatMoney } from './currency';
 import { getSizedImageUrl } from './image';
 
 class CartAPI {
@@ -30,7 +27,7 @@ class CartAPI {
     cart.items.map((item) => {
       item.image = getSizedImageUrl(item.image, '500x');
       item.price = formatMoney(item.price, theme.moneyFormat);
-      item.multiple_quantities = item.quantity > 1
+      item.multiple_quantities = item.quantity > 1;
 
       // Adjust the item's variant options to add "name" and "value" properties
       if (item.hasOwnProperty('product')) {

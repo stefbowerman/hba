@@ -53,8 +53,18 @@
   }
 }
 
+@keyframes strobe {
+  50% { opacity: 0; }
+}
+
 .header-logo {
   max-width: $header-logo-width;
+
+  &.is-strobing {
+    animation-play-state: running;
+    animation: strobe 60ms steps(1, end) infinite;
+    animation-delay: 1s; 
+  }
 }
 
 .header-logo__image {

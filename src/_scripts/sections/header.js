@@ -8,19 +8,22 @@ const $body   = $(document.body);
 
 const selectors = {
   header: '[data-header]',
+  logo: '[data-logo]',
   dropdownTrigger: '[data-dropdown-trigger][data-block]'
 };
 
 const classes = {
   headerFixed: 'is-fixed',
-  siteHasFixedHeader: 'site-fixed-header'
+  siteHasFixedHeader: 'site-fixed-header',
+  logoStrobe: 'is-strobing'
 };
 
 export default class HeaderSection extends BaseSection {
   constructor(container) {
     super(container, 'header');
 
-    this.$el = $(selectors.header, this.$container);
+    this.$el   = $(selectors.header, this.$container);
+    this.$logo = $(selectors.logo, this.$container);
 
     this.$container.on(this.events.MOUSELEAVE, this.onMouseLeave.bind(this));
 
@@ -34,6 +37,17 @@ export default class HeaderSection extends BaseSection {
       $window.on(this.events.SCROLL, throttle(20, this.onScroll.bind(this)));
       this.onScroll(); // hit this one time on init to make sure everything is good
     }
+
+    this.strobeLogo();
+  }
+
+  strobeLogo() {
+    this.$logo.toggleClass(classes.logoStrobe);
+
+    const min = 8;
+    const max = 20;
+    const rand = Math.floor(Math.random() * (max - min + 1) + min);
+    setTimeout(this.strobeLogo.bind(this), rand*100);
   }
 
   scrollCheck() {

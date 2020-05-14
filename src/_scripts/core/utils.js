@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 /**
  * Return an object from an array of objects that matches the provided key and value
  *
