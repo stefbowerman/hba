@@ -14,13 +14,14 @@ $gray-darker:  #494949 !default;
 $gray-darkest: #212529 !default;
 $black:        #000 !default;
 
+$red:          #FF0000 !default;
 $green:        #00A651 !default;
 
 $blue:    #4e85e6 !default;
 $indigo:  #6610f2 !default;
 $purple:  #8174cd !default;
 $pink:    #d885c1 !default;
-$red:     #dc3545 !default;
+// $red:     #dc3545 !default;
 $orange:  #f48d52 !default;
 $yellow:  #eee57a !default;
 // $green:   #00a465 !default;
@@ -35,27 +36,27 @@ $colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $colors: map-merge(
   (
-    "white":        $white,
-    "gray-lighter": $gray-lighter,
-    "gray-light":   $gray-light,
-    "gray":         $gray,
-    "gray-dark":    $gray-dark,
-    "gray-darker":  $gray-darker,
-    "gray-darkest":  $gray-darkest,
-    "black":        $black,
-    "blue":         $blue,
-    "indigo":       $indigo,
-    "purple":       $purple,
-    "pink":         $pink,
-    "red":          $red,
-    "orange":       $orange,
-    "yellow":       $yellow,
-    "green":        $green,
-    "teal":         $teal,
-    "cyan":         $cyan,
-    "khaki":        $khaki,
-    "brown":        $brown,
-    "tan":          $tan
+    // "white":        $white,
+    // "gray-lighter": $gray-lighter,
+    // "gray-light":   $gray-light,
+    // "gray":         $gray,
+    // "gray-dark":    $gray-dark,
+    // "gray-darker":  $gray-darker,
+    // "gray-darkest":  $gray-darkest,
+    // "black":        $black,
+    // "blue":         $blue,
+    // "indigo":       $indigo,
+    // "purple":       $purple,
+    // "pink":         $pink,
+    // "red":          $red,
+    // "orange":       $orange,
+    // "yellow":       $yellow,
+    // "green":        $green,
+    // "teal":         $teal,
+    // "cyan":         $cyan,
+    // "khaki":        $khaki,
+    // "brown":        $brown,
+    // "tan":          $tan
   ),
   $colors
 );
@@ -223,7 +224,7 @@ $largest-container-width: map-get($container-max-widths, last(map_keys($containe
 //
 // Set the number of columns and specify the width of the gutters.
 
-$grid-columns:                12 !default;
+$grid-columns:                10 !default;
 $grid-gutter-width:           30px !default;
 
 
