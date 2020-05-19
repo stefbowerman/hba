@@ -1,1 +1,15 @@
-{% section 'collection' %}
+{%- comment -%} Overload the collection filtering functionality {%- endcomment -%}
+{% if current_tags contains 'lookbook' %}
+  <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
+    <div class="container">
+      {% render 'page-title' with 'Lookbook' %}
+      {% assign c = collections[collection.handle] %}
+      {% for p in c.products %}
+        {{ p.title }}
+      {% endfor %}
+    </div>
+  </div>
+  {%- comment -%} section 'lookbook' {%- endcomment -%}
+{% else %}
+  {% section 'collection' %}
+{% endif %}
