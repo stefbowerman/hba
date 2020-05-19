@@ -37,9 +37,9 @@ export default class ProductDetailForm {
 
     this.events = {
       RESIZE: `resize${this.namespace}`,
-      CLICK:  `click${this.namespace}`
+      CLICK: `click${this.namespace}`
     };
-    
+
     const defaults = {
       $container: null,
       onVariantChange: $.noop,
@@ -55,18 +55,18 @@ export default class ProductDetailForm {
 
     /* eslint-disable */
     /* temporarily disable to allow long lines for element descriptions */
-    this.$container              = this.settings.$container; // Scoping element for all DOM lookups
-    this.$addToCartBtn           = $(selectors.addToCart, this.$container);
-    this.$addToCartBtnText       = $(selectors.addToCartText, this.$container); // Text inside the add to cart button
-    this.$priceWrapper           = $(selectors.priceWrapper, this.$container); // Contains all price elements
-    this.$productPrice           = $(selectors.productPrice, this.$container);
-    this.$comparePrice           = $(selectors.comparePrice, this.$container);
-    this.$compareEls             = this.$comparePrice.add($(selectors.comparePriceText, this.$container));
-    this.$singleOptionSelectors  = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
+    this.$container = this.settings.$container; // Scoping element for all DOM lookups
+    this.$addToCartBtn = $(selectors.addToCart, this.$container);
+    this.$addToCartBtnText = $(selectors.addToCartText, this.$container); // Text inside the add to cart button
+    this.$priceWrapper = $(selectors.priceWrapper, this.$container); // Contains all price elements
+    this.$productPrice = $(selectors.productPrice, this.$container);
+    this.$comparePrice = $(selectors.comparePrice, this.$container);
+    this.$compareEls = this.$comparePrice.add($(selectors.comparePriceText, this.$container));
+    this.$singleOptionSelectors = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
     this.$variantOptionValueList = $(selectors.variantOptionValueList, this.$container); // Alternate UI that takes the place of a single option selector (could be swatches, dots, buttons, whatever..)
     /* eslint-enable */
 
-    this.productSingleObject  = JSON.parse($(selectors.productJson, this.$container).html());
+    this.productSingleObject = JSON.parse($(selectors.productJson, this.$container).html());
 
     this.variants = new Variants({
       $container: this.$container,
@@ -152,7 +152,7 @@ export default class ProductDetailForm {
         // Since we are finding the variantOptionValueUI based on the *actual* value, we need to scope to the correct list
         // As some products can have the same values for different variant options (waist + inseam both use "32", "34", etc..)
         const $list = this.$variantOptionValueList.filter(`[data-option-position="${i}"]`);
-        const $variantOptionValueUI   = $list.find('[data-variant-option-value="'+variantOptionValue+'"]');
+        const $variantOptionValueUI = $list.find('[data-variant-option-value="' + variantOptionValue + '"]');
 
         $variantOptionValueUI.addClass(classes.variantOptionValueActive);
         $variantOptionValueUI.siblings().removeClass(classes.variantOptionValueActive);
@@ -167,14 +167,15 @@ export default class ProductDetailForm {
    * @param {event} evt
    */
   onVariantOptionValueClick(e) {
+    e.preventDefault();
     const $option = $(e.currentTarget);
 
     if ($option.hasClass(classes.variantOptionValueActive)) {
       return;
     }
 
-    const value     = $option.data('variant-option-value');
-    const position  = $option.parents(selectors.variantOptionValueList).data('option-position');
+    const value = $option.data('variant-option-value');
+    const position = $option.parents(selectors.variantOptionValueList).data('option-position');
     const $selector = this.$singleOptionSelectors.filter(`[data-index="option${position}"]`);
 
     $selector.val(value);

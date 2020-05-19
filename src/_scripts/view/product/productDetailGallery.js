@@ -20,19 +20,20 @@ export default class ProductDetailGallery {
    * See: snippets/product-detail-gallery.liquid
    *
    * @param {HTMLElement | jQuery} el - gallery element containing elements matching the slideshow and thumbnails selectors
-   */  
+   */
   constructor(el) {
     this.$el = $(el);
-    this.$slideshow  = this.$el.find(selectors.productGallerySlideshow);
+    this.$slideshow = this.$el.find(selectors.productGallerySlideshow);
     this.$thumbnailSlides = this.$el.find(selectors.productGalleryThumbnailsSlide);
 
     const initialSlide = $(selectors.initialSlide, this.$slideshow).index();
-    
+
     this.swiper = new Swiper(this.$slideshow.get(0), {
       init: false,
       loop: true,
       initialSlide: (initialSlide === -1 ? 0 : initialSlide), // If the initial slide doesn't exist, jQuery will return -1
       speed: 0,
+      simulateTouch: false,
       on: {
         init: this.onSlideShowInit.bind(this),
         slideChangeTransitionEnd: this.onSlideChangeTransitionEnd.bind(this)
@@ -80,6 +81,6 @@ export default class ProductDetailGallery {
     this.destroyHoverZoom($(sw.slides[sw.previousIndex]));
     this.initHoverZoom($(sw.slides[sw.activeIndex]));
     this.$thumbnailSlides.removeClass(classes.thumbnailSlideActive);
-    this.$thumbnailSlides.eq(sw.activeIndex-1).addClass(classes.thumbnailSlideActive);
+    this.$thumbnailSlides.eq(sw.activeIndex - 1).addClass(classes.thumbnailSlideActive);
   }
 }

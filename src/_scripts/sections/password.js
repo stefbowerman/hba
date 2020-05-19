@@ -3,7 +3,7 @@ import BaseSection from './base';
 
 const selectors = {
   program: '[data-program]'
-}
+};
 
 export default class PasswordSection extends BaseSection {
   constructor(container) {
@@ -12,7 +12,7 @@ export default class PasswordSection extends BaseSection {
     // get IP address
 
     this.interval = null;
-    this.chunks = []
+    this.chunks = [];
 
     this.$program = $(selectors.program, this.$container);
 
@@ -39,7 +39,7 @@ export default class PasswordSection extends BaseSection {
     const rand = this.chunks.length % 3 === 0;
     const chunk = `1=-1.5075${rand ? '0E+0 ' : '70E -1  '}`.repeat(6);
 
-    this.$program.append(chunk)
+    this.$program.append(chunk);
     this.chunks.push(chunk);
   }
 }

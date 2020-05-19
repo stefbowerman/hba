@@ -47,28 +47,28 @@ export default class AJAXCart {
     // It allows other parts of the application to trigger cart to open
 
     this.events = {
-      CLICK:   `click${this.namespace}`,
-      CHANGE:  `change${this.namespace}`,
-      RENDER:  `render${this.namespace}`,
+      CLICK: `click${this.namespace}`,
+      CHANGE: `change${this.namespace}`,
+      RENDER: `render${this.namespace}`,
       DESTROY: `destroy${this.namespace}`,
       UPDATE_AND_OPEN: `updateAndOpen${this.namespace}`
     };
 
     this.templateData = templateData;
-    
-    this.$el                = $(selectors.container);
-    this.$acBody            = $(selectors.body, this.$el);
-    this.$acFooter          = $(selectors.footer, this.$el);
-    this.$acFooterTop       = $(selectors.footerTop, this.$el);
-    this.$bodyTemplate      = $(selectors.bodyTemplate);
-    this.$footerTopTemplate = $(selectors.footerTopTemplate);
-    this.$cartBadge         = $(selectors.cartBadge);
-    this.$cartBadgeCount    = $(selectors.cartBadgeCount);
 
-    this.stateIsOpen          = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
-    this.hasBeenRendered      = false; // Lock to prevent displaying the cart before anything has been rendered
-    this.transitionEndEvent   = whichTransitionEnd();
-    this.rendered             = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
+    this.$el = $(selectors.container);
+    this.$acBody = $(selectors.body, this.$el);
+    this.$acFooter = $(selectors.footer, this.$el);
+    this.$acFooterTop = $(selectors.footerTop, this.$el);
+    this.$bodyTemplate = $(selectors.bodyTemplate);
+    this.$footerTopTemplate = $(selectors.footerTopTemplate);
+    this.$cartBadge = $(selectors.cartBadge);
+    this.$cartBadgeCount = $(selectors.cartBadgeCount);
+
+    this.stateIsOpen = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
+    this.hasBeenRendered = false; // Lock to prevent displaying the cart before anything has been rendered
+    this.transitionEndEvent = whichTransitionEnd();
+    this.rendered = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
 
     if (!this.$bodyTemplate.length || !this.$footerTopTemplate.length) {
       console.warn(`[${this.name}] - Handlebars template required to initialize`);
@@ -76,7 +76,7 @@ export default class AJAXCart {
     }
 
     // Compile this once during initialization
-    this.bodyTemplate      = Handlebars.compile(this.$bodyTemplate.html());
+    this.bodyTemplate = Handlebars.compile(this.$bodyTemplate.html());
     this.footerTopTemplate = Handlebars.compile(this.$footerTopTemplate.html());
 
     if (isThemeEditor()) {
@@ -258,12 +258,10 @@ export default class AJAXCart {
     this.lockUI();
 
     CartAPI.changeLineItemQuantityByKey(attrs.key, 0).then((cart) => {
-      // this.render(cart);
       if (cart.item_count > 0) {
         // We only need to re-render the footer
-        attrs.$row.slideUp(250, () => {
-          this.render(cart, 'footer');
-        });
+        attrs.$row.remove();
+        this.render(cart, 'footer');
       }
       else {
         this.render(cart);
@@ -284,7 +282,7 @@ export default class AJAXCart {
    */
   onTriggerClick(e) {
     e.preventDefault();
-    
+
     // If we haven't rendered the cart yet, don't show it
     if (!this.hasBeenRendered) {
       return;

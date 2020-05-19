@@ -26,23 +26,27 @@
   <script type="text/x-handlebars-template" data-ajax-cart-body-template>
     {{#if items}}
       <div class="container-fluid">
-        <ul class="ajax-cart__list">
+        <div class="ajax-cart__list">
           {{#each items}}
-            <li class="ajax-cart__item" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
-              <img src="{{ image }}" class="ajax-cart__item-image">
-              <div class="ajax-cart__item-info">
-                <h3>{{ product_title }}</h3>
-                <div>{{ price }}</div>
-                <div>SKU{{ sku }}</div>
-                <div>{{ variant_title }}</div>
-                {{#if multiple_quantities}}
-                <div>QTY{{ quantity }}</div>
-                {{/if}}
-                <a href="#" class="btn btn-alt" data-ajax-cart-item-remove>Remove</a>
+            <div class="ajax-cart__item" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
+              <div class="ajax-cart__item-child">
+                <img src="{{ image }}" class="ajax-cart__item-image">
               </div>
-            </li>
+              <div class="ajax-cart__item-child">
+                <div class="ajax-cart__item-info">
+                  <h3>{{ product_title }}</h3>
+                  <div>{{ price }}</div>
+                  <div>SKU{{ sku }}</div>
+                  <div>{{ variant_title }}</div>
+                  {{#if multiple_quantities}}
+                  <div>QTY{{ quantity }}</div>
+                  {{/if}}
+                  <a href="#" class="btn btn-alt" data-ajax-cart-item-remove>Remove</a>
+                </div>
+              </div>
+            </div>
           {{/each}}
-        </ul>
+        </div>
       </div>
     {{else}}
       <div class="ajax-cart__empty-message">
