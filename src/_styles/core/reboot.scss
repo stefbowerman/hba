@@ -492,3 +492,13 @@ template {
 [hidden] {
   display: none !important;
 }
+
+::-moz-selection {
+  background-color: $green;
+  color: $black;
+}
+
+::selection {
+  background-color: $green;
+  color: $black;
+}

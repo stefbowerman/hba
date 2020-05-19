@@ -1,0 +1,61 @@
+{%- comment %}
+
+  Lookbook Section
+  ------------------------------------------------------------------------------
+
+{% endcomment -%}
+{% paginate collection.products by 600 %}
+
+<style>
+[data-details].highlight {
+  color: white;
+}
+</style>
+
+<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="lookbook">
+  {% assign page_title_text = collection.title | append: ' Lookbook' %}
+
+  {% render 'page-title' with page_title_text %}
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        {% include 'collection-sidebar', collection_handle: collection.handle %}
+      </div>
+      <div class="col-6">
+        {% assign c = collections[collection.handle] %}
+
+        <div class="content-grid">
+          {% for p in c.products %}
+            <div class="content-grid__item">
+              {% include 'product-card', product: p %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-2">
+        {% for p in c.products %}
+          <div style="margin-bottom: 30px" data-details data-id="{{ p.id }}">
+            <h6 style="margin-bottom: 0;">{{ p.title }}</h6>
+            <p>{{ p.variants[0].sku }}</p>
+            <div style="font-size: 10px;">{{ p.description }}</div>
+            {% for product_option in p.options_with_values %}
+              {% assign option = product_option.name | upcase %}
+              {% if option == 'SIZE' %}
+                <div style="font-size: 10px; margin-top: 15px;">Manufactured in {{ product_option.values | join: ', ' }}</div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Lookbook",
+    "settings": []
+  }
+{% endschema %}

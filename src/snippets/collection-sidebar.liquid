@@ -1,0 +1,52 @@
+{%- comment %}
+
+  Collection Sidebar
+  ------------------------------------------------------------------------------
+
+  Usage:
+
+  {% include 'collection-sidebar',
+              collection_handle: { string } %}
+
+{% endcomment -%}
+
+{% if collection_handle %}
+  {%- comment -%} Need to get a fresh copy of the collection in case the global 'collection' object is being filtered {%- endcomment -%}
+  {% assign c = collections[collection_handle] %}
+
+  {% if c %}
+    <div style="text-transform: uppercase">
+      <p>{{ c.url }}{% if current_tags %}/{{ current_tags | join: '+' }}{% endif %}</p>
+
+      <p>
+        <a href="{{ c.url }}/lookbook">Lookbook</a>
+      </p>
+
+      {%- comment -%} Collect product types + sale item check {%- endcomment -%}
+      {% assign sale_items = false %}
+      {% assign product_types = '' %}
+
+      {% for p in c.products %}
+        {% assign product_types = product_types | append: p.type | append: '$$' %}
+
+        {% if p.price_min < p.compare_at_price_min %}
+          {% assign sale_items = true %}
+        {% endif %}
+      {% endfor %}
+
+      {% if product_types %}
+        {% assign product_types_array = product_types | split: '$$' | uniq %}
+        <p>
+          {% for type in product_types_array %}
+            <span>{{ type }}</span>
+            {% unless forloop.last %}<br />{% endunless %}
+          {% endfor %}
+        <p>
+      {% endif %}
+
+      {% if sale_items %}
+        <p>Sale</p>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endif %}

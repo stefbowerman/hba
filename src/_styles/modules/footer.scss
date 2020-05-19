@@ -17,13 +17,20 @@
   }
 }
 
+// Need to emulate the grid for the footer blocks
+// I say "emulate" because we don't want to use col-* classes since footer blocks
+// can be added and removed and should take up the full width of the screen no matter what
 .footer-blocks {
   display: flex;
   justify-content: space-between;
+  margin-left: -$grid-gutter-width/2;
+  margin-right: -$grid-gutter-width/2;  
 }
 
 .footer-block {
   flex: 1;
+  padding-left: $grid-gutter-width/2;
+  padding-right: $grid-gutter-width/2;
 }
 
 .footer-block__title {
@@ -31,10 +38,6 @@
 }
 
 .footer-menu {
-
-}
-
-.footer-menu__list {
   @extend .list-unstyled;
 
   li:not(:last-child) {

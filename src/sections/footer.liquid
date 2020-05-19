@@ -22,15 +22,13 @@
 
       {% if block.type == 'menu' %}
         {% if block.settings.link_list != blank %}
-          <div class="footer-menu">
-            {% if block.settings.link_list and linklists[block.settings.link_list].links.size > 0 %}
-              <ul class="footer-menu__list">
-                {% for link in linklists[block.settings.link_list].links %}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </div>
+          {% if block.settings.link_list and linklists[block.settings.link_list].links.size > 0 %}
+            <ul class="footer-menu">
+              {% for link in linklists[block.settings.link_list].links %}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         {% endif %}
       {% elsif block.type == 'info' %}
         {% assign year = 'now' | date: "%Y" %}

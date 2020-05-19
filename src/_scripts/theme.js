@@ -18,19 +18,20 @@ import {
   wrapIframe
 } from './core/rte';
 import { pageLinkFocus } from './core/a11y';
-import * as Animations   from './core/animations';
-import * as Breakpoints  from './core/breakpoints';
+import * as Animations from './core/animations';
+import * as Breakpoints from './core/breakpoints';
 
 // Sections
-import SectionManager    from './sections/sectionManager';
-import HeaderSection     from './sections/header';
-import FooterSection     from './sections/footer';
-import ProductSection    from './sections/product';
-import CartSection       from './sections/cart';
-import AJAXCartSection   from './sections/ajaxCart';
+import SectionManager from './sections/sectionManager';
+import HeaderSection from './sections/header';
+import FooterSection from './sections/footer';
+import ProductSection from './sections/product';
+import CartSection from './sections/cart';
+import AJAXCartSection from './sections/ajaxCart';
 import CollectionSection from './sections/collection';
-import BlogSection       from './sections/blog';
-import ArticleSection    from './sections/article';
+import LookbookSection from './sections/lookbook';
+import BlogSection from './sections/blog';
+import ArticleSection from './sections/article';
 
 // Do this ASAP
 Animations.initialize();
@@ -47,6 +48,7 @@ Breakpoints.initialize();
   sectionManager.register('cart', CartSection);
   sectionManager.register('ajax-cart', AJAXCartSection);
   sectionManager.register('collection', CollectionSection);
+  sectionManager.register('lookbook', LookbookSection);
   sectionManager.register('blog', BlogSection);
   sectionManager.register('article', ArticleSection);
 

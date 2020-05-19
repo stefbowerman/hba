@@ -1,15 +1,6 @@
-{%- comment -%} Overload the collection filtering functionality {%- endcomment -%}
+{%- comment -%} Overload the collection filtering functionality so we can use the /collections/{{ handle }}/lookbook url {%- endcomment -%}
 {% if current_tags contains 'lookbook' %}
-  <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
-    <div class="container">
-      {% render 'page-title' with 'Lookbook' %}
-      {% assign c = collections[collection.handle] %}
-      {% for p in c.products %}
-        {{ p.title }}
-      {% endfor %}
-    </div>
-  </div>
-  {%- comment -%} section 'lookbook' {%- endcomment -%}
+  {% section 'lookbook' %}
 {% else %}
   {% section 'collection' %}
 {% endif %}
