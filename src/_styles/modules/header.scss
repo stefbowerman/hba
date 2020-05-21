@@ -51,20 +51,16 @@
 
   @include media-breakpoint-up(lg) {
     right: $outer-gutter;
-  }  
-}
+  }
 
-// Cart Icon + Quantity
-.header-cart__badge {
   display: none;
 
-  &.has-items {
+  &.has-items,
+  .ajax-cart-open & {
     display: inline-block;
   }
 }
 
-
-// .header-nav
 .header-nav {
   font-family: $font-family-sans-serif;
   font-weight: bold;

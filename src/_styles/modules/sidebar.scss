@@ -1,0 +1,11 @@
+// -------------------------
+// Sidebar
+// -------------------------
+
+.sidebar {
+  text-transform: uppercase;
+  
+  a {
+    @include highlight-link;
+  }
+}

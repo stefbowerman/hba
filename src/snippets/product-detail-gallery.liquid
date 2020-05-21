@@ -32,11 +32,13 @@
       {% endfor %}
     </div>
   </div>
-  <div id="slideshow-thumbs-{{ product.id }}" class="product-gallery__thumbnails">
-    {% for image in product.images %}
-      <div class="product-gallery__thumbnails-slide" data-product-gallery-thumbnails-slide>
-        <img src="{{ image.src | img_url: photo_thumb_dimension }}" alt="{{ image.alt | escape }}" class="img-fluid">
-      </div>
-    {% endfor %}
-  </div>
+  {% if product.images.size > 1 %}
+    <div id="slideshow-thumbs-{{ product.id }}" class="product-gallery__thumbnails">
+      {% for image in product.images %}
+        <div class="product-gallery__thumbnails-slide" data-product-gallery-thumbnails-slide>
+          <img src="{{ image.src | img_url: photo_thumb_dimension }}" alt="{{ image.alt | escape }}" class="img-fluid">
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>

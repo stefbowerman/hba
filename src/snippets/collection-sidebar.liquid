@@ -15,7 +15,7 @@
   {% assign c = collections[collection_handle] %}
 
   {% if c %}
-    <div style="text-transform: uppercase">
+    <div>
       <p>{{ c.url }}{% if current_tags %}/{{ current_tags | join: '+' }}{% endif %}</p>
 
       <p>
@@ -38,14 +38,14 @@
         {% assign product_types_array = product_types | split: '$$' | uniq %}
         <p>
           {% for type in product_types_array %}
-            <span>{{ type }}</span>
+            <a href="{{ c.url }}/{{ type | handle }}">{{ type }}</a>
             {% unless forloop.last %}<br />{% endunless %}
           {% endfor %}
         <p>
       {% endif %}
 
       {% if sale_items %}
-        <p>Sale</p>
+        <a href="{{ c.url }}/sale">Sale</a>
       {% endif %}
     </div>
   {% endif %}

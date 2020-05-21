@@ -8,12 +8,8 @@
   text-transform: uppercase;
   font-size: $footer-font-size;
 
-  // @TODO - Turn this into a mixin?
   a {
-    &:hover {
-      background-color: $white;
-      color: $black;
-    }
+    @include highlight-link;
   }
 }
 

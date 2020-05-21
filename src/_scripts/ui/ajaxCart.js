@@ -20,16 +20,15 @@ const selectors = {
   footerTop: '[data-ajax-cart-footer-top]',
   item: '[data-ajax-item][data-key][data-qty]',
   itemRemove: '[data-ajax-cart-item-remove]',
-  cartBadge: '[data-cart-badge]',
-  cartBadgeCount: '[data-cart-badge-count]'
+  cartCount: '[data-cart-count]'
 };
 
 const classes = {
   bodyCartOpen: 'ajax-cart-open',
   cartOpen: 'is-open',
-  cartBadgeHasItems: 'has-items',
   cartIsEmpty: 'is-empty',
   lockUI: 'lock-ui',
+  triggerHasItems: 'has-items',
   triggerActive: 'is-active'
 };
 
@@ -62,8 +61,7 @@ export default class AJAXCart {
     this.$acFooterTop = $(selectors.footerTop, this.$el);
     this.$bodyTemplate = $(selectors.bodyTemplate);
     this.$footerTopTemplate = $(selectors.footerTopTemplate);
-    this.$cartBadge = $(selectors.cartBadge);
-    this.$cartBadgeCount = $(selectors.cartBadgeCount);
+    this.$cartCount = $(selectors.cartCount);
 
     this.stateIsOpen = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
     this.hasBeenRendered = false; // Lock to prevent displaying the cart before anything has been rendered
@@ -178,14 +176,14 @@ export default class AJAXCart {
   }
 
   /**
-   * Update the cart badge + count here
+   * Update the cart count here
    *
    * @param {Object} cart - JSON representation of the cart.
    * @return this
    */
   updateCartCount(cart) {
-    this.$cartBadgeCount.html(cart.item_count);
-    this.$cartBadge.toggleClass(classes.cartBadgeHasItems, cart.item_count > 0);
+    this.$cartCount.html(cart.item_count);
+    $(selectors.trigger).toggleClass(classes.triggerHasItems, cart.item_count > 0);
 
     return this;
   }

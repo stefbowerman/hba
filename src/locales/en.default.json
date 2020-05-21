@@ -94,7 +94,7 @@
       "checkout": "Check Out",
       "proceed_to_checkout": "Proceed to checkout",
       "view": "View Cart",
-      "empty": "Your cart is currently empty.",
+      "empty": "Cart empty",
       "cookies_required": "Enable cookies to use the shopping cart",
       "continue_browsing_html": "Continue browsing <a href=\"/collections/all\">here</a>.",
       "item_quantity": "Item quantity",
