@@ -6,6 +6,18 @@
   height: 100%;
 }
 
+.product-card__contents {
+  position: relative;
+}
+
+.product-card__badge {
+  position: absolute;
+  left: 3px;
+  bottom: 2px;
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+}
+
 .product-card__gallery {
   position: relative;
   width: 100%;

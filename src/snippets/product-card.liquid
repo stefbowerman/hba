@@ -8,6 +8,7 @@
   {% include 'product-card',
               product: { product } - required
               lazy_load: { boolean } - optional, defaults to false
+              show_sold_out: { boolean } - optional, defaults to false
   %}
 
 {% endcomment -%}
@@ -15,6 +16,10 @@
 {% comment %} Defaults {% endcomment %}
 {% if lazy_load == blank %}
   {% assign lazy_load = false %}
+{% endif %}
+
+{% if show_sold_out == blank %}
+  {% assign show_sold_out = false %}
 {% endif %}
 {% comment %} End Defaults {% endcomment %}
 
@@ -41,6 +46,10 @@
             {% endif %}
           </a>
         </div>
+      {% endif %}
+
+      {% if product.available == false and show_sold_out == true %}
+        <span class="product-card__badge">Sold Out</span>
       {% endif %}
     </div>
   </div>

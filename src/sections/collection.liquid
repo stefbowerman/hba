@@ -29,7 +29,8 @@
               <div class="content-grid__item">
                 {% include 'product-card',
                             product: product,
-                            lazy_load: lazy_load
+                            lazy_load: lazy_load,
+                            show_sold_out: true
                 %}
               </div>
             {% endfor %}
