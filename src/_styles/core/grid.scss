@@ -1,36 +1,21 @@
 // Container widths
 //
-// Set the container width, and override it for fixed navbars in media queries.
 
 @if $enable-grid-classes {
   .container {
-    @include make-container();
-    @include make-container-max-widths();
+    @include make-container($outer-gutter-mobile*2);
+
+    @include media-breakpoint-up(lg) {
+      padding-left: $outer-gutter;
+      padding-right: $outer-gutter;
+    }
+
+    & & {
+      @include make-container();
+    }
   }
 }
 
-// Fluid container
-//
-// Utilizes the mixin meant for fixed width containers, but with 100% width for
-// fluid, full width layouts.
-
-@if $enable-grid-classes {
-  .container-fluid {
-    @include make-container();
-  }
-}
-
-// Fluid max container
-//
-// Utilizes the mixin meant for fixed width containers, but with 100% width for
-// fluid, full width layouts.  Has a max width width of the largest container width to work with normal layouts.
-
-@if $enable-grid-classes {
-  .container-fluid-max {
-    @include make-container();
-    max-width: $largest-container-width;
-  }
-}
 
 // Row
 //

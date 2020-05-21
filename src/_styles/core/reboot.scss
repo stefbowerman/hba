@@ -192,12 +192,7 @@ a {
   }
 
   @include hover {
-    color: $link-hover-color;
     text-decoration: $link-hover-decoration;
-
-    svg {
-      fill: $link-hover-color;
-    }
   }
 }
 

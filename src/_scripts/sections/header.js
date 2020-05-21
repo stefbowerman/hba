@@ -1,31 +1,38 @@
 import $ from 'jquery';
 import BaseSection from './base';
-import DropdownManager from '../managers/dropdown';
+import Overlay from '../ui/overlay';
 
 const selectors = {
-  header: '[data-header]',
   logo: '[data-logo]',
-  dropdownTrigger: '[data-dropdown-trigger][data-block]'
+  menuOverlay: '[data-menu-overlay]',
+  navLink: '.header-nav__link',
+  subnavToggle: '[data-subnav-toggle]',
+  subnav: '[data-subnav]'
 };
 
 const classes = {
   headerFixed: 'is-fixed',
-  logoStrobe: 'is-strobing'
+  logoStrobe: 'is-strobing',
+  navLinkActive: 'is-active'
 };
 
 export default class HeaderSection extends BaseSection {
   constructor(container) {
     super(container, 'header');
 
-    this.$el   = $(selectors.header, this.$container);
     this.$logo = $(selectors.logo, this.$container);
+    this.$menuOverlay = $(selectors.menuOverlay, this.$container);
 
-    this.$container.on(this.events.MOUSELEAVE, this.onMouseLeave.bind(this));
+    this.menuOverlay = new Overlay(this.$menuOverlay);
 
-    // Register each dropdown trigger
-    $(selectors.dropdownTrigger, this.$container).each((i, trigger) => {
-      DropdownManager.register($(trigger));
-    });
+
+    this.$logo.on('click', () => this.menuOverlay.toggle());
+
+    this.$container.on('mouseenter', selectors.navLink, this.onNavLinkMouseenter.bind(this));
+    this.$container.on('mouseleave', selectors.navLink, this.onNavLinkMouseleave.bind(this));
+    this.$container.on('touchstart', selectors.navLink, this.onNavLinkTouchstart.bind(this));
+    this.$container.on('touchend',   selectors.navLink, this.onNavLinkTouchend.bind(this));
+    this.$container.on('click', selectors.subnavToggle, this.onSubnavToggleClick.bind(this));
 
     this.strobeLogo();
   }
@@ -36,28 +43,31 @@ export default class HeaderSection extends BaseSection {
     const min = 8;
     const max = 20;
     const rand = Math.floor(Math.random() * (max - min + 1) + min);
-    setTimeout(this.strobeLogo.bind(this), rand*100);
+    setTimeout(this.strobeLogo.bind(this), rand * 100);
   }
 
-  onMouseLeave() {
-    DropdownManager.closeAllDropdowns();
+  onNavLinkMouseenter(e) {
+    $(e.currentTarget).addClass(classes.navLinkActive);
   }
 
-  onBlockSelect(e) {
-    const dropdown = DropdownManager.getDropdownByBlockId(e.detail.blockId);
-
-    // Bypass dropdown manager since we're inside the theme editor
-    if (dropdown) {
-      dropdown.forceOpen();
-    }
+  onNavLinkMouseleave(e) {
+    $(e.currentTarget).removeClass(classes.navLinkActive);
   }
 
-  onBlockDeselect(e) {
-    const dropdown = DropdownManager.getDropdownByBlockId(e.detail.blockId);
+  onNavLinkTouchstart(e) {
+    $(e.currentTarget).addClass(classes.navLinkActive);
+  }
 
-    // Bypass dropdown manager since we're inside the theme editor
-    if (dropdown) {
-      dropdown.forceClose();
-    }
+  onNavLinkTouchend(e) {
+    $(e.currentTarget).removeClass(classes.navLinkActive);
+  }
+
+  onSubnavToggleClick(e) {
+    e.preventDefault();
+    const id = $(e.currentTarget).data('id');
+    $(selectors.subnav, this.$container).each((i, el) => {
+      const $subnav = $(el);
+      $subnav.toggleClass('is-visible', $subnav.data('id') === id);
+    });
   }
 }

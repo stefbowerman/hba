@@ -173,7 +173,6 @@ $body-color:                $green !default;
 
 $link-color:                              $body-color !default;
 $link-decoration:                         none !default;
-$link-hover-color:                        lighten($link-color, 10%) !default;
 $link-hover-decoration:                   none !default;
 // Darken percentage for links with `.text-*` class (e.g. `.text-success`)
 $emphasized-link-hover-darken-percentage: 15% !default;
@@ -226,6 +225,9 @@ $largest-container-width: map-get($container-max-widths, last(map_keys($containe
 
 $grid-columns:                10 !default;
 $grid-gutter-width:           30px !default;
+
+$outer-gutter-mobile:         20px;
+$outer-gutter:                $grid-gutter-width;
 
 
 // Components
@@ -733,7 +735,9 @@ $zindex-dropdown:                   1000 !default;
 $zindex-sticky:                     1500 !default;
 $zindex-fixed:                      2000 !default;
 $zindex-ajax-cart:                  2006 !default;
-$zindex-header:                     2100 !default;
+$zindex-header-cart:                2020 !default;
+$zindex-overlay:                    2050 !default;
+$zindex-header-logo:                2100 !default;
 $zindex-modal-backdrop:             2500 !default;
 $zindex-modal:                      3000 !default;
 $zindex-popover:                    3500 !default;
@@ -784,6 +788,12 @@ $transition-timing-function-dropdown-out: $transition-timing-function-out !defau
 $transition-duration-slide:               $transition-duration-medium !default;
 $transition-timing-function-slide-in:     cubic-bezier(0.34, 0.75, 0.6, 1) !default;
 $transition-timing-function-slide-out:    cubic-bezier(0.4, 0.5, 0.5, 1) !default;
+
+$transition-duration-overlay:             $transition-duration-slow !default;
+$transition-timing-function-overlay-in:   cubic-bezier(0, 0, 0.23, 1.43) !default;
+$transition-timing-function-overlay-out:  $transition-timing-function-out !default;
+$transition-timing-function-overlay-opacity-in: $transition-timing-function-hard-in !default;
+$transition-timing-function-overlay-opacity-out: $transition-timing-function-hard-out !default;
 
 
 // Cards
@@ -928,13 +938,13 @@ $print-body-min-width:              map-get($grid-breakpoints, "lg") !default;
 $header-bp-min:                         map-get($grid-breakpoints, "md") !default; // Above this breakpoint, switch to the full desktop nav
 $header-height-small:                   65px !default;
 $header-height-base:                    75px !default;
-$header-logo-width:                     120px !default;
+$header-logo-width:                     117px !default;
 
 
 // Footer
 
 $footer-padding-top:                    79px;
-$footer-padding-bottom:                 15px;
+$footer-padding-bottom:                 22px;
 $footer-font-size:                      $font-size-xs;
 
 

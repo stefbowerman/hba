@@ -69,9 +69,6 @@
     {% section 'footer' %}
   </div>
 
-  {% comment %} Select the appropriate 'newsletter-*' section for the theme you are building and remove the associated files for the other {% endcomment %}
-  {% section 'newsletter-modal' %}
-
   {% unless template == 'cart' %}
     {% section 'ajax-cart' %}
   {% endunless %}

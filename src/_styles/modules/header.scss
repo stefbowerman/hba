@@ -2,32 +2,39 @@
 // Header
 // -------------------------
 
-.header {
-  position: fixed;
-  z-index: $zindex-header;
-  top: 30px;
-  left: $grid-gutter-width;
-  right: 0;
-  height: $header-height-small;
-  backface-visibility: hidden;
-
-  @media (min-width: $header-bp-min) {
-    height: $header-height-base;
-  }
-}
-
 @keyframes strobe {
   50% { opacity: 0; }
 }
 
+@keyframes strobeline {
+  50% { opacity: 0.7; }
+}
+
 .header-logo {
   display: block;
+  position: fixed;
+  z-index: $zindex-header-logo;  
+  top: 22px;
+  left: $outer-gutter-mobile;  
   max-width: $header-logo-width;
+
+  @include media-breakpoint-up(lg) {
+    left: $outer-gutter;
+  }
 
   &.is-strobing {
     animation-play-state: running;
     animation: strobe 60ms steps(1, end) infinite;
     animation-delay: 1s; 
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .ajax-cart-open & {
+    color: $black;
   }
 }
 
@@ -36,19 +43,15 @@
   transform: translateZ(0); // Prevent bluriness from scaling
 }
 
-// .header-nav
-.header-nav {
-  padding-top: 85px;
-  padding-left: $grid-gutter-width;
-  font-family: $font-family-sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
 .header-cart {
   position: fixed;
-  top: 30px;
-  right: $grid-gutter-width;
+  z-index: $zindex-header-cart;
+  top: 34px;
+  right: $outer-gutter-mobile;
+
+  @include media-breakpoint-up(lg) {
+    right: $outer-gutter;
+  }  
 }
 
 // Cart Icon + Quantity
@@ -57,5 +60,72 @@
 
   &.has-items {
     display: inline-block;
+  }
+}
+
+
+// .header-nav
+.header-nav {
+  font-family: $font-family-sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 36px;
+  letter-spacing: -1px;
+
+  @include media-breakpoint-up(lg) {
+    font-size: 60px;
+    width: 60%;
+  }
+}
+
+.header-nav__link {
+  position: relative;
+  display: block;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: transparent;
+    filter: blur(1px);
+  }
+
+  &.is-active:after {
+    background-color: $white;
+    animation-play-state: running;
+    animation: strobeline 60ms steps(1, end) infinite;
+  }
+
+  .header-nav__subnav &:after {
+    bottom: -2px;
+    height: 3px;
+  }
+
+  .ajax-cart-open &.is-active:after {
+    background-color: $black;
+  }  
+}
+
+.header-nav__item {
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.header-nav__subnav {
+  margin-left: 34%;
+  padding-top: 21px;
+  padding-bottom: 6px;
+  font-size: 24px;
+  display: none;
+
+  &.is-visible {
+    display: block;
   }
 }

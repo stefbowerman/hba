@@ -1,6 +1,8 @@
 <div data-section-id="{{ section.id }}" data-section-type="header">
-  <header class="header" role="banner" data-header>
-    {% include 'header-logo' %}
+  <header role="banner">
+    <a href="#" data-menu-toggle>
+      {% include 'header-logo' %}
+    </a>
 
     <a href="/cart" class="header-cart btn" data-ajax-cart-trigger>
       <div class="header-cart__badge{% if cart.item_count > 0 %} has-items{% endif %}" data-cart-badge>
@@ -9,23 +11,36 @@
     </a>
   </header>
 
-  <nav class="header-nav">
-    {% assign ll = linklists[section.settings.main_menu] %}
-    {% if ll and ll.links.size > 0 %}
-      {% for link in ll.links %}
-        <div><a href="{{ link.url }}">{{ link.title }}</a></div>
-        {% if link.links.size > 0 %}
-          <div style="margin-left: 30px">
-            {% for sublink in link.links %}
-              <div>
-                <a href="{{ sublink.url }}">{{ sublink.title }}</a>
+  <div class="overlay overlay--menu" data-menu-overlay>
+    <div class="overlay__content">
+      <div class="container">
+        <nav class="header-nav">
+          {% assign ll = linklists[section.settings.main_menu] %}
+          {% if ll and ll.links.size > 0 %}
+            {% for link in ll.links %}
+              <div class="header-nav__item">
+                
+                {% if link.links.size == 0 %}
+                  <a href="{{ link.url }}" class="header-nav__link">{{ link.title }}</a>
+                {% else %}
+                  {% assign id = 'subnav-' | append: forloop.index %}
+
+                  <a href="#" class="header-nav__link" data-subnav-toggle data-id="{{ id }}">{{ link.title }}</a>
+                  <div class="header-nav__subnav" data-subnav data-id="{{ id }}">
+                    {% for sublink in link.links %}
+                      <div class="header-nav__item">
+                        <a href="{{ sublink.url }}" class="header-nav__link">{{ sublink.title }}</a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}                
               </div>
             {% endfor %}
-          </div>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-  </nav>  
+          {% endif %}
+        </nav>
+      </div>
+    </div>
+  </div> 
 </div>
 
 {% schema %}

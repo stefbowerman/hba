@@ -5,7 +5,7 @@
         {% comment %} Filled in via JS {% endcomment %}
       </div>
       <div class="ajax-cart__footer" data-ajax-cart-footer>
-        <div class="container-fluid">
+        <div class="container">
           <div class="ajax-cart__footer-top" data-ajax-cart-footer-top>
             {% comment %} Filled in via JS {% endcomment %}
           </div>
@@ -25,7 +25,7 @@
 {% raw %}
   <script type="text/x-handlebars-template" data-ajax-cart-body-template>
     {{#if items}}
-      <div class="container-fluid">
+      <div class="container">
         <div class="ajax-cart__list">
           {{#each items}}
             <div class="ajax-cart__item" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>

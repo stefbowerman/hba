@@ -1,0 +1,17 @@
+// -------------------------
+// Overlay Menu
+// -------------------------
+
+.overlay--menu {
+  .template-index & {
+    background-color: transparent;
+  }
+
+  .ajax-cart-open & {
+    background-color: transparentize($white, 0.5);
+
+    a {
+      color: $black;
+    }
+  }
+}
