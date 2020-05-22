@@ -14,19 +14,12 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 
 <div data-product-detail>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-7"></div>
-      <div class="col-md-5">
-        {% include 'product-detail-gallery',
-                    product: product,
-                    current_variant: current_variant
-        %}
-        {% include 'product-detail-form',
-                    product: product,
-                    current_variant: current_variant
-        %} 
-      </div>
-    </div>
-  </div>
+  {% include 'product-detail-gallery',
+              product: product,
+              current_variant: current_variant
+  %}
+  {% include 'product-detail-form',
+              product: product,
+              current_variant: current_variant
+  %}
 </div>

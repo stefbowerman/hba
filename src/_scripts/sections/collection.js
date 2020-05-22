@@ -22,9 +22,11 @@ export default class CollectionSection extends BaseSection {
 
     // this.collectionData = JSON.parse($(selectors.collectionJson, this.$container).html());
     this.productCards = $.map($(selectors.productCard, this.$container), (el, i) => {
-      $(el).hide();
-      $(el).delay(150 * i).fadeIn(50);
-      return new ProductCard(el);
+      const card = new ProductCard(el);
+
+      setTimeout(() => card.show(), (150 * i));
+
+      return card;
     });
 
     this.$container.on('click', selectors.productCard, this.onProductCardClick.bind(this));

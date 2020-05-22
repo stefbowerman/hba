@@ -195,8 +195,7 @@ export default class AJAXCart {
    */
   onUpdateAndOpen() {
     CartAPI.getCart().then((cart) => {
-      this.render(cart);
-      this.open();
+      this.render(cart).open();
     });
   }
 
@@ -206,18 +205,17 @@ export default class AJAXCart {
    * @param {Object} cart - JSON representation of the cart.
    */
   onChangeSuccess(cart) {
-    this.render(cart).open();
+    this.render(cart);
   }
 
   /**
    * STUB - Callback when changing a cart quantity fails
    *
-   * @param {Object} data
-   * @param {String} data.message - error message
+   * @param {String} message - error message
    */
-  onChangeFail(data) {
+  onChangeFail(message) {
     console.warn(`[${this.name}] - onChangeFail`);
-    console.warn(`[${this.name}] - ${data.message}`);
+    console.warn(`[${this.name}] - ${message}`);
   }
 
   /**

@@ -1,9 +1,11 @@
 import $ from 'jquery';
 import { formatMoney } from '../../core/currency';
+import AJAXFormManager from '../../managers/ajaxForm';
 import Variants from './variants';
 
 const selectors = {
   addToCart: '[data-add-to-cart]',
+  addToCartForm: '[data-add-to-cart-form]',
   addToCartText: '[data-add-to-cart-text]',
   comparePrice: '[data-compare-price]',
   comparePriceText: '[data-compare-text]',
@@ -13,13 +15,19 @@ const selectors = {
   productPrice: '[data-product-price]',
   singleOptionSelector: '[data-single-option-selector]',
   variantOptionValueList: '[data-variant-option-value-list][data-option-position]',
-  variantOptionValue: '[data-variant-option-value]'
+  variantOptionValue: '[data-variant-option-value]',
+  status: '[data-status]'
 };
 
 const classes = {
   hide: 'hide',
-  variantOptionValueActive: 'is-active'
+  variantOptionValueActive: 'is-active',
+  btnActive: 'is-active'
 };
+
+const $window = $(window);
+
+const STATUS_TIMEOUT_DURATION = 2000;
 
 export default class ProductDetailForm {
   /**
@@ -56,6 +64,7 @@ export default class ProductDetailForm {
     /* eslint-disable */
     /* temporarily disable to allow long lines for element descriptions */
     this.$container = this.settings.$container; // Scoping element for all DOM lookups
+    this.$addToCartForm = $(selectors.addToCartForm, this.$container);
     this.$addToCartBtn = $(selectors.addToCart, this.$container);
     this.$addToCartBtnText = $(selectors.addToCartText, this.$container); // Text inside the add to cart button
     this.$priceWrapper = $(selectors.priceWrapper, this.$container); // Contains all price elements
@@ -64,6 +73,7 @@ export default class ProductDetailForm {
     this.$compareEls = this.$comparePrice.add($(selectors.comparePriceText, this.$container));
     this.$singleOptionSelectors = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
     this.$variantOptionValueList = $(selectors.variantOptionValueList, this.$container); // Alternate UI that takes the place of a single option selector (could be swatches, dots, buttons, whatever..)
+    this.$status = $(selectors.status, this.$container);
     /* eslint-enable */
 
     this.productSingleObject = JSON.parse($(selectors.productJson, this.$container).html());
@@ -78,6 +88,9 @@ export default class ProductDetailForm {
 
     this.$container.on('variantChange', this.onVariantChange.bind(this));
     this.$container.on(this.events.CLICK, selectors.variantOptionValue, this.onVariantOptionValueClick.bind(this));
+    $window.on(AJAXFormManager.events.ADD_START, this.onAJAXFormAddStart.bind(this));
+    $window.on(AJAXFormManager.events.ADD_SUCCESS, this.onAJAXFormAddSuccess.bind(this));
+    $window.on(AJAXFormManager.events.ADD_FAIL, this.onAJAXFormAddFail.bind(this));
   }
 
   onVariantChange(evt) {
@@ -183,5 +196,37 @@ export default class ProductDetailForm {
 
     $option.addClass(classes.variantOptionValueActive);
     $option.siblings().removeClass(classes.variantOptionValueActive);
+  }
+
+  onAJAXFormAddStart(e) {
+    this.$addToCartBtn.addClass(classes.btnActive);
+  }
+
+  /**
+   * Called when the ajax form manager successfully adds a product to the ajax cart
+   * Called for all forms so we need to check if the related target is equal to the form attached to the current instance
+   *
+   * @param {event} evt
+   */
+  onAJAXFormAddSuccess(e) {
+    if (!this.$addToCartForm.is(e.relatedTarget)) return;
+
+    this.$status.text('1 Item added to cart');
+
+    setTimeout(() => {
+      this.$status.text('');
+      this.$addToCartBtn.removeClass(classes.btnActive);
+    }, STATUS_TIMEOUT_DURATION);
+  }
+
+  onAJAXFormAddFail(e) {
+    if (!this.$addToCartForm.is(e.relatedTarget)) return;
+
+    this.$status.text(e.message || 'something went wrong');
+    this.$addToCartBtn.removeClass(classes.btnActive);
+
+    setTimeout(() => {
+      this.$status.text('');
+    }, STATUS_TIMEOUT_DURATION);
   }
 }

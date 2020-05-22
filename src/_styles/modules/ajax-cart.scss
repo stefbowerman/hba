@@ -43,7 +43,7 @@ body.ajax-cart-open {
 .ajax-cart__body {
   position: relative;
   flex: 1;
-  padding-top: 109px;
+  // padding-top: 109px;
 
   // Ajax cart loading shield
   &:before {
@@ -64,29 +64,40 @@ body.ajax-cart-open {
 }
 
 .ajax-cart__list {
-  display: flex;
-  flex-wrap: wrap;
+  // display: flex;
+  // flex-wrap: wrap;
+
+  @include media-breakpoint-up(md) {
+    width: percentage(4/5); // Switch to a 5 column grid for the cart;
+  }
 }
 
 .ajax-cart__item {
   display: flex;
-  flex: 1;
-  flex-basis: percentage(1);
-  max-width: percentage(1);
-  margin-left: -$grid-gutter-width/2;
-  margin-right: -$grid-gutter-width/2;
-  margin-bottom: 55px;
+  margin: 0 5px 40px;
 
   @include media-breakpoint-up(md) {
-    flex-basis: percentage(1/2);
-    max-width: percentage(1/2);
+    margin: 0 -10px 55px;
+    margin-bottom: 55px;
+
+    // Emulate col-md-5
+    // @TODO - I don't know what's going on here...
+    margin-left: -$grid-gutter-width/2;
+    margin-right: -$grid-gutter-width/2;
+    padding-left: $grid-gutter-width/2;
+    padding-right: $grid-gutter-width/2;
+    flex: 0 0 50%;
+    max-width: 50%;
   }
 }
 
 .ajax-cart__item-child {
   flex: 1;
-  padding-left: $grid-gutter-width/2;
-  padding-right: $grid-gutter-width/2;
+  padding: 0 10px;
+
+  @include media-breakpoint-up(md) {
+    padding: $grid-gutter-width/2;
+  }
 }
 
 .ajax-cart__item-image {
@@ -110,24 +121,19 @@ body.ajax-cart-open {
 }
 
 .ajax-cart__footer {
-  padding-bottom: 47px;
+  position: fixed;
+  bottom: $grid-gutter-width;
+  right: $grid-gutter-width;
+  width: 50%;
+
+   @include media-breakpoint-up(md) {
+    width: 20%;
+   }
 }
 
 .ajax-cart__footer-bottom {
-  margin-top: 32px;
+  margin-top: 31px;
 }
-
-// .ajax-cart__footer-row {
-//   padding-top: $spacer;
-
-//   &:not(:last-child) {
-//     margin-bottom: 15px;
-//   }
-
-//   p:last-child {
-//     margin-bottom: 0;
-//   }
-// }
 
 .ajax-cart__empty-message {
   height: 100%;

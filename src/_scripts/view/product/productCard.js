@@ -7,7 +7,8 @@ const selectors = {
 };
 
 const classes = {
-  mainLoaded: 'is-loaded'
+  mainLoaded: 'is-loaded',
+  visible: 'is-visible'
 };
 
 export default class ProductCard {
@@ -36,5 +37,9 @@ export default class ProductCard {
         $img.parents(selectors.gallery).addClass(classes.mainLoaded);
       });
     });
+  }
+
+  show() {
+    this.$el.addClass(classes.visible);
   }
 }

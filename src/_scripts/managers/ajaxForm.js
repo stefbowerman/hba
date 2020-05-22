@@ -17,7 +17,8 @@ class AJAXFormManager {
     this.namespace = `.${this.name}`;
     this.events = {
       ADD_SUCCESS: `addSuccess${this.namespace}`,
-      ADD_FAIL: `addFail${this.namespace}`
+      ADD_FAIL: `addFail${this.namespace}`,
+      ADD_START: `addStart${this.namespace}`
     };
 
     let requestInProgress = false;
@@ -27,8 +28,14 @@ class AJAXFormManager {
 
       if (requestInProgress) return;
 
-      const $submitButton = $(e.target).find(selectors.addToCart);
+      const $form = $(e.currentTarget);
+      const $submitButton = $form.find(selectors.addToCart);
       const $submitButtonText = $submitButton.find(selectors.addToCartText);
+
+      const submitButtonText = $submitButtonText.text();
+
+      const startEvent = $.Event(this.events.ADD_START, { relatedTarget: $form, btnText: submitButtonText });
+      $window.trigger(startEvent);
 
       // Update the submit button text and disable the button so the user knows the form is being submitted
       $submitButton.prop('disabled', true);
@@ -36,19 +43,24 @@ class AJAXFormManager {
 
       requestInProgress = true;
 
-      CartAPI.addItemFromForm($(e.target))
+      CartAPI.addItemFromForm($form)
         .then((data) => {
-          const event = $.Event(this.events.ADD_SUCCESS, { cart: data });
+          const event = $.Event(this.events.ADD_SUCCESS, { cart: data, relatedTarget: $form });
           $window.trigger(event);
         })
         .fail((data) => {
-          const event = $.Event(this.events.ADD_FAIL, { data });
+          const event = $.Event(this.events.ADD_FAIL, {
+            message: data.message,
+            description: data.description,
+            relatedTarget: $form
+          });
+          
           $window.trigger(event);
         })
         .always(() => {
           // Reset button state
           $submitButton.prop('disabled', false);
-          $submitButtonText.html(theme.strings.addToCart);
+          $submitButtonText.html(submitButtonText);
 
           requestInProgress = false;
         });

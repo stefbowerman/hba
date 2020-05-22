@@ -28,12 +28,8 @@ export default class AJAXCartSection extends BaseSection {
 
     // Store callbacks so we can remove them later
     this.callbacks = {
-      changeSuccess: (e) => {
-        this.ajaxCartUI.onChangeSuccess(e.cart);
-      },
-      changeFail: (e) => {
-        this.ajaxCartUI.onChangeFail(e.data);
-      }
+      changeSuccess: e => this.ajaxCartUI.onChangeSuccess(e.cart),
+      changeFail: e => this.ajaxCartUI.onChangeFail(e.description)
     };
 
     $window.on(AJAXFormManager.events.ADD_SUCCESS, this.callbacks.changeSuccess);

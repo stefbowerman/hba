@@ -20,7 +20,7 @@
   <h1>{{ product.title }}</h1>
   <p>{{ current_variant.sku }}</p>
 
-  <div class="rte">
+  <div class="product-description rte">
     {{ product.description }}
   </div>  
 
@@ -32,7 +32,7 @@
     <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
 
     <div data-add-to-cart-form-wrapper>
-      <form action="/cart/add" method="post" enctype="multipart/form-data" data-add-to-cart-form>
+      <form class="pdf-add-to-cart-form" action="/cart/add" method="post" enctype="multipart/form-data" data-add-to-cart-form>
         {% if product.available %}
           {% unless product.has_only_default_variant %}
             {% for option in product.options_with_values %}
@@ -124,26 +124,28 @@
 
           <input type="hidden" value="1" name="quantity" />
 
-          <button
-            type="submit"
-            name="add"
-            class="btn"
-            data-add-to-cart
-            {% unless current_variant.available %}disabled="disabled"{% endunless %}>
-              <span data-add-to-cart-text>
-                {% if current_variant.available %}
-                  {{ 'products.product.add_to_cart' | t }}
-                {% else %}
-                  {{ 'products.product.sold_out' | t }}
-                {% endif %}
-              </span>
-          </button>
-        {% else %}
-          <button class="btn">{{ 'products.product.sold_out' | t }}</button>
-        {% endif %}
+          <div class="pdf-submit-wrapper">
+            <button
+              type="submit"
+              name="add"
+              class="btn"
+              data-add-to-cart
+              {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+                <span data-add-to-cart-text>
+                  {% if current_variant.available %}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% endif %}
+                </span>
+            </button>
+          {% else %}
+            <button class="btn">{{ 'products.product.sold_out' | t }}</button>
+          {% endif %}
+          <div class="pdf-status" data-status></div>
+        </div>
       </form>
     </div>
-
   </div>
 
   {% unless product == empty %}

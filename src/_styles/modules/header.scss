@@ -14,12 +14,14 @@
   display: block;
   position: fixed;
   z-index: $zindex-header-logo;  
-  top: 22px;
+  top: 20px;
   left: $outer-gutter-mobile;  
-  max-width: $header-logo-width;
+  max-width: 101px;
 
   @include media-breakpoint-up(lg) {
+    top: 22px;
     left: $outer-gutter;
+    max-width: 117px;
   }
 
   &.is-strobing {
@@ -46,10 +48,11 @@
 .header-cart {
   position: fixed;
   z-index: $zindex-header-cart;
-  top: 34px;
+  top: 24px;
   right: $outer-gutter-mobile;
 
   @include media-breakpoint-up(lg) {
+    top: 34px;
     right: $outer-gutter;
   }
 

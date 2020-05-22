@@ -6,15 +6,19 @@
 // --------------------------------------------------------
 
 .product-gallery {
-  margin-bottom: 50px;
+  margin-bottom: 53px;
 
   // Make these go flush on mobile
   margin-left: -($grid-gutter-width / 2);
   margin-right: -($grid-gutter-width / 2);
 
-  @include media-breakpoint-up('md') {
+  @include media-breakpoint-up(md) {
     margin-left: 0;
     margin-right: 0;
+  }
+
+  @include media-breakpoint-up(lg) {
+    padding-right: 115px;
   }
 }
 
@@ -86,4 +90,27 @@
   img {
     width: 100%;
   }
+}
+
+
+// Form
+// --------------------------------------------------------
+
+.product-description {
+  margin-bottom: 18px;
+  max-width: 36em;
+}
+
+.pdf-add-to-cart-form {
+  margin-top: 32px;
+}
+
+.pdf-submit-wrapper {
+  margin-top: 30px;
+  display: flex;
+}
+
+.pdf-status {
+  text-transform: uppercase;
+  padding-left: 8px;
 }

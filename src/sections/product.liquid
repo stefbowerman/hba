@@ -9,7 +9,15 @@
     <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
     <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
 
-    {% include 'product-detail', product: product %}
+    <div class="container">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4"></div>
+        <div class="col-4">
+          {% include 'product-detail', product: product %}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

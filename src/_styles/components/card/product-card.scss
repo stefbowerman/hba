@@ -4,6 +4,15 @@
 
 .product-card {
   height: 100%;
+
+  .js & {
+    opacity: 0.01;
+
+    &.is-visible {
+      opacity: 1;
+      transition: opacity 50ms ease-out;
+    }    
+  }
 }
 
 .product-card__contents {

@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { isTouch } from '../core/utils';
 import BaseSection from './base';
 import Overlay from '../ui/overlay';
 
@@ -20,19 +21,21 @@ export default class HeaderSection extends BaseSection {
   constructor(container) {
     super(container, 'header');
 
-    this.$logo = $(selectors.logo, this.$container);
+    this.$logo        = $(selectors.logo, this.$container);
     this.$menuOverlay = $(selectors.menuOverlay, this.$container);
-
-    this.menuOverlay = new Overlay(this.$menuOverlay);
-
+    this.menuOverlay  = new Overlay(this.$menuOverlay);
 
     this.$logo.on('click', () => this.menuOverlay.toggle());
-
-    this.$container.on('mouseenter', selectors.navLink, this.onNavLinkMouseenter.bind(this));
-    this.$container.on('mouseleave', selectors.navLink, this.onNavLinkMouseleave.bind(this));
-    this.$container.on('touchstart', selectors.navLink, this.onNavLinkTouchstart.bind(this));
-    this.$container.on('touchend',   selectors.navLink, this.onNavLinkTouchend.bind(this));
     this.$container.on('click', selectors.subnavToggle, this.onSubnavToggleClick.bind(this));
+
+    if (isTouch()) {
+      this.$container.on('touchstart', selectors.navLink, this.onNavLinkTouchstart.bind(this));
+      this.$container.on('touchend',   selectors.navLink, this.onNavLinkTouchend.bind(this));
+    }
+    else {
+      this.$container.on('mouseenter', selectors.navLink, this.onNavLinkMouseenter.bind(this));
+      this.$container.on('mouseleave', selectors.navLink, this.onNavLinkMouseleave.bind(this));
+    }
 
     this.strobeLogo();
   }
@@ -65,9 +68,16 @@ export default class HeaderSection extends BaseSection {
   onSubnavToggleClick(e) {
     e.preventDefault();
     const id = $(e.currentTarget).data('id');
+
     $(selectors.subnav, this.$container).each((i, el) => {
       const $subnav = $(el);
-      $subnav.toggleClass('is-visible', $subnav.data('id') === id);
+      
+      if ($subnav.data('id') === id) {
+        $subnav.toggleClass('is-visible');
+      }
+      else {
+        $subnav.removeClass('is-visible');
+      }
     });
   }
 }

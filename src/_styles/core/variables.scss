@@ -933,14 +933,6 @@ $print-body-min-width:              map-get($grid-breakpoints, "lg") !default;
 // Variables to adjust site-wide components that are *not* part of bootstrap
 
 
-// Header
-
-$header-bp-min:                         map-get($grid-breakpoints, "md") !default; // Above this breakpoint, switch to the full desktop nav
-$header-height-small:                   65px !default;
-$header-height-base:                    75px !default;
-$header-logo-width:                     117px !default;
-
-
 // Footer
 
 $footer-padding-top:                    79px;
