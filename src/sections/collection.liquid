@@ -12,12 +12,13 @@
   
   <div class="container">
     <div class="row">
-      <div class="col-2">
+      <div class="col-lg-2">
         <div class="sidebar">
           {% include 'collection-sidebar', collection_handle: collection.handle %}
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-md-5 col-lg-4 order-md-2" data-product-pane style="margin-bottom: 30px;"></div>
+      <div class="col-md-5 col-lg-4 order-md-1">
         {% if collection.products.size > 0 %}
           <div class="content-grid">
             {% for product in collection.products %}
@@ -40,10 +41,8 @@
 
         {% else %}
           <p>{{ 'collections.general.no_matches' | t }}</p>
-
         {% endif %}      
-      </div>
-      <div class="col-4" data-product-pane style="padding-right: 100px;"></div>
+      </div>      
     </div>
   </div>
 

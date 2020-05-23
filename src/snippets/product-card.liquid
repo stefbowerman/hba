@@ -30,7 +30,7 @@
     {% assign product_url = product.url | within: collection %}
   {% endif %}
 
-  <div class="product-card" data-product-card data-id="{{ product.id }}">
+  <div class="product-card" data-product-card data-id="{{ product.id }}" data-handle="{{ product.handle }}">
     <div class="product-card__contents">
       {% if product.featured_image %}
         <div class="product-card__gallery">

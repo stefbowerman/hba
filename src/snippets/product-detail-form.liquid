@@ -139,11 +139,13 @@
                   {% endif %}
                 </span>
             </button>
-          {% else %}
+            <div class="pdf-status" data-status></div>
+          </div>
+        {% else %}
+          <div class="pdf-submit-wrapper">
             <button class="btn">{{ 'products.product.sold_out' | t }}</button>
-          {% endif %}
-          <div class="pdf-status" data-status></div>
-        </div>
+          </div>
+        {% endif %}
       </form>
     </div>
   </div>

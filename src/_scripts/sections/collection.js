@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import BaseSection from './base';
+import ProductDetail from '../view/product/productDetail';
 import ProductCard from '../view/product/productCard';
 
 const selectors = {
@@ -21,6 +22,8 @@ export default class CollectionSection extends BaseSection {
     // }
 
     // this.collectionData = JSON.parse($(selectors.collectionJson, this.$container).html());
+    this.productDetails = {};
+
     this.productCards = $.map($(selectors.productCard, this.$container), (el, i) => {
       const card = new ProductCard(el);
 
@@ -34,7 +37,20 @@ export default class CollectionSection extends BaseSection {
 
   onProductCardClick(e) {
     e.preventDefault();
-    const $card = $(e.currentTarget).clone();
-    this.$productPane.html($card);
+
+    const handle = $(e.currentTarget).data('handle');
+
+    // Temp - this doesn't really work
+    if (this.productDetails[handle]) {
+      this.$productPane.html(this.productDetails[handle].$el);
+    }
+    else {
+      $.get(`/products/${handle}?view=detail`, (html) => {
+        const $el = $(html);
+        this.$productPane.html($el);
+        const pd = new ProductDetail($el, false);
+        this.productDetails[handle] = { $el, pd };
+      });
+    }
   }
 }

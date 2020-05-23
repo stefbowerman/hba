@@ -12,12 +12,11 @@ export default class LookbookSection extends BaseSection {
     super(container, 'lookbook');
 
     this.productCards = $.map($(selectors.productCard, this.$container), (el, i) => {
-      $(el)
-        .hide()
-        .delay(150 * i)
-        .fadeIn(50);
+      const card = new ProductCard(el);
 
-      return new ProductCard(el);
+      setTimeout(() => card.show(), (150 * i));
+
+      return card;
     });
 
     // @TODO - Do this better, create card + detail pairs in the contructor

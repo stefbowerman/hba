@@ -17,36 +17,39 @@
   {% if c %}
     <div>
       <p>{{ c.url }}{% if current_tags %}/{{ current_tags | join: '+' }}{% endif %}</p>
-
+      
       <p>
         <a href="{{ c.url }}/lookbook">Lookbook</a>
       </p>
 
-      {%- comment -%} Collect product types + sale item check {%- endcomment -%}
-      {% assign sale_items = false %}
-      {% assign product_types = '' %}
+      <div class="d-none d-lg-block">
 
-      {% for p in c.products %}
-        {% assign product_types = product_types | append: p.type | append: '$$' %}
+        {%- comment -%} Collect product types + sale item check {%- endcomment -%}
+        {% assign sale_items = false %}
+        {% assign product_types = '' %}
 
-        {% if p.price_min < p.compare_at_price_min %}
-          {% assign sale_items = true %}
+        {% for p in c.products %}
+          {% assign product_types = product_types | append: p.type | append: '$$' %}
+
+          {% if p.price_min < p.compare_at_price_min %}
+            {% assign sale_items = true %}
+          {% endif %}
+        {% endfor %}
+
+        {% if product_types %}
+          {% assign product_types_array = product_types | split: '$$' | uniq %}
+          <p>
+            {% for type in product_types_array %}
+              <a href="{{ c.url }}/{{ type | handle }}">{{ type }}</a>
+              {% unless forloop.last %}<br />{% endunless %}
+            {% endfor %}
+          <p>
         {% endif %}
-      {% endfor %}
 
-      {% if product_types %}
-        {% assign product_types_array = product_types | split: '$$' | uniq %}
-        <p>
-          {% for type in product_types_array %}
-            <a href="{{ c.url }}/{{ type | handle }}">{{ type }}</a>
-            {% unless forloop.last %}<br />{% endunless %}
-          {% endfor %}
-        <p>
-      {% endif %}
-
-      {% if sale_items %}
-        <a href="{{ c.url }}/sale">Sale</a>
-      {% endif %}
+        {% if sale_items %}
+          <a href="{{ c.url }}/sale">Sale</a>
+        {% endif %}
+      </div>
     </div>
   {% endif %}
 {% endif %}

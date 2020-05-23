@@ -3,31 +3,46 @@
 // -------------------------
 
 .article-card {
-  height: 100%;
+  @include media-breakpoint-up(md) {
+    display: flex;
+  }
+
+  & + & {
+    margin-top: 40px;
+  }
 }
 
 .article-card__image {
-  width: 100%;
+  flex: 1;
   margin-bottom: 11px;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: 0;
+  }
+
+  img {
+    width: 100%;
+  }
 }
 
 .article-card__info {
+  flex: 1;
   padding-top: 13px;
+
+  @include media-breakpoint-up(md) {
+    padding-top: 0;
+    padding-left: $grid-gutter-width;
+  }
 }
 
 .article-card__info-title {
   margin-bottom: 8px;
 }
 
+.article-card__info-meta {
+  margin: -8px 0 16px;
+}
+
 .article-card__info-excerpt {
   font-size: $font-size-sm;
-  margin-bottom: 8px;
-}
-
-.article-card__info-tags {
-  margin-bottom: 18px;
-}
-
-.article-card__info-meta {
-
 }

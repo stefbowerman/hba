@@ -1,0 +1,67 @@
+<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+        <div class="sidebar" style="margin-bottom: 15px;">
+          <p>{{ page.url | append: '/' | replace: 'pages/', '' }}</p>
+
+          {% assign sidebar_linklist = false %}
+
+          {% comment %} Find the first menu containing the link that we're currently on {% endcomment %}
+          {% for block in section.blocks %}
+            {% for link in linklists[block.settings.menu].links %}
+              {% if link.url == page.url %}
+                {% assign sidebar_linklist = block.settings.menu %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+
+            {% if sidebar_linklist != false %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          {% if sidebar_linklist %}
+            {% for link in linklists[sidebar_linklist].links %}
+              {% unless link.url == page.url %}
+                <a href="{{ link.url }}">{{ link.title }}</a><br />
+              {% endunless %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-8">
+        {% render 'page-title' with page.title %}
+
+        <div class="rte" style="max-width: 40em;">
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Page",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "sidebar_menu",
+        "name": "Sidebar Menu",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
