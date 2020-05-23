@@ -6,7 +6,8 @@ import ProductCard from '../view/product/productCard';
 const selectors = {
   // collectionJson: '[data-collection-json]',
   productCard: '[data-product-card]',
-  productPane: '[data-product-pane]'
+  productPane: '[data-product-pane]',
+  productDetail: '[data-product-detail]'
 };
 
 export default class CollectionSection extends BaseSection {
@@ -22,35 +23,22 @@ export default class CollectionSection extends BaseSection {
     // }
 
     // this.collectionData = JSON.parse($(selectors.collectionJson, this.$container).html());
-    this.productDetails = {};
 
-    this.productCards = $.map($(selectors.productCard, this.$container), (el, i) => {
-      const card = new ProductCard(el);
+    this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el, {
+      onClick: this.onProductCardClick.bind(this)
+    }));
+    this.productDetails = $.map($(selectors.productDetail, this.$container), el => new ProductDetail(el));
 
-      setTimeout(() => card.show(), (150 * i));
-
-      return card;
-    });
-
-    this.$container.on('click', selectors.productCard, this.onProductCardClick.bind(this));
+    // Reveal
+    this.productCards.forEach((card, i) => setTimeout(() => card.show(), (150 * i)));
   }
 
-  onProductCardClick(e) {
+  onProductCardClick(e, card) {
     e.preventDefault();
 
-    const handle = $(e.currentTarget).data('handle');
-
-    // Temp - this doesn't really work
-    if (this.productDetails[handle]) {
-      this.$productPane.html(this.productDetails[handle].$el);
-    }
-    else {
-      $.get(`/products/${handle}?view=detail`, (html) => {
-        const $el = $(html);
-        this.$productPane.html($el);
-        const pd = new ProductDetail($el, false);
-        this.productDetails[handle] = { $el, pd };
-      });
-    }
+    this.productDetails.forEach((pd) => {
+      // Needs to be a hide / show method on the product detail so it can do some clean up
+      pd.$el.toggleClass('is-active', card.id === pd.id);
+    });
   }
 }

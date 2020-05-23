@@ -7,6 +7,34 @@
 
 {% paginate collection.products by 600 %}
 
+{% assign content_grid_html = '' %}
+{% assign product_pane_html = '' %}
+
+{% for product in collection.products %}
+  {% comment %} Lazy load all product images below the fold.  Adjust the limit as needed {% endcomment %}
+  {% assign lazy_load = false %}
+  {% if forloop.index > 10 %}
+    {% assign lazy_load = true %}
+  {% endif %}
+
+  {% capture grid_item_html %}
+    <div class="content-grid__item">
+      {% include 'product-card',
+                  product: product,
+                  lazy_load: lazy_load,
+                  show_sold_out: true
+      %}
+    </div>
+  {% endcapture %}
+
+  {% capture pane_html %}
+    {% include 'product-detail', product: product %}
+  {% endcapture %}
+
+  {% assign content_grid_html = content_grid_html | append: grid_item_html %}
+  {% assign product_pane_html = product_pane_html | append: pane_html %}
+{% endfor %}
+
 <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
   {% render 'page-title' with collection.title %}
   
@@ -17,28 +45,16 @@
           {% include 'collection-sidebar', collection_handle: collection.handle %}
         </div>
       </div>
-      <div class="col-md-5 col-lg-4 order-md-2" data-product-pane style="margin-bottom: 30px;"></div>
+      <div class="col-md-5 col-lg-4 order-md-2">
+        <div class="product-pane" data-product-pane style="margin-bottom: 30px;">
+          {{ product_pane_html }}
+        </div>
+      </div>
       <div class="col-md-5 col-lg-4 order-md-1">
-        {% if collection.products.size > 0 %}
+        {% if content_grid_html %}
           <div class="content-grid">
-            {% for product in collection.products %}
-
-              {% comment %} Lazy load all product images below the fold.  Adjust the limit as needed {% endcomment %}
-              {% assign lazy_load = false %}
-              {% if forloop.index > 10 %}
-                {% assign lazy_load = true %}
-              {% endif %}
-
-              <div class="content-grid__item">
-                {% include 'product-card',
-                            product: product,
-                            lazy_load: lazy_load,
-                            show_sold_out: true
-                %}
-              </div>
-            {% endfor %}
+            {{ content_grid_html }}
           </div>
-
         {% else %}
           <p>{{ 'collections.general.no_matches' | t }}</p>
         {% endif %}      

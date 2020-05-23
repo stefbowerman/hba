@@ -17,6 +17,8 @@ const classes = {
   navLinkActive: 'is-active'
 };
 
+const $body = $(document.body);
+
 export default class HeaderSection extends BaseSection {
   constructor(container) {
     super(container, 'header');
@@ -38,6 +40,11 @@ export default class HeaderSection extends BaseSection {
     }
 
     this.strobeLogo();
+
+    // Eventually move this out to the main theme file
+    if ($body.hasClass('template-index')) {
+      setTimeout(() => this.menuOverlay.show(), 1500);
+    }
   }
 
   strobeLogo() {
