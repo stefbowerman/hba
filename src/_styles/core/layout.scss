@@ -10,7 +10,7 @@
     min-height: 100vh;
   }
   /* stylelint-disable-next-line selector-max-id */
-  main#MainContent {
+  main#view-container {
     flex: 1 0 0; // All three need to be specified for IE11
     flex-direction: column;
   }
@@ -20,9 +20,9 @@
 
 }
 
-.layout-main-content {
-  flex-direction: column;
-}
+// .layout-main-content {
+//   flex-direction: column;
+// }
 
 // Use this as the only direct child of main#MainContent on pages where you don't want the content flush to the header and footer
 // Or use the modifier classes to get flush on top or bottom

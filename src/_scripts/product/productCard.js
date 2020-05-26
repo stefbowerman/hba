@@ -17,9 +17,13 @@ export default class ProductCard {
    *
    * @param {HTMLElement | $} el - The card element
    */
-  constructor(el) {
+  constructor(el, options) {
     this.name = 'productCard';
     this.namespace = `.${this.name}`;
+
+    const defaults = {
+      onClick: () => {}
+    };
 
     this.$el = $(el);
 
@@ -27,6 +31,10 @@ export default class ProductCard {
       console.warn(`[${this.name}] - Element matching ${selectors.el} required to initialize.`);
       return;
     }
+
+    this.settings = $.extend({}, defaults, options);
+    this.id = this.$el.data('id');
+    this.url = this.$el.find('a').first().attr('href');
 
     this.$mainLazyImg = $(selectors.mainLazyImg, this.$el);
 
@@ -37,6 +45,9 @@ export default class ProductCard {
         $img.parents(selectors.gallery).addClass(classes.mainLoaded);
       });
     });
+
+    // Events
+    this.$el.on('click', e => this.settings.onClick(e, this));
   }
 
   show() {

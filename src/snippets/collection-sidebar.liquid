@@ -16,7 +16,14 @@
 
   {% if c %}
     <div>
-      <p>{{ c.url }}{% if current_tags %}/{{ current_tags | join: '+' }}{% endif %}</p>
+      {% assign url = c.url %}
+
+      {% if current_tags %}
+        {% assign tags_param = current_tags | join: '+' %}
+        {% assign url = url | append: '/' | append: tags_param %}
+      {% endif %}
+
+      <p><a href="{{ url }}">{{ url }}</a></p>
       
       <p>
         <a href="{{ c.url }}/lookbook">Lookbook</a>

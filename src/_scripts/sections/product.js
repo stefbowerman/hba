@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import BaseSection from './base';
-import ProductDetail from '../view/product/productDetail';
+import ProductDetail from '../product/productDetail';
 
 const selectors = {
   productDetail: '[data-product-detail]'

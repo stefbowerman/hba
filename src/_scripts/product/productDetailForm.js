@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import { formatMoney } from '../../core/currency';
-import AJAXFormManager from '../../managers/ajaxForm';
+import { formatMoney } from '../core/currency';
+import AJAXFormManager from '../managers/ajaxForm';
 import Variants from './variants';
 
 const selectors = {

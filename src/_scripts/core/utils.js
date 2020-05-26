@@ -385,6 +385,21 @@ export function decodeEntities(encodedString) {
   return textArea.value;
 }
 
+/**
+ * Checks if a url is an external link or not
+ *
+ * @param {String} url
+ * @return {Bool}
+ */
+export function isExternal(url) {
+  /* eslint-disable */
+  const match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
+  if (typeof match[1] === 'string' && match[1].length > 0 && match[1].toLowerCase() !== location.protocol) return true;
+  if (typeof match[2] === 'string' && match[2].length > 0 && match[2].replace(new RegExp(":("+{"http:":80,"https:":443}[location.protocol]+")?$"), "") !== location.host) return true;
+  return false;
+  /* eslint-enable */
+}
+
 export function credits() {
   if (window && window.location && window.location.hostname !== 'localhost') {
     // eslint-disable-next-line no-console, max-len

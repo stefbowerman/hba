@@ -13,7 +13,7 @@
 
 {% assign current_variant = product.selected_or_first_available_variant %}
 
-<div data-product-detail>
+<div class="product-detail" data-product-detail data-id="{{ product.id }}">
   {% include 'product-detail-gallery',
               product: product,
               current_variant: current_variant
