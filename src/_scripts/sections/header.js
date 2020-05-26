@@ -25,7 +25,7 @@ export default class HeaderSection extends BaseSection {
     this.$menuOverlay = $(selectors.menuOverlay, this.$container);
     this.menuOverlay  = new Overlay(this.$menuOverlay);
 
-    this.$logo.on('click', () => this.menuOverlay.toggle());
+    this.$logo.on('click', this.onLogoClick.bind(this));
     this.$container.on('click', selectors.subnavToggle, this.onSubnavToggleClick.bind(this));
 
     if (isTouch()) {
@@ -47,6 +47,11 @@ export default class HeaderSection extends BaseSection {
     const max = 20;
     const rand = Math.floor(Math.random() * (max - min + 1) + min);
     setTimeout(this.strobeLogo.bind(this), rand * 100);
+  }
+
+  onLogoClick(e) {
+    e.preventDefault();
+    this.menuOverlay.toggle();
   }
 
   onNavLinkMouseenter(e) {

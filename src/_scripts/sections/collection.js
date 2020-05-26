@@ -1,12 +1,12 @@
 import $ from 'jquery';
 import BaseSection from './base';
-import ProductDetail from '../view/product/productDetail';
-import ProductCard from '../view/product/productCard';
+import ProductDetail from '../product/productDetail';
+import ProductCard from '../product/productCard';
 
 const selectors = {
-  // collectionJson: '[data-collection-json]',
-  productCard: '[data-product-card]',
-  productPane: '[data-product-pane]'
+  productCard:   '[data-product-card]',
+  productPane:   '[data-product-pane]',
+  productDetail: '[data-product-detail]'
 };
 
 export default class CollectionSection extends BaseSection {
@@ -15,42 +15,27 @@ export default class CollectionSection extends BaseSection {
 
     this.$productPane = $(selectors.productPane, this.$container);
 
-    // Stop parsing if we don't have the collection json script tag
-    // if (!$(selectors.collectionJson, this.$container).html()) {
-    //   console.warn(`[${this.name}] - Element matching ${selectors.collectionJson} required.`);
-    //   return;
-    // }
+    this.productDetails = $.map($(selectors.productDetail, this.$container), (el, i) => new ProductDetail(el, false));
+    this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el, {
+      onClick: this.onProductCardClick.bind(this)
+    }));
 
-    // this.collectionData = JSON.parse($(selectors.collectionJson, this.$container).html());
-    this.productDetails = {};
-
-    this.productCards = $.map($(selectors.productCard, this.$container), (el, i) => {
-      const card = new ProductCard(el);
-
-      setTimeout(() => card.show(), (150 * i));
-
-      return card;
-    });
-
-    this.$container.on('click', selectors.productCard, this.onProductCardClick.bind(this));
+    this.productCards.forEach((card, i) => setTimeout(() => card.show(), (150 * i)));
   }
 
-  onProductCardClick(e) {
+  onProductCardClick(e, card) {
     e.preventDefault();
 
-    const handle = $(e.currentTarget).data('handle');
+    this.productDetails.forEach((pd) => {
+      // Needs to be a hide / show method on the product detail so it can do some clean up
+      pd.$el.toggleClass('is-active', card.id === pd.id);
+    });
 
-    // Temp - this doesn't really work
-    if (this.productDetails[handle]) {
-      this.$productPane.html(this.productDetails[handle].$el);
-    }
-    else {
-      $.get(`/products/${handle}?view=detail`, (html) => {
-        const $el = $(html);
-        this.$productPane.html($el);
-        const pd = new ProductDetail($el, false);
-        this.productDetails[handle] = { $el, pd };
-      });
+    if (window.HBA) {
+      window.HBA.appController
+        .pauseRouter()
+        .navigate(card.url)
+        .resumeRouter();
     }
   }
 }
