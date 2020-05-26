@@ -11,17 +11,11 @@
 {% assign product_pane_html = '' %}
 
 {% for product in collection.products %}
-  {% comment %} Lazy load all product images below the fold.  Adjust the limit as needed {% endcomment %}
-  {% assign lazy_load = false %}
-  {% if forloop.index > 10 %}
-    {% assign lazy_load = true %}
-  {% endif %}
-
   {% capture grid_item_html %}
     <div class="content-grid__item">
       {% include 'product-card',
                   product: product,
-                  lazy_load: lazy_load,
+                  lazy_load: true,
                   show_sold_out: true
       %}
     </div>
@@ -46,7 +40,7 @@
         </div>
       </div>
       <div class="col-md-5 col-lg-4 order-md-2">
-        <div class="product-pane" data-product-pane style="margin-bottom: 30px;">
+        <div class="product-pane" data-product-pane>
           {{ product_pane_html }}
         </div>
       </div>
@@ -61,23 +55,6 @@
       </div>      
     </div>
   </div>
-
-  {% comment %} This JSON is required for filtering and sorting {% endcomment %}
-  {% capture collection_url %}
-    {% if collection.handle == "all" %}
-      /collections/all
-    {% else %}
-      {{ collection.url }}
-    {% endif %}
-  {% endcapture %}
-
-  <script type="application/json" data-collection-json>
-    {
-      "url": {{ collection_url | strip | json }},
-      "sortDefault": {{ collection.default_sort_by | json }},
-      "sortApplied": {{ collection.sort_by | json }}
-    }
-  </script>
 </div>
 
 {% endpaginate %}

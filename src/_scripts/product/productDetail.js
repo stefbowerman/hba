@@ -20,6 +20,7 @@ export default class ProductDetail {
     this.name = 'productDetail';
 
     this.$el = $(el);
+    this.id = this.$el.data('id');
 
     if (!this.$el || this.$el === undefined) {
       console.warn(`[${this.name}] - $el required to initialize`);

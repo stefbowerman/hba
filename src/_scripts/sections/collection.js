@@ -1,12 +1,11 @@
 import $ from 'jquery';
 import BaseSection from './base';
-import ProductDetail from '../view/product/productDetail';
-import ProductCard from '../view/product/productCard';
+import ProductDetail from '../product/productDetail';
+import ProductCard from '../product/productCard';
 
 const selectors = {
-  // collectionJson: '[data-collection-json]',
-  productCard: '[data-product-card]',
-  productPane: '[data-product-pane]',
+  productCard:   '[data-product-card]',
+  productPane:   '[data-product-pane]',
   productDetail: '[data-product-detail]'
 };
 
@@ -16,18 +15,10 @@ export default class CollectionSection extends BaseSection {
 
     this.$productPane = $(selectors.productPane, this.$container);
 
-    // Stop parsing if we don't have the collection json script tag
-    // if (!$(selectors.collectionJson, this.$container).html()) {
-    //   console.warn(`[${this.name}] - Element matching ${selectors.collectionJson} required.`);
-    //   return;
-    // }
-
-    // this.collectionData = JSON.parse($(selectors.collectionJson, this.$container).html());
-
     this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el, {
       onClick: this.onProductCardClick.bind(this)
     }));
-    this.productDetails = $.map($(selectors.productDetail, this.$container), el => new ProductDetail(el));
+    this.productDetails = $.map($(selectors.productDetail, this.$container), el => new ProductDetail(el, false));
 
     // Reveal
     this.productCards.forEach((card, i) => setTimeout(() => card.show(), (150 * i)));
@@ -40,5 +31,12 @@ export default class CollectionSection extends BaseSection {
       // Needs to be a hide / show method on the product detail so it can do some clean up
       pd.$el.toggleClass('is-active', card.id === pd.id);
     });
+
+    if (window.HBA) {
+      window.HBA.appController
+        .pauseRouter()
+        .navigate(card.url)
+        .resumeRouter();
+    }
   }
 }

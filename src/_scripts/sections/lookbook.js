@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import BaseSection from './base';
-import ProductCard from '../view/product/productCard';
+import ProductCard from '../product/productCard';
 
 const selectors = {
   productCard: '[data-product-card]',

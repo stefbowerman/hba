@@ -53,15 +53,17 @@
 {% endcapture %}
 
 <body id="{{ page_title | handle }}" class="{{ body_class | strip | strip_newlines }}">
-  <a class="in-page-link visually-hidden skip-link" href="#MainContent">
+  <script type="text/javascript">document.body.className += ' is-loading';</script>
+
+  <a class="in-page-link visually-hidden skip-link" href="#view-container">
     {{ 'general.accessibility.skip_to_content' | t }}
   </a>  
 
   <div class="layout-wrapper">
     {% section 'header' %}
 
-    <main role="main" id="MainContent" role="main">
-      <div class="layout-main-content">
+    <main id="view-container" class="view-container" role="main">
+      <div id="view-content" class="view-content">
         {{ content_for_layout }}
       </div>
     </main>
@@ -69,10 +71,7 @@
     {% section 'footer' %}
   </div>
 
-  {% unless template == 'cart' %}
-    {% section 'ajax-cart' %}
-  {% endunless %}
-
+  {% section 'ajax-cart' %}
   {% section 'video-background' %}
 </body>
 </html>
