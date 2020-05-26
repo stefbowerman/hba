@@ -11,30 +11,29 @@ export default class LookbookSection extends BaseSection {
   constructor(container) {
     super(container, 'lookbook');
 
-    this.productCards = $.map($(selectors.productCard, this.$container), (el, i) => {
-      const card = new ProductCard(el);
+    this.$details = $(selectors.details, this.$container);
 
-      setTimeout(() => card.show(), (150 * i));
-
-      return card;
-    });
+    this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el));
 
     // @TODO - Do this better, create card + detail pairs in the contructor
     // add mouseenter/leave events to each pair and store the currently highlighted one
     this.$container.on('mouseenter', selectors.productCard, this.onProductCardMouseenter.bind(this));
     this.$container.on('mouseleave', selectors.productCard, this.onProductCardMouseleave.bind(this));
+
+    // Reveal
+    this.productCards.forEach((card, i) => setTimeout(() => card.show(), (150 * i)));    
   }
 
   onProductCardMouseenter(e) {
     const id = $(e.currentTarget).data('id');
 
-    $(selectors.details, this.$container).filter((i, el) => {
+    this.$details.filter((i, el) => {
       return $(el).data('id') === id;
     }).addClass('highlight');
   }
 
   onProductCardMouseleave(e) {
-    $(selectors.details, this.$container)
+    this.$details
       .filter('.highlight')
       .removeClass('highlight');
   }
