@@ -1,0 +1,30 @@
+{%- comment %}
+
+  Lookbook Product Details
+  ------------------------------------------------------------------------------
+
+  Usage:
+
+  {% include 'lookbook-product-details',
+              product: { product } - required
+  %}
+
+{% endcomment -%}
+
+{% if product %}
+  <div class="lookbook-product-details" style="margin-bottom: 30px" data-details data-id="{{ product.id }}">
+    <div style="margin-bottom: 1rem">
+      <h6 style="margin-bottom: 0;">{{ product.title }}</h6>
+      {% if product.variants[0].sku != blank %}
+        <div style="font-size: 10px;">{{ product.variants[0].sku | prepend: 'SKU' }}</div>
+      {% endif %}
+    </div>
+    <div style="font-size: 10px;">{{ product.description }}</div>
+    {% for product_option in product.options_with_values %}
+      {% assign option = product_option.name | upcase %}
+      {% if option == 'SIZE' %}
+        <div style="font-size: 10px; margin-top: 15px;">Manufactured in {{ product_option.values | join: ', ' }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}

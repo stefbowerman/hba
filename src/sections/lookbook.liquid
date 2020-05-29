@@ -7,6 +7,8 @@
 {% paginate collection.products by 600 %}
 
 <style>
+/* @TODO - Create a look book scss file %/
+
 [data-details].highlight {
   color: white;
 }
@@ -19,35 +21,35 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-2">
+      <div class="col-lg-2">
         <div class="sidebar">
-          {% include 'collection-sidebar', collection_handle: collection.handle %}
+          {% render 'collection-sidebar', collection_handle: collection.handle %}
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-md-7 col-lg-6">
         {% assign c = collections[collection.handle] %}
 
-        <div class="content-grid">
+        <div class="content-grid content-grid--lookbook">
           {% for p in c.products %}
             <div class="content-grid__item">
-              {% include 'product-card', product: p %}
+              <div class="lookbook-card">
+                {% render 'product-card',
+                            product: p,
+                            show_sku: true,
+                            linkable: false
+                %}
+
+                <div class="d-md-none">
+                  {% render 'lookbook-product-details', product: p %}
+                </div>
+              </div>
             </div>
           {% endfor %}
         </div>
       </div>
-      <div class="col-2">
+      <div class="d-none d-md-block col-md-3 col-lg-2">
         {% for p in c.products %}
-          <div style="margin-bottom: 30px" data-details data-id="{{ p.id }}">
-            <h6 style="margin-bottom: 0;">{{ p.title }}</h6>
-            <p>{{ p.variants[0].sku }}</p>
-            <div style="font-size: 10px;">{{ p.description }}</div>
-            {% for product_option in p.options_with_values %}
-              {% assign option = product_option.name | upcase %}
-              {% if option == 'SIZE' %}
-                <div style="font-size: 10px; margin-top: 15px;">Manufactured in {{ product_option.values | join: ', ' }}</div>
-              {% endif %}
-            {% endfor %}
-          </div>
+          {% render 'lookbook-product-details', product: p %}
         {% endfor %}
       </div>
     </div>
