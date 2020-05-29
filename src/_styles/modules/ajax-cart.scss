@@ -111,6 +111,13 @@ body.ajax-cart-open {
 .ajax-cart__footer {
   position: fixed;
   bottom: $grid-gutter-width;
+  
+  // These values match .header-cart
+  bottom: 24px;
+
+  @include media-breakpoint-up(md) {
+    bottom: 34px;
+  }
 }
 
 .ajax-cart__footer-bottom {
@@ -118,10 +125,22 @@ body.ajax-cart-open {
 }
 
 .ajax-cart__empty-message {
+  position: fixed;
+  top: 0;
+  left: 0;
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-bottom: 109px; // @TODO - this is just matching cart top padding...
+  
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity $transition-duration-slow $transition-timing-function-overlay-opacity-in;
+
+  .is-open.is-empty & {
+    pointer-events: auto;
+    opacity: 1;
+  }
 }

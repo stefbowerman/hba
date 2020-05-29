@@ -16,6 +16,7 @@ const selectors = {
   singleOptionSelector: '[data-single-option-selector]',
   variantOptionValueList: '[data-variant-option-value-list][data-option-position]',
   variantOptionValue: '[data-variant-option-value]',
+  variantSku: '[data-variant-sku]',
   status: '[data-status]'
 };
 
@@ -73,6 +74,7 @@ export default class ProductDetailForm {
     this.$compareEls = this.$comparePrice.add($(selectors.comparePriceText, this.$container));
     this.$singleOptionSelectors = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
     this.$variantOptionValueList = $(selectors.variantOptionValueList, this.$container); // Alternate UI that takes the place of a single option selector (could be swatches, dots, buttons, whatever..)
+    this.$variantSku = $(selectors.variantSku, this.$container);
     this.$status = $(selectors.status, this.$container);
     /* eslint-enable */
 
@@ -99,6 +101,7 @@ export default class ProductDetailForm {
     this.updateProductPrices(variant);
     this.updateAddToCartState(variant);
     this.updateVariantOptionValues(variant);
+    this.updateVariantSku(variant);
 
     this.settings.onVariantChange(variant);
   }
@@ -148,6 +151,17 @@ export default class ProductDetailForm {
       }
     }
   }
+
+  /**
+   * Updates the DOM with sku for the selected variant
+   *
+   * @param {Object} variant - Shopify variant object
+   */
+  updateVariantSku(variant) {
+    if (variant && variant.sku) {
+      this.$variantSku.text(`SKU${variant.sku}`);
+    }
+  }  
 
   /**
    * Updates the DOM state of the elements matching the variantOption Value selector based on the currently selected variant

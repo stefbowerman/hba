@@ -114,3 +114,9 @@
   text-transform: uppercase;
   padding-left: 8px;
 }
+
+.btn.option-value {
+  &.is-active {
+    background-color: transparent;
+  }
+}

@@ -1,9 +1,6 @@
 import $ from 'jquery';
 import Handlebars from 'handlebars';
-import {
-  whichTransitionEnd,
-  isThemeEditor
-} from '../core/utils';
+import { whichTransitionEnd } from '../core/utils';
 import CartAPI from '../core/cartAPI';
 
 const $window = $(window);
@@ -173,7 +170,7 @@ export default class AJAXCart {
    * @return this
    */
   updateCartCount(cart) {
-    this.$cartCount.html(cart.item_count);
+    this.$cartCount.html((cart.item_count === 0 ? '' : cart.item_count));
     $(selectors.trigger).toggleClass(classes.triggerHasItems, cart.item_count > 0);
 
     return this;

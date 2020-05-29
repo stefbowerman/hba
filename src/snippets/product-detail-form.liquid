@@ -18,7 +18,7 @@
 
 <div data-product-detail-form>
   <h1>{{ product.title }}</h1>
-  <p>{{ current_variant.sku }}</p>
+  <p data-variant-sku>{{ current_variant.sku }}</p>
 
   <div class="product-description rte">
     {{ product.description }}
@@ -139,7 +139,8 @@
                   {% endif %}
                 </span>
             </button>
-            <div class="pdf-status" data-status></div>
+            {% comment %} @TODO - only have the ajax cart trigger hooked up when something is added successfully{% endcomment %}
+            <div class="pdf-status" data-status data-ajax-cart-trigger></div>
           </div>
         {% else %}
           <div class="pdf-submit-wrapper">

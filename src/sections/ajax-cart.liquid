@@ -27,8 +27,17 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>     
     </form>
+
+    <div class="ajax-cart__empty-message">
+      {% if section.settings.empty_text != blank %}
+        {{ section.settings.empty_text }}
+      {% else %}
+        <p>{{ 'cart.general.empty' | t }}</p>
+      {% endif %}
+      <a href="/" class="btn btn-alt" data-ajax-cart-close>Shop</a>
+    </div>    
   </div>
 </div>
 
@@ -57,17 +66,6 @@
             </div>
           </div>
         {{/each}}
-      </div>
-    {{else}}
-      <div class="ajax-cart__empty-message">
-        {% endraw %}
-        {% if section.settings.empty_text != blank %}
-          {{ section.settings.empty_text }}
-        {% else %}
-          <p>{{ 'cart.general.empty' | t }}</p>
-        {% endif %}
-        {% raw %}
-        <a href="/" class="btn btn-alt" data-ajax-cart-close>Shop</a>
       </div>
     {{/if}}
   </script>
