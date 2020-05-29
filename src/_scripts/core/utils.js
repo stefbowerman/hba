@@ -403,7 +403,7 @@ export function isExternal(url) {
 export function credits() {
   if (window && window.location && window.location.hostname !== 'localhost') {
     // eslint-disable-next-line no-console, max-len
-    console.log('%cdesign + development courtesy of...', 'font-family: Helvetica; font-size: 11px;');
+    console.log('%c HOOD BY AIR: development → stefanbowerman.com', 'font-family: Helvetica; font-size: 11px; color: #00A651; background-color: #000');
   }
 }
 

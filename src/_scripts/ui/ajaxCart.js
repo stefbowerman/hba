@@ -12,14 +12,12 @@ const $body = $(document.body);
 const selectors = {
   container: '[data-ajax-cart-container]',
   bodyTemplate: 'script[data-ajax-cart-body-template]',
-  footerTopTemplate: 'script[data-ajax-cart-footer-top-template]',
   trigger: '[data-ajax-cart-trigger]',
   close: '[data-ajax-cart-close]',
   body: '[data-ajax-cart-body]',
-  footer: '[data-ajax-cart-footer]',
-  footerTop: '[data-ajax-cart-footer-top]',
   item: '[data-ajax-item][data-key][data-qty]',
   itemRemove: '[data-ajax-cart-item-remove]',
+  totalPrice: '[data-ajax-cart-total-price]',
   cartCount: '[data-cart-count]'
 };
 
@@ -57,10 +55,8 @@ export default class AJAXCart {
 
     this.$el = $(selectors.container);
     this.$acBody = $(selectors.body, this.$el);
-    this.$acFooter = $(selectors.footer, this.$el);
-    this.$acFooterTop = $(selectors.footerTop, this.$el);
+    this.$totalPrice = $(selectors.totalPrice, this.$el);
     this.$bodyTemplate = $(selectors.bodyTemplate);
-    this.$footerTopTemplate = $(selectors.footerTopTemplate);
     this.$cartCount = $(selectors.cartCount);
 
     this.stateIsOpen = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
@@ -68,18 +64,13 @@ export default class AJAXCart {
     this.transitionEndEvent = whichTransitionEnd();
     this.rendered = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
 
-    if (!this.$bodyTemplate.length || !this.$footerTopTemplate.length) {
+    if (!this.$bodyTemplate.length) {
       console.warn(`[${this.name}] - Handlebars template required to initialize`);
       return;
     }
 
     // Compile this once during initialization
     this.bodyTemplate = Handlebars.compile(this.$bodyTemplate.html());
-    this.footerTopTemplate = Handlebars.compile(this.$footerTopTemplate.html());
-
-    if (isThemeEditor()) {
-      this.$el.find('.additional-checkout-button').parent('.ajax-cart__footer-row').remove();
-    }
 
     $body.on(this.events.CLICK, selectors.trigger, this.onTriggerClick.bind(this));
     $body.on(this.events.CLICK, selectors.close, this.onCloseClick.bind(this));
@@ -161,11 +152,11 @@ export default class AJAXCart {
       this.$acBody.empty().append(this.bodyTemplate(templateData));
     }
     else if (slot === 'footer') {
-      this.$acFooterTop.empty().append(this.footerTopTemplate(templateData));
+      this.$totalPrice.text(cart.total_price);
     }
     else {
       this.$acBody.empty().append(this.bodyTemplate(templateData));
-      this.$acFooterTop.empty().append(this.footerTopTemplate(templateData));
+      this.$totalPrice.text(cart.total_price);
     }
 
     $window.trigger($.Event(this.events.RENDER, { cart }));
