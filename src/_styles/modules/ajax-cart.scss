@@ -109,14 +109,11 @@ body.ajax-cart-open {
 }
 
 .ajax-cart__footer {
-  position: fixed;
-  bottom: $grid-gutter-width;
-  
-  // These values match .header-cart
-  bottom: 24px;
+  position: fixed;  
+  bottom: 54px;
 
-  @include media-breakpoint-up(md) {
-    bottom: 34px;
+  @include media-breakpoint-up(xl) {
+    bottom: 68px
   }
 }
 
