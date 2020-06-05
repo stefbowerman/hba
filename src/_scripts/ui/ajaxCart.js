@@ -57,9 +57,8 @@ export default class AJAXCart {
     this.$cartCount = $(selectors.cartCount);
 
     this.stateIsOpen = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
-    this.hasBeenRendered = false; // Lock to prevent displaying the cart before anything has been rendered
+    this.hasBeenRendered = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
     this.transitionEndEvent = whichTransitionEnd();
-    this.rendered = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
 
     if (!this.$bodyTemplate.length) {
       console.warn(`[${this.name}] - Handlebars template required to initialize`);
@@ -157,8 +156,6 @@ export default class AJAXCart {
     }
 
     $window.trigger($.Event(this.events.RENDER, { cart }));
-
-    this.rendered = true;
 
     return this;
   }
@@ -298,7 +295,7 @@ export default class AJAXCart {
    *
    */
   open() {
-    if (this.stateIsOpen || !this.rendered) return;
+    if (this.stateIsOpen || !this.hasBeenRendered) return;
 
     $body.addClass(classes.bodyCartOpen);
     this.$el.addClass(classes.cartOpen);

@@ -5,7 +5,6 @@ import AJAXFormManager from '../managers/ajaxForm';
 import AJAXCartUI from '../ui/ajaxCart';
 
 const $window = $(window);
-const $body = $(document.body);
 
 /**
  * Ajax Cart Section Script
@@ -18,9 +17,7 @@ export default class AJAXCartSection extends BaseSection {
   constructor(container) {
     super(container, 'ajaxCart');
 
-    if ($body.hasClass('template-cart')) {
-      return;
-    }
+    this.openOnReady = false; // if true, the ajaxcart will open once it finishes it's initial render
 
     // Create a new instance of the cart UI.
     // Pass in any variables used by the Handlebars template that aren't part of the cart object
@@ -38,7 +35,20 @@ export default class AJAXCartSection extends BaseSection {
     // Make sure we get the latest cart data when this initializes
     CartAPI.getCart().then((cart) => {
       this.ajaxCartUI.render(cart);
+
+      if (this.openOnReady) {
+        this.ajaxCartUI.open();
+      }
     });
+  }
+
+  open() {
+    if (this.ajaxCartUI.hasBeenRendered) {
+      this.ajaxCartUI.open();
+    }
+    else {
+      this.openOnReady = true;
+    }
   }
 
   onSelect() {

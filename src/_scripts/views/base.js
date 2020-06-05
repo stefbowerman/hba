@@ -13,8 +13,8 @@ export default class BaseView {
     this.sections = [];
 
     $document.on({
-      'shopify:section:load': this.onSectionLoad.bind(this)),
-      'shopify:section:unload': this.onSectionUnload.bind(this))
+      'shopify:section:load': this.onSectionLoad.bind(this),
+      'shopify:section:unload': this.onSectionUnload.bind(this)
     });
     
     // console.log('BaseView - contructing view - ' + type);

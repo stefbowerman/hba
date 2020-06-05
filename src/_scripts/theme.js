@@ -22,7 +22,6 @@ import AppController     from './core/appController';
 // Views
 import ProductView    from './views/product';
 import CollectionView from './views/collection';
-import CartView       from './views/cart';
 
 // Sections
 import HeaderSection   from './sections/header';
@@ -45,21 +44,17 @@ window.HBA = {};
     ajaxCart: new AJAXCartSection($('[data-section-type="ajax-cart"]'))
   };
 
+  // @TODO - Remove this at some point
+  window.HBA.sections = sections;
+
   // Create the app controller for routing
   const appController = new AppController({
     viewConstructors: {
       product: ProductView,
-      collection: CollectionView,
-      cart: CartView
+      collection: CollectionView
     },
     onInitialViewReady: (view) => {
       console.log('onInitialViewReady');
-
-      if (view.type === 'index') {
-        setTimeout(() => {
-          sections.header.menuOverlay.show();
-        }, 1500);
-      }
     },
     onBeforeRouteStart: (deferred) => {
       console.log('onBeforeRouteStart');
@@ -77,12 +72,16 @@ window.HBA = {};
     },
     onViewReady: (view) => {
       console.log('onViewReady');
+      console.log(view);
 
       if (view.type === 'index') {
         setTimeout(() => {
           sections.header.menuOverlay.show();
         }, 1000);
-      }      
+      }
+      else if (view.type === 'cart') {
+        sections.ajaxCart.open();
+      }
     }
   });
 
