@@ -12,9 +12,9 @@ const selectors = {
 };
 
 const classes = {
-  headerFixed: 'is-fixed',
   logoStrobe: 'is-strobing',
-  navLinkActive: 'is-active'
+  navLinkActive: 'is-active',
+  navLinkFaded: 'faded-out'
 };
 
 const $body = $(document.body);
@@ -25,9 +25,13 @@ export default class HeaderSection extends BaseSection {
 
     this.$logo        = $(selectors.logo, this.$container);
     this.$menuOverlay = $(selectors.menuOverlay, this.$container);
+    this.$navLinks    = $(selectors.navLink, this.$container);
+    this.$subnavs     = $(selectors.subnav, this.$container)
+
     this.menuOverlay  = new Overlay(this.$menuOverlay);
 
     this.$logo.on('click', this.onLogoClick.bind(this));
+    this.$navLinks.on('click', this.onNavLinkClick.bind(this));
     this.$container.on('click', selectors.subnavToggle, this.onSubnavToggleClick.bind(this));
 
     if (isTouch()) {
@@ -39,12 +43,10 @@ export default class HeaderSection extends BaseSection {
       this.$container.on('mouseleave', selectors.navLink, this.onNavLinkMouseleave.bind(this));
     }
 
-    this.strobeLogo();
+    // @TODO - Make these events static props? Overlay.events.HIDDEN ?
+    this.$menuOverlay.on(this.menuOverlay.events.HIDDEN, this.onMenuOverlayHidden.bind(this));
 
-    // Eventually move this out to the main theme file
-    if ($body.hasClass('template-index')) {
-      setTimeout(() => this.menuOverlay.show(), 1500);
-    }
+    this.strobeLogo();
   }
 
   strobeLogo() {
@@ -59,6 +61,21 @@ export default class HeaderSection extends BaseSection {
   onLogoClick(e) {
     e.preventDefault();
     this.menuOverlay.toggle();
+  }
+
+  onNavLinkClick(e) {
+    const $clicked = $(e.currentTarget);
+    const href = $clicked.attr('href')
+
+    if ($clicked.is(selectors.subnavToggle) || href === '#') return;
+
+    e.preventDefault();
+
+    this.$navLinks.not($clicked).addClass(classes.navLinkFaded);
+
+    setTimeout(() => {
+      window.HBA.appController.navigate(href);
+    }, 700);
   }
 
   onNavLinkMouseenter(e) {
@@ -79,17 +96,18 @@ export default class HeaderSection extends BaseSection {
 
   onSubnavToggleClick(e) {
     e.preventDefault();
+    // @TODO - Maybe just use $(e.currentTarget).next() to get the subnav we need?
     const id = $(e.currentTarget).data('id');
 
-    $(selectors.subnav, this.$container).each((i, el) => {
+    this.$subnavs.each((i, el) => {
       const $subnav = $(el);
-      
-      if ($subnav.data('id') === id) {
-        $subnav.toggleClass('is-visible');
-      }
-      else {
-        $subnav.removeClass('is-visible');
-      }
+      $subnav.toggleClass('is-visible', $subnav.data('id') === id);
     });
+  }
+
+  // Reset the menu
+  onMenuOverlayHidden(e) {
+    this.$subnavs.removeClass('is-visible');
+    this.$navLinks.removeClass(classes.navLinkFaded);
   }
 }
