@@ -54,9 +54,11 @@ window.HBA = {};
     },
     onInitialViewReady: (view) => {
       console.log('onInitialViewReady');
-      // Add parameter to the view so we can do view.templateName instead of checking body class?
-      if ($body.hasClass('template-index')) {
-        setTimeout(sections.header.menuOverlay.show(), 1500);
+
+      if (view.type === 'index') {
+        setTimeout(() => {
+          sections.header.menuOverlay.show();
+        }, 1500);
       }
     },
     onBeforeRouteStart: (deferred) => {
@@ -75,6 +77,12 @@ window.HBA = {};
     },
     onViewReady: (view) => {
       console.log('onViewReady');
+
+      if (view.type === 'index') {
+        setTimeout(() => {
+          sections.header.menuOverlay.show();
+        }, 1000);
+      }      
     }
   });
 

@@ -3,8 +3,8 @@ import CollectionSection from '../sections/collection';
 import LookbookSection from '../sections/lookbook';
 
 export default class CollectionView extends BaseView {
-  constructor($el) {
-    super($el);
+  constructor($el, type, router) {
+    super($el, type, router);
 
     // Could be one or the other?
     this.collectionSection = new CollectionSection($el.find('[data-section-type="collection"]'));

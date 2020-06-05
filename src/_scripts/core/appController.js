@@ -120,7 +120,7 @@ export default class AppController {
     if (this.firstRoute) {
       // Can't cache here, at this point the DOM has been altered via JS.
       // We can only cache fresh HTML from the server
-      this.currentView = new ViewConstructor(this.$viewContainer, this);
+      this.currentView = new ViewConstructor(this.$viewContainer, type, this);
       this.settings.onViewReady(this.currentView);
       this.firstRoute = false;
       this.settings.onInitialViewReady(this.currentView);
@@ -129,7 +129,7 @@ export default class AppController {
     }
 
     const urlKey = hashFromString(url);
-    const ajaxDeferred        = $.Deferred();
+    const ajaxDeferred = $.Deferred();
     const beforeRouteStartDeferred = $.Deferred();
 
     // If we already have the page HTML in our cache...
@@ -165,12 +165,12 @@ export default class AppController {
 
       // Once AJAX *and* css animations are done, trigger the callback
       $.when(ajaxDeferred).done((response) => {
-        this.doViewChange(response, ViewConstructor, url);
+        this.doViewChange(response, ViewConstructor, type, url);
       });
     });
   }
 
-  doViewChange(AJAXResponse, ViewConstructor, url) {
+  doViewChange(AJAXResponse, ViewConstructor, type, url) {
     // Kill the current view
     this.currentView.destroy();
 
@@ -192,7 +192,7 @@ export default class AppController {
     // Here's where we append the new dom, transition out the old dom, and then do cleanup
     this.$viewContainer.append($newViewContent);
 
-    const newView = new ViewConstructor($newViewContent, this);
+    const newView = new ViewConstructor($newViewContent, type, this);
 
     // Wait for everything to load before animating in?
     this.settings.onViewChangeStart(url, newView);

@@ -6,15 +6,18 @@ const $document = $(document);
 const SectionConstructorDictionary = {};
 
 export default class BaseView {
-  constructor($el, router) {
+  constructor($el, type, router) {
     this.$el = $el;
+    this.type = type;
     this.router = router;
     this.sections = [];
 
-    $document.on('shopify:section:load',   this.onSectionLoad.bind(this));
-    $document.on('shopify:section:unload', this.onSectionUnload.bind(this));
+    $document.on({
+      'shopify:section:load': this.onSectionLoad.bind(this)),
+      'shopify:section:unload': this.onSectionUnload.bind(this))
+    });
     
-    // console.log('BaseView - contructing view');    
+    // console.log('BaseView - contructing view - ' + type);
   }
 
   _createSectionInstance($container) {
