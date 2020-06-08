@@ -9,7 +9,7 @@
 
 // Container that the modal scrolls within
 .overlay {
-  display: block;
+  display: flex;
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -26,26 +26,36 @@
   // https://github.com/twbs/bootstrap/pull/10951.
   outline: 0;
 
-  transition: opacity 500ms $transition-timing-function-overlay-out;
-
   .overlay-open & {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-  }
+}
 
   &.is-visible {
     pointer-events: auto;
     opacity: 1;
-    transition: opacity 500ms $transition-timing-function-overlay-in;
+    transition: opacity 0.5s step-start;
   }
 }
 
-.overlay__content {
+.overlay__inner {
   padding: 61px 0;
+  width: 100%;
 
   @include media-breakpoint-up(lg) {
     padding-top: 86px;
     padding-bottom: 86px;
+    max-width: 60%;
+  }
+}
+
+.overlay__content {
+  width: 0;
+  overflow: hidden;
+
+  .is-visible & {
+    width: 100%;
+    transition: width 0.5s linear 0.5s;
   }
 }

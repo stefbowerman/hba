@@ -10,32 +10,34 @@
   </header>
 
   <div class="overlay overlay--menu" data-menu-overlay>
-    <div class="overlay__content">
-      <div class="container">
-        <nav class="header-nav">
-          {% assign ll = linklists[section.settings.main_menu] %}
-          {% if ll and ll.links.size > 0 %}
-            {% for link in ll.links %}
-              <div class="header-nav__item">
-                
-                {% if link.links.size == 0 %}
-                  <a href="{{ link.url }}" class="header-nav__link">{{ link.title }}</a>
-                {% else %}
-                  {% assign id = 'subnav-' | append: forloop.index %}
+    <div class="overlay__inner">
+      <div class="overlay__content">
+        <div class="container">
+          <nav class="header-nav">
+            {% assign ll = linklists[section.settings.main_menu] %}
+            {% if ll and ll.links.size > 0 %}
+              {% for link in ll.links %}
+                <div class="header-nav__item">
+                  
+                  {% if link.links.size == 0 %}
+                    <a href="{{ link.url }}" class="header-nav__link">{{ link.title }}</a>
+                  {% else %}
+                    {% assign id = 'subnav-' | append: forloop.index %}
 
-                  <a href="#" class="header-nav__link" data-subnav-toggle data-id="{{ id }}">{{ link.title }}</a>
-                  <div class="header-nav__subnav" data-subnav data-id="{{ id }}">
-                    {% for sublink in link.links %}
-                      <div class="header-nav__item">
-                        <a href="{{ sublink.url }}" class="header-nav__link">{{ sublink.title }}</a>
-                      </div>
-                    {% endfor %}
-                  </div>
-                {% endif %}                
-              </div>
-            {% endfor %}
-          {% endif %}
-        </nav>
+                    <a href="#" class="header-nav__link" data-subnav-toggle data-id="{{ id }}">{{ link.title }}</a>
+                    <div class="header-nav__subnav" data-subnav data-id="{{ id }}">
+                      {% for sublink in link.links %}
+                        <div class="header-nav__item">
+                          <a href="{{ sublink.url }}" class="header-nav__link">{{ sublink.title }}</a>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}                
+                </div>
+              {% endfor %}
+            {% endif %}
+          </nav>
+        </div>
       </div>
     </div>
   </div> 

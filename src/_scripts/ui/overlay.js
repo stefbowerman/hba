@@ -88,12 +88,8 @@ export default class Overlay {
 
     this.$el.removeClass(classes.visible);
 
-    if (this.supportsCssTransitions) {
-      this.$el.one(this.transitionEndEvent, this.onHidden.bind(this));
-    }
-    else {
-      this.onHidden();
-    }
+    // Hide happens immediately, no transition
+    this.onHidden();
   }
 
   show() {
