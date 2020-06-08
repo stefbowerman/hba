@@ -22,7 +22,9 @@ export default class ProductCard {
     this.namespace = `.${this.name}`;
 
     const defaults = {
-      onClick: () => {}
+      onClick: () => {},
+      onMouseenter: () => {},
+      onMouseleave: () => {}
     };
 
     this.$el = $(el);
@@ -49,7 +51,11 @@ export default class ProductCard {
     });
 
     // Events
-    this.$el.on('click', e => this.settings.onClick(e, this));
+    this.$el.on({
+      click: e => this.settings.onClick(e, this),
+      mouseenter: e => this.settings.onMouseenter(e, this),
+      mouseleave: e => this.settings.onMouseleave(e, this)
+    });
   }
 
   show() {

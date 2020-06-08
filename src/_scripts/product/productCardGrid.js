@@ -17,14 +17,18 @@ export default class ProductCardGrid {
     this.$container = $(container);
 
     const defaults = {
-      onProductCardClick: (e, card) => {}
+      onProductCardClick: (e, card) => {},
+      onProductCardMouseenter: () => {},
+      onProductCardMouseleave: () => {},
     };
 
     this.settings = $.extend({}, defaults, options);
     this.revealed = false;
 
     this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el, {
-      onClick: this.settings.onProductCardClick
+      onClick: this.settings.onProductCardClick,
+      onMouseenter: this.settings.onProductCardMouseenter,
+      onMouseleave: this.settings.onProductCardMouseleave
     }));
   }
 

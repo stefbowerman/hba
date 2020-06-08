@@ -4,6 +4,7 @@
 
 .sidebar {
   text-transform: uppercase;
+  overflow-wrap: break-word;
   
   a {
     @include highlight-link;

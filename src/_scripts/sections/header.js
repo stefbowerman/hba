@@ -17,8 +17,6 @@ const classes = {
   navLinkFaded: 'faded-out'
 };
 
-const $body = $(document.body);
-
 export default class HeaderSection extends BaseSection {
   constructor(container) {
     super(container, 'header');
@@ -26,7 +24,7 @@ export default class HeaderSection extends BaseSection {
     this.$logo        = $(selectors.logo, this.$container);
     this.$menuOverlay = $(selectors.menuOverlay, this.$container);
     this.$navLinks    = $(selectors.navLink, this.$container);
-    this.$subnavs     = $(selectors.subnav, this.$container)
+    this.$subnavs     = $(selectors.subnav, this.$container);
 
     this.menuOverlay  = new Overlay(this.$menuOverlay);
 
@@ -65,7 +63,7 @@ export default class HeaderSection extends BaseSection {
 
   onNavLinkClick(e) {
     const $clicked = $(e.currentTarget);
-    const href = $clicked.attr('href')
+    const href = $clicked.attr('href');
 
     if ($clicked.is(selectors.subnavToggle) || href === '#') return;
 
