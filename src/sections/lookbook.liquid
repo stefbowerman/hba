@@ -7,7 +7,7 @@
 {% paginate collection.products by 600 %}
 
 <style>
-/* @TODO - Create a look book scss file %/
+/* @TODO - Create a look book scss file */
 
 [data-details].highlight {
   color: white;
@@ -22,14 +22,12 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-2">
-        <div class="sidebar">
-          {% render 'collection-sidebar', collection_handle: collection.handle %}
-        </div>
+        {% render 'collection-sidebar', collection_handle: collection.handle %}
       </div>
       <div class="col-md-7 col-lg-6">
         {% assign c = collections[collection.handle] %}
 
-        <div class="content-grid content-grid--lookbook">
+        <div class="content-grid content-grid--lookbook" data-product-card-grid>
           {% for p in c.products %}
             <div class="content-grid__item">
               <div class="lookbook-card">
@@ -39,9 +37,11 @@
                             linkable: false
                 %}
 
+                {% comment %}
                 <div class="d-md-none">
                   {% render 'lookbook-product-details', product: p %}
                 </div>
+                {% endcomment %}
               </div>
             </div>
           {% endfor %}

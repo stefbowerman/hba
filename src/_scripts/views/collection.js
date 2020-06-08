@@ -7,10 +7,14 @@ export default class CollectionView extends BaseView {
     super($el, type, router);
 
     // Could be one or the other?
-    this.collectionSection = new CollectionSection($el.find('[data-section-type="collection"]'));
-    this.lookbookSection   = new LookbookSection($el.find('[data-section-type="lookbook"]'));
+    const $collectionSection = $el.find('[data-section-type="collection"]');
+    const $lookbookSection   = $el.find('[data-section-type="lookbook"]');
 
-    this.sections.push(this.collectionSection);
-    this.sections.push(this.lookbookSection);
+    if ($collectionSection.length) {
+      this.sections.push(new CollectionSection($collectionSection));
+    }
+    if ($lookbookSection.length) {
+      this.sections.push(new LookbookSection($lookbookSection));
+    }
   }
 }

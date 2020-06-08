@@ -35,6 +35,8 @@ export default class ProductCard {
     this.settings = $.extend({}, defaults, options);
     this.id = this.$el.data('id');
     this.url = this.$el.data('url');
+    this.productType = this.$el.data('product-type');
+    this.sale = this.$el.data('sale');
 
     this.$mainLazyImg = $(selectors.mainLazyImg, this.$el);
 

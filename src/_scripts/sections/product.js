@@ -1,15 +1,10 @@
-import $ from 'jquery';
 import BaseSection from './base';
-import ProductDetail from '../product/productDetail';
-
-const selectors = {
-  productDetail: '[data-product-detail]'
-};
+import Collection from '../collection/collection';
 
 export default class ProductSection extends BaseSection {
   constructor(container) {
     super(container, 'product');
 
-    this.productDetail = new ProductDetail($(selectors.productDetail, this.$container));
+    this.collection = new Collection(this.$container);
   }
 }
