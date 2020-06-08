@@ -14,6 +14,7 @@ export default class AppController {
       viewContentSelector: '.view-content',
       viewConstructors: {},
       redirectTimeoutMs: 5000,
+      onSameRoute: () => {},
       onBeforeRouteStart: d => d.resolve(),
       onRouteStart: () => {},
       onViewTransitionOutDone: (url, d) => d.resolve(), // eslint-disable-line brace-style
@@ -233,7 +234,13 @@ export default class AppController {
   }
 
   navigate(url) {
-    this.router.navigate(url);
+    if (url === this.router.lastRouteResolved().url) {
+      this.settings.onSameRoute(url, this.currentView);
+    }
+    else {
+      this.router.navigate(url);      
+    }
+
     return this;
   }
 

@@ -41,7 +41,13 @@
     {% assign product_url = product.url | within: collection %}
   {% endif %}
 
-  <div class="product-card" data-product-card data-id="{{ product.id }}" data-url="{{ product_url }}" data-product-type="{{ product.type | handle }}" data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
+  <div class="product-card"
+       data-product-card
+       data-id="{{ product.id }}"
+       data-handle="{{ product.handle }}"
+       data-url="{{ product_url }}"
+       data-product-type="{{ product.type | handle }}"
+       data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
     <div class="product-card__contents">
       {% if product.featured_image %}
         <div class="product-card__gallery">

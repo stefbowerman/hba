@@ -2,7 +2,8 @@ import $ from 'jquery';
 
 const selectors = {
   filter: '[data-filter]',
-  breadcrumb: '[data-breadcrumb]'
+  breadcrumbs: '[data-breadcrumbs]',
+  crumb: '[data-crumb]'
 };
 
 export default class CollectionSidebar {
@@ -11,18 +12,34 @@ export default class CollectionSidebar {
    *
    * @param {HTMLElement | $} container - The container element
    */
-  constructor(container) {
+  constructor(container, options) {
     this.$container = $(container);
-    this.$breadcrumb = $(selectors.breadcrumb, this.$container);
+    this.$breadcrumbs = $(selectors.breadcrumbs, this.$container);
+    this.$crumbs = $(selectors.crumb, this.$container);
+
+    const defaults = {
+      onFilterClick: () => {}
+    };
+
+    this.settings = $.extend({}, defaults, options);
 
     this.$container.on('click', selectors.filter, (e) => {
       e.preventDefault();
-      console.log(e.currentTarget.getAttribute('href'));
+      this.settings.onFilterClick(e.currentTarget.getAttribute('href'));
     });
   }
 
-  setBreadCrumb(url) {
-    this.$breadcrumb.attr('href', url);
-    this.$breadcrumb.text(url);
+  setBreadCrumb(part, text, url) {
+    // @TODO - This needs to be typed??
+    // Are we going to have to do some crazy string matching?
+    this.$crumbs.filter((i, el) => {
+      return $(el).data('crumb') === part;
+    })
+      .text(text)
+      .attr('href', url);
+  }
+
+  setSelectedFilter(url) {
+    console.log('settings selected filter =' + url);
   }
 }

@@ -39,4 +39,8 @@ export default class ProductCardGrid {
 
     this.revealed = true;
   }
+
+  filterBy(url) {
+    console.log(url);
+  }
 }

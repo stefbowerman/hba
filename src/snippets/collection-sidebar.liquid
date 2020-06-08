@@ -19,18 +19,34 @@
   
   <div class="sidebar" data-sidebar>
     {% if c %}
-      {% assign url = c.url %}
 
-      {% if current_tags %}
-        {% assign tags_param = current_tags | join: '+' %}
-        {% assign url = url | append: '/' | append: tags_param %}
-      {% endif %}
+      {%- capture crumb_collections -%}
+        /<a href="/collections" data-crumb="collections">collections</a>
+      {%- endcapture -%}
 
-      {% if product %}
-        {% assign url = url | append: '/products/' | append: product.handle %}
-      {% endif %}
+      {%- capture crumb_collection -%}
+        /<a href="/collections/{{ c.handle }}" data-crumb="collection">{{ c.handle }}</a>
+      {%- endcapture -%}      
 
-      <p><a href="{{ url }}" data-breadcrumb>{{ url }}</a></p>
+      {%- capture crumb_collection_tags -%}
+        {% if current_tags %}
+          /<a href="/collections/{{ c.handle }}/{{ current_tags | join: '+' }}" data-crumb="collection-tags">{{ current_tags | join: '+' }}</a>
+        {% endif %}
+      {%- endcapture -%} 
+
+      {%- capture crumb_collection_product -%}
+        {% if product %}
+          {% if current_tags %}
+            /<a href="/collections/{{ c.handle }}/{{ current_tags | join: '+' }}/products/{{ product.handle }}" data-crumb="collection-product">products/{{ product.handle }}</a>
+          {% else %}
+            /<a href="/collections/{{ c.handle }}/products/{{ product.handle }}" data-crumb="collection-product">products/{{ product.handle }}</a>
+          {% endif %}
+        {% endif %}
+      {%- endcapture -%}
+
+      <p data-breadcrumbs>
+        {{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_tags | strip }}{{ crumb_collection_product | strip }}
+      </p>
       
       <p>
         <a href="{{ c.url }}/lookbook">Lookbook</a>

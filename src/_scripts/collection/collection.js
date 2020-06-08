@@ -20,13 +20,26 @@ export default class Collection {
   constructor(container) {
     this.$container = $(container);
 
-    this.sidebar      = new CollectionSidebar($(selectors.sidebar, this.$container));
-    this.productPane  = new ProductPane($(selectors.productPane, this.$container));
+    // Maybe we ditch collection sidebar and just go straight to collectionBreadcrumbs and collectionFilters
+    this.sidebar = new CollectionSidebar($(selectors.sidebar, this.$container), {
+      onFilterClick: this.onFilterClick.bind(this)
+    });
+
+    this.productPane = new ProductPane($(selectors.productPane, this.$container));
+
     this.productCardGrid = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
       onProductCardClick: this.onProductCardClick.bind(this)
     });
 
+    // this.productPane.reveal();
     this.productCardGrid.reveal();
+  }
+
+  onFilterClick(url) {
+    console.log('clicked on ' + url);
+
+    this.productCardGrid.filterBy(url);
+    this.sidebar.setSelectedFilter(url);
   }
 
   onProductCardClick(e, card) {
@@ -41,7 +54,7 @@ export default class Collection {
         .navigate(card.url)
         .resumeRouter();
 
-      this.sidebar.setBreadCrumb(card.url);
+      this.sidebar.setBreadCrumb('collection-product', `products/${card.handle}`, card.url);
     }
   }
 }

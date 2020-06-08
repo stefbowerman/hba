@@ -12,8 +12,9 @@ const classes = {
 export default class ProductPane {
   constructor(container) {
     this.$container = $(container);
-    this.productDetails = $.map($(selectors.productDetail, this.$container), el => new ProductDetail(el, false));
-    // this.selectedProductDetail = $(selectors.productDetail, this.$container).filter(`.${classes.productDetailActive}`);
+    this.$productDetails = $(selectors.productDetail, this.$container);
+    this.productDetails = $.map(this.$productDetails, el => new ProductDetail(el, false));
+    // this.$selectedProductDetail = this.$productDetails.filter(`.${classes.productDetailActive}`);
   }
 
   activate(cardId) {

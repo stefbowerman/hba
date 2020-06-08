@@ -53,12 +53,15 @@ window.HBA = {};
       product: ProductView,
       collection: CollectionView
     },
+    onSameRoute: (url, currentView) => {
+      sections.header.menuOverlay.hide(); // ??
+    },
     onInitialViewReady: (view) => {
       console.log('onInitialViewReady');
     },
     onBeforeRouteStart: (deferred) => {
       console.log('onBeforeRouteStart');
-      sections.header.menuOverlay.hide();
+      // sections.header.menuOverlay.hide();
       deferred.resolve();
     },
     onRouteStart: (url) => {
@@ -69,6 +72,7 @@ window.HBA = {};
     },
     onViewChangeComplete: (newView) => {
       console.log('onViewChangeComplete');
+      sections.header.menuOverlay.hide();      
     },
     onViewReady: (view) => {
       console.log('onViewReady');
