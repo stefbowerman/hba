@@ -1,4 +1,5 @@
 import $ from 'jquery';
+// import Typed from 'typed.js';
 import { formatMoney } from '../core/currency';
 import AJAXFormManager from '../managers/ajaxForm';
 import Variants from './variants';
