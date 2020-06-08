@@ -779,15 +779,11 @@ $transition-timing-function-in-out-ui:    cubic-bezier(0.42, 0, 0.13, 1.04) !def
 $transition-timing-function-hard-in:      cubic-bezier(0, 0, 0, 1) !default;
 $transition-timing-function-hard-out:     cubic-bezier(1, 0, 1, 1) !default;
 
-// Header + dropdowns
-$transition-duration-dropdown:            $transition-duration-base !default;
-$transition-timing-function-dropdown-in:  $transition-timing-function-in !default;
-$transition-timing-function-dropdown-out: $transition-timing-function-out !default;
-
-// slide - (ajaxcart / mobile menu)
-$transition-duration-slide:               $transition-duration-medium !default;
-$transition-timing-function-slide-in:     cubic-bezier(0.34, 0.75, 0.6, 1) !default;
-$transition-timing-function-slide-out:    cubic-bezier(0.4, 0.5, 0.5, 1) !default;
+$transition-duration-overlay:             $transition-duration-slow !default; 
+$transition-timing-function-overlay-in:   cubic-bezier(0, 0, 0.23, 1.43) !default;  
+$transition-timing-function-overlay-out:  $transition-timing-function-out !default; 
+$transition-timing-function-overlay-opacity-in: $transition-timing-function-hard-in !default; 
+$transition-timing-function-overlay-opacity-out: $transition-timing-function-hard-out !default;
 
 
 // Cards

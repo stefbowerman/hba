@@ -13,10 +13,11 @@
 {% for product in collection.products %}
   {% capture grid_item_html %}
     <div class="content-grid__item">
-      {% include 'product-card',
+      {% render 'product-card',
                   product: product,
                   lazy_load: true,
-                  show_sold_out: true
+                  show_sold_out: true,
+                  collection: collection
       %}
     </div>
   {% endcapture %}
@@ -29,15 +30,15 @@
   {% assign product_pane_html = product_pane_html | append: pane_html %}
 {% endfor %}
 
+{% endpaginate %}
+
 <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
   {% render 'page-title' with collection.title %}
   
   <div class="container">
     <div class="row">
       <div class="col-lg-2">
-        <div class="sidebar">
-          {% include 'collection-sidebar', collection_handle: collection.handle %}
-        </div>
+        {% render 'collection-sidebar', collection_handle: collection.handle %}
       </div>
       <div class="col-md-5 col-lg-4 order-md-2">
         <div class="product-pane" data-product-pane>
@@ -45,19 +46,15 @@
         </div>
       </div>
       <div class="col-md-5 col-lg-4 order-md-1">
-        {% if content_grid_html %}
-          <div class="content-grid">
+        {% if content_grid_html != blank %}
+          <div class="content-grid" data-product-card-grid>
             {{ content_grid_html }}
           </div>
-        {% else %}
-          <p>{{ 'collections.general.no_matches' | t }}</p>
         {% endif %}      
       </div>      
     </div>
   </div>
 </div>
-
-{% endpaginate %}
 
 {% schema %}
   {

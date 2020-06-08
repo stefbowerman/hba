@@ -1,21 +1,68 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 
-<div data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product">
-  <div class="layout-content-wrapper">
-    <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
-    <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
-    <meta itemprop="brand" content="{{ product.vendor }}">
-    <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
-    <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+{% if collection == blank and product.collections.size > 0 %}
+  {% assign collection = product.collections | first %}
+{% endif %}
 
-    <div class="container">
-      <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4"></div>
-        <div class="col-4">
-          {% include 'product-detail', product: product %}
+{% paginate collection.products by 600 %}
+
+{% assign content_grid_html = '' %}
+{% assign product_pane_html = '' %}
+
+{% for p in collection.products %}
+  {% assign selected = false %}
+  {% if p.handle == product.handle %}
+    {% assign selected = true %}
+  {% endif %}
+
+  {% capture grid_item_html %}
+    <div class="content-grid__item">
+      {% render 'product-card',
+                 product: p,
+                 lazy_load: true,
+                 show_sold_out: true,
+                 collection: collection
+      %}
+    </div>
+  {% endcapture %}
+
+  {% capture pane_html %}
+    {% render 'product-detail',
+               product: p,
+               selected: selected
+    %}
+  {% endcapture %}
+
+  {% assign content_grid_html = content_grid_html | append: grid_item_html %}
+  {% assign product_pane_html = product_pane_html | append: pane_html %}
+{% endfor %}
+
+{% endpaginate %}
+
+<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product">
+  <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
+  <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
+  <meta itemprop="brand" content="{{ product.vendor }}">
+  <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
+  <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-2">
+        {% render 'collection-sidebar', collection_handle: collection.handle %}
+      </div>
+      <div class="col-md-5 col-lg-4 order-md-2">
+        <div class="product-pane" data-product-pane>
+          {{ product_pane_html }}
         </div>
+      </div>
+      <div class="col-md-5 col-lg-4 order-md-1">
+        {% if content_grid_html != blank %}
+          <div class="content-grid" data-product-card-grid>
+            {{ content_grid_html }}
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>

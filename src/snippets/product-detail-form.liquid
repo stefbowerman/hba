@@ -24,7 +24,7 @@
     {{ product.description }}
   </div>  
 
-  {% include 'product-detail-price', product: product, current_variant: current_variant %}
+  {% render 'product-detail-price', product: product, current_variant: current_variant %}
 
   <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
     <meta itemprop="priceCurrency" content="{{ shop.currency }}">
@@ -153,7 +153,7 @@
 
   {% unless product == empty %}
     <script type="application/json" data-product-json>
-      {% include 'product-json', product: product %}
+      {% render 'product-json', product: product %}
     </script>
   {% endunless %}
 </div>

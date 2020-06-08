@@ -1,9 +1,10 @@
 import $ from 'jquery';
 import BaseSection from './base';
-import ProductCard from '../product/productCard';
+import ProductCardGrid from '../product/productCardGrid';
 
 const selectors = {
   productCard: '[data-product-card]',
+  productCardGrid: '[data-product-card-grid]',
   details: '[data-details]'
 };
 
@@ -11,28 +12,22 @@ export default class LookbookSection extends BaseSection {
   constructor(container) {
     super(container, 'lookbook');
 
+    // @TODO - Do this better, create card + detail pairs in the contructor ??
     this.$details = $(selectors.details, this.$container);
 
-    this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el));
+    this.productCardGrid = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
+      onProductCardMouseenter: this.onProductCardMouseenter.bind(this),
+      onProductCardMouseleave: this.onProductCardMouseleave.bind(this),
+    });
 
-    // @TODO - Do this better, create card + detail pairs in the contructor
-    // add mouseenter/leave events to each pair and store the currently highlighted one
-    this.$container.on('mouseenter', selectors.productCard, this.onProductCardMouseenter.bind(this));
-    this.$container.on('mouseleave', selectors.productCard, this.onProductCardMouseleave.bind(this));
-
-    // Reveal
-    this.productCards.forEach((card, i) => setTimeout(() => card.show(), (150 * i)));    
+    this.productCardGrid.reveal();
   }
 
-  onProductCardMouseenter(e) {
-    const id = $(e.currentTarget).data('id');
-
-    this.$details.filter((i, el) => {
-      return $(el).data('id') === id;
-    }).addClass('highlight');
+  onProductCardMouseenter(e, card) {
+    this.$details.filter((i, el) => $(el).data('id') === card.id).addClass('highlight');
   }
 
-  onProductCardMouseleave(e) {
+  onProductCardMouseleave(e, card) {
     this.$details
       .filter('.highlight')
       .removeClass('highlight');

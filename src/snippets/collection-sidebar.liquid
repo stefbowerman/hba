@@ -11,11 +11,14 @@
 {% endcomment -%}
 
 {% if collection_handle %}
-  {%- comment -%} Need to get a fresh copy of the collection in case the global 'collection' object is being filtered {%- endcomment -%}
+  {%- comment -%}
+    Need to get a fresh copy of the collection in case the global 'collection' object is being filtered
+  {%- endcomment -%}
+  
   {% assign c = collections[collection_handle] %}
-
-  {% if c %}
-    <div>
+  
+  <div class="sidebar" data-sidebar>
+    {% if c %}
       {% assign url = c.url %}
 
       {% if current_tags %}
@@ -23,7 +26,11 @@
         {% assign url = url | append: '/' | append: tags_param %}
       {% endif %}
 
-      <p><a href="{{ url }}">{{ url }}</a></p>
+      {% if product %}
+        {% assign url = url | append: '/products/' | append: product.handle %}
+      {% endif %}
+
+      <p><a href="{{ url }}" data-breadcrumb>{{ url }}</a></p>
       
       <p>
         <a href="{{ c.url }}/lookbook">Lookbook</a>
@@ -47,16 +54,16 @@
           {% assign product_types_array = product_types | split: '$$' | uniq %}
           <p>
             {% for type in product_types_array %}
-              <a href="{{ c.url }}/{{ type | handle }}">{{ type }}</a>
+              <a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">{{ type }}</a>
               {% unless forloop.last %}<br />{% endunless %}
             {% endfor %}
           <p>
         {% endif %}
 
         {% if sale_items %}
-          <a href="{{ c.url }}/sale">Sale</a>
+          <a href="{{ c.url }}/sale" data-filter="sale">Sale</a>
         {% endif %}
       </div>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 {% endif %}

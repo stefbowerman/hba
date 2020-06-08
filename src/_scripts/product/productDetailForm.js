@@ -161,7 +161,7 @@ export default class ProductDetailForm {
     if (variant && variant.sku) {
       this.$variantSku.text(`SKU${variant.sku}`);
     }
-  }  
+  }
 
   /**
    * Updates the DOM state of the elements matching the variantOption Value selector based on the currently selected variant
