@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import Typed from 'typed.js';
+import { getBreakpointMinWidth } from '../core/breakpoints';
 import ProductPane from '../product/productPane';
 import ProductCardGrid from '../product/productCardGrid';
 
@@ -25,6 +26,7 @@ export default class Collection {
     this.$container = $(container);
 
     this.breadcrumbTyped = null;
+    this.mobileScreenWidth = getBreakpointMinWidth('xs') - 1;
 
     this.$breadcrumbs = $(selectors.breadcrumbs, this.$container);
     this.$crumbs = $(selectors.crumb, this.$container);
@@ -53,6 +55,55 @@ export default class Collection {
     this.productCardGrid.reveal();
   }
 
+  setBreadCrumb(part, text, url) {
+    if (!this.crumbMap.hasOwnProperty(part)) return;
+
+    const $crumb = this.crumbMap[part];
+    
+    $crumb.attr('href', url).text('');
+    
+    if (this.breadcrumbTyped) {
+      this.breadcrumbTyped.destroy();
+    }
+
+    // Type out the text
+    this.breadcrumbTyped = new Typed($crumb.get(0), {
+      strings: [text],
+      typeSpeed: 20,
+      showCursor: false,
+      startDelay: 100
+    });
+  }
+
+  activateProduct(id, url, handle) {
+    if (!id) return;
+
+    // @TODO - Add router navigate as a callback to this activate function?
+    // @TODO - Check if the card we clicked on is currently active, return if true
+    this.productPane.activate(id);
+
+    if (window.HBA) {
+      window.HBA.appController
+        .pauseRouter()
+        .navigate(url)
+        .resumeRouter();
+    }
+
+    const isMobile = window.innerWidth < this.mobileScreenWidth
+
+    // Below this screen size, the grid is at the bottom of the page
+    if (isMobile) {
+      $('html, body').animate({ scrollTop: 0 }, {
+        duration: 300,
+        easing: 'easeOutQuint'
+      });
+    }
+
+    setTimeout(() => {
+      this.setBreadCrumb('collection-product', handle, url);
+    }, (isMobile ? 300 : 0));
+  }
+
   onFilterClick(e) {
     e.preventDefault();
     const url = e.currentTarget.getAttribute('href');
@@ -69,36 +120,6 @@ export default class Collection {
 
   onProductCardClick(e, card) {
     e.preventDefault();
-
-    // @TODO - Add router navigate as a callback to this activate function?
-    this.productPane.activate(card.id);
-
-    if (window.HBA) {
-      window.HBA.appController
-        .pauseRouter()
-        .navigate(card.url)
-        .resumeRouter();
-
-      this.setBreadCrumb('collection-product', card.handle, card.url);
-    }
-  }
-
-  setBreadCrumb(part, text, url) {
-    if (!this.crumbMap.hasOwnProperty(part)) return;
-
-    const $crumb = this.crumbMap[part];
-    
-    $crumb.attr('href', url).text('');
-    
-    if (this.breadcrumbTyped) {
-      this.breadcrumbTyped.destroy();
-    }
-
-    // Type out the text
-    this.breadcrumbTyped = new Typed($crumb.get(0), {
-      strings: [text],
-      typeSpeed: 10,
-      showCursor: false
-    });
+    this.activateProduct(card.id, card.url, card.handle);
   }
 }
