@@ -24,13 +24,15 @@
                   {% else %}
                     {% assign id = 'subnav-' | append: forloop.index %}
 
-                    <a href="#" class="header-nav__link" data-subnav-toggle data-id="{{ id }}">{{ link.title }}</a>
-                    <div class="header-nav__subnav" data-subnav data-id="{{ id }}">
-                      {% for sublink in link.links %}
-                        <div class="header-nav__item">
-                          <a href="{{ sublink.url }}" class="header-nav__link">{{ sublink.title }}</a>
-                        </div>
-                      {% endfor %}
+                    <a href="#" class="header-nav__link" data-subnav-toggle>{{ link.title }}</a>
+                    <div class="header-nav__subnav" data-subnav>
+                      <div class="header-nav__subnav-contents">
+                        {% for sublink in link.links %}
+                          <div class="header-nav__item">
+                            <a href="{{ sublink.url }}" class="header-nav__link">{{ sublink.title }}</a>
+                          </div>
+                        {% endfor %}
+                      </div>
                     </div>
                   {% endif %}                
                 </div>

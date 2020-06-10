@@ -79,6 +79,7 @@
 .header-nav__link {
   position: relative;
   display: block;
+  text-shadow: 0 0 2px currentColor;
   opacity: 1;
 
   &.faded-out {
@@ -127,9 +128,15 @@
   padding-top: 21px;
   padding-bottom: 6px;
   font-size: 24px;
-  display: none;
+  display: none; // jQuery will display it for us
+}
 
-  &.is-visible {
-    display: block;
+.header-nav__subnav-contents {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.5s linear;
+
+  .is-revealed & {
+    width: 100%;
   }
 }

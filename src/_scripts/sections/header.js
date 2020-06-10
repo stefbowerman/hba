@@ -14,7 +14,9 @@ const selectors = {
 const classes = {
   logoStrobe: 'is-strobing',
   navLinkActive: 'is-active',
-  navLinkFaded: 'faded-out'
+  navLinkFaded: 'faded-out',
+  subnavVisible: 'is-visible',
+  subnavRevealed: 'is-revealed'
 };
 
 export default class HeaderSection extends BaseSection {
@@ -94,18 +96,34 @@ export default class HeaderSection extends BaseSection {
 
   onSubnavToggleClick(e) {
     e.preventDefault();
-    // @TODO - Maybe just use $(e.currentTarget).next() to get the subnav we need?
-    const id = $(e.currentTarget).data('id');
 
-    this.$subnavs.each((i, el) => {
-      const $subnav = $(el);
-      $subnav.toggleClass('is-visible', $subnav.data('id') === id);
-    });
+    const $subnav = $(e.currentTarget).next();
+
+    // is-visible tracks if the nav is open
+    // is-revealed handles the "wipe" animation
+    if ($subnav.hasClass(classes.subnavVisible)) {
+      $subnav.removeClass(classes.subnavRevealed);
+      setTimeout(() => {
+        $subnav.stop().slideUp(350, () => {
+          $subnav.removeClass(classes.subnavVisible);
+        });
+      }, 500); // this is the transition duration for the 'is-revealed' animation
+    }
+    else {
+      $subnav
+        .addClass(classes.subnavVisible)
+        .stop().slideDown(350, () => {
+          $subnav.addClass(classes.subnavRevealed);
+        });
+    }
   }
 
   // Reset the menu
   onMenuOverlayHidden(e) {
-    this.$subnavs.removeClass('is-visible');
     this.$navLinks.removeClass(classes.navLinkFaded);
+    this.$subnavs
+      .filter(`.${classes.subnavVisible}`)
+      .removeClass(`${classes.subnavVisible} ${classes.subnavRevealed}`)
+      .hide();
   }
 }
