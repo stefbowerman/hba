@@ -2,9 +2,20 @@
 // Overlay Menu
 // -------------------------
 
+// This is *really* weird but they want the menu overlay to be part of the page on the homepage
+.template-index.overlay-open {
+  overflow: auto;
+}
+
 .overlay--menu {
   .template-index & {
     background-color: transparent;
+    position: static;
+    height: 0;
+
+    &.is-visible {
+      height: 100%;
+    }
   }
 
   .ajax-cart-open & {
