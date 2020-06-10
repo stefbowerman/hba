@@ -1,10 +1,8 @@
-<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
+<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="page">
   <div class="container">
     <div class="row">
       <div class="col-md-2">
         <div class="sidebar" style="margin-bottom: 15px;">
-          <p>{{ page.url | append: '/' | replace: 'pages/', '' }}</p>
-
           {% assign sidebar_linklist = false %}
 
           {% comment %} Find the first menu containing the link that we're currently on {% endcomment %}
@@ -21,13 +19,19 @@
             {% endif %}
           {% endfor %}
 
-          {% if sidebar_linklist %}
-            {% for link in linklists[sidebar_linklist].links %}
-              {% unless link.url == page.url %}
-                <a href="{{ link.url }}">{{ link.title }}</a><br />
-              {% endunless %}
-            {% endfor %}
-          {% endif %}
+          <ul class="sidebar-menu">
+            {% if sidebar_linklist %}
+              {% for link in linklists[sidebar_linklist].links %}
+                <li>
+                  <a href="{{ link.url }}" {% if link.url == page.url %}class="is-active"{% endif %}>
+                    {{ link.url | replace: 'pages/', '' }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% else %}
+             <li><a href="{{ page.url }}">{{ page.url | replace: 'pages/', '' }}</a></li>
+            {% endif %}
+          </ul>
         </div>
       </div>
       <div class="col-md-8">

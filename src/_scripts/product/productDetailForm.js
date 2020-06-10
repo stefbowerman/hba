@@ -243,6 +243,7 @@ export default class ProductDetailForm {
     // @TODO - Stuff around making sure the statused are hidden / destroyed in case we click things fast
     this.typers.statusSuccess = new Typed(this.$statusSuccess.get(0), {
       strings: [`1 Item added to cart ^${STATUS_TIMEOUT_DURATION}`, ''],
+      contentType: null,
       typeSpeed: 5,
       backSpeed: 5,
       showCursor: false,      
@@ -266,6 +267,7 @@ export default class ProductDetailForm {
 
     this.typers.statusError = new Typed(this.$statusError.get(0), {
       strings: [`${e.message || 'something went wrong'} ^${STATUS_TIMEOUT_DURATION}`, ''],
+      contentType: null,
       typeSpeed: 5,
       backSpeed: 5,
       showCursor: false,      

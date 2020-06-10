@@ -22,6 +22,7 @@ import AppController     from './core/appController';
 // Views
 import ProductView    from './views/product';
 import CollectionView from './views/collection';
+import PageView       from './views/page';
 
 // Sections
 import HeaderSection   from './sections/header';
@@ -51,10 +52,11 @@ window.HBA = {};
   const appController = new AppController({
     viewConstructors: {
       product: ProductView,
-      collection: CollectionView
+      collection: CollectionView,
+      page: PageView
     },
     onSameRoute: (url, currentView) => {
-      sections.header.menuOverlay.hide(); // ??
+      sections.header.menuOverlay.hide();
     },
     onInitialViewReady: (view) => {
       console.log('onInitialViewReady');

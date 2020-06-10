@@ -38,9 +38,9 @@
         {{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_product | strip }}
       </p>
       
-      <p>
-        <a href="{{ c.url }}/lookbook">/Lookbook</a>
-      </p>
+      <ul class="sidebar-menu">
+        <li><a href="{{ c.url }}/lookbook">/Lookbook</a></li>
+      </ul>
 
       <div class="d-none d-lg-block">
 
@@ -58,16 +58,17 @@
 
         {% if product_types %}
           {% assign product_types_array = product_types | split: '$$' | uniq %}
-          <p>
+          <ul class="sidebar-menu">
             {% for type in product_types_array %}
-              <a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">/{{ type }}</a>
-              {% unless forloop.last %}<br />{% endunless %}
+              <li><a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">/{{ type }}</a></li>
             {% endfor %}
-          <p>
+          </ul>
         {% endif %}
 
         {% if sale_items %}
-          <a href="{{ c.url }}/sale" data-filter="sale">/Sale</a>
+          <ul class="sidebar-menu">
+            <li><a href="{{ c.url }}/sale" data-filter="sale">/Sale</a></li>
+          </ul>
         {% endif %}
       </div>
     {% endif %}
