@@ -1,5 +1,5 @@
 import $ from 'jquery';
-// import Typed from 'typed.js';
+import Typed from 'typed.js';
 import { formatMoney } from '../core/currency';
 import AJAXFormManager from '../managers/ajaxForm';
 import Variants from './variants';
@@ -18,13 +18,15 @@ const selectors = {
   variantOptionValueList: '[data-variant-option-value-list][data-option-position]',
   variantOptionValue: '[data-variant-option-value]',
   variantSku: '[data-variant-sku]',
-  status: '[data-status]'
+  statusSuccess: '[data-status-success]',
+  statusError: '[data-status-error]'
 };
 
 const classes = {
   hide: 'hide',
   variantOptionValueActive: 'is-active',
-  btnActive: 'is-active'
+  btnActive: 'is-active',
+  statusVisible: 'is-visible'
 };
 
 const $window = $(window);
@@ -76,8 +78,14 @@ export default class ProductDetailForm {
     this.$singleOptionSelectors = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
     this.$variantOptionValueList = $(selectors.variantOptionValueList, this.$container); // Alternate UI that takes the place of a single option selector (could be swatches, dots, buttons, whatever..)
     this.$variantSku = $(selectors.variantSku, this.$container);
-    this.$status = $(selectors.status, this.$container);
+    this.$statusSuccess = $(selectors.statusSuccess, this.$container);
+    this.$statusError = $(selectors.statusError, this.$container);
     /* eslint-enable */
+
+    this.typers = {
+      statusSuccess: null,
+      statusError: null
+    };
 
     this.productSingleObject = JSON.parse($(selectors.productJson, this.$container).html());
 
@@ -226,22 +234,45 @@ export default class ProductDetailForm {
   onAJAXFormAddSuccess(e) {
     if (!this.$addToCartForm.is(e.relatedTarget)) return;
 
-    this.$status.text('1 Item added to cart');
+    this.$statusSuccess.addClass(classes.statusVisible);
 
-    setTimeout(() => {
-      this.$status.text('');
-      this.$addToCartBtn.removeClass(classes.btnActive);
-    }, STATUS_TIMEOUT_DURATION);
+    if (this.typers.statusSuccess) {
+      this.types.statusSuccess.destroy();
+    }
+
+    // @TODO - Stuff around making sure the statused are hidden / destroyed in case we click things fast
+    this.typers.statusSuccess = new Typed(this.$statusSuccess.get(0), {
+      strings: [`1 Item added to cart ^${STATUS_TIMEOUT_DURATION}`, ''],
+      typeSpeed: 5,
+      backSpeed: 5,
+      showCursor: false,      
+      onComplete: (typed) => {
+        this.$statusSuccess.text('').removeClass(classes.statusVisible);
+        this.$addToCartBtn.removeClass(classes.btnActive);
+        typed.destroy();
+      }
+    });
   }
 
   onAJAXFormAddFail(e) {
     if (!this.$addToCartForm.is(e.relatedTarget)) return;
 
-    this.$status.text(e.message || 'something went wrong');
+    this.$statusError.addClass(classes.statusVisible);
     this.$addToCartBtn.removeClass(classes.btnActive);
 
-    setTimeout(() => {
-      this.$status.text('');
-    }, STATUS_TIMEOUT_DURATION);
+    if (this.typers.statusError) {
+      this.typers.statusError.destroy()
+    }    
+
+    this.typers.statusError = new Typed(this.$statusError.get(0), {
+      strings: [`${e.message || 'something went wrong'} ^${STATUS_TIMEOUT_DURATION}`, ''],
+      typeSpeed: 5,
+      backSpeed: 5,
+      showCursor: false,      
+      onComplete: (typed) => {
+        this.$statusError.text('').removeClass(classes.statusVisible);
+        typed.destroy();
+      }
+    });
   }
 }

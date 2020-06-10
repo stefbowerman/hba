@@ -113,6 +113,11 @@
 .pdf-status {
   text-transform: uppercase;
   padding-left: 8px;
+  display: none;
+
+  &.is-visible {
+    display: block;
+  }
 }
 
 .btn.option-value {

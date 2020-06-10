@@ -54,7 +54,7 @@ export default class Collection {
         .navigate(card.url)
         .resumeRouter();
 
-      this.sidebar.setBreadCrumb('collection-product', `products/${card.handle}`, card.url);
+      this.sidebar.setBreadCrumb('collection-product', card.handle, card.url);
     }
   }
 }

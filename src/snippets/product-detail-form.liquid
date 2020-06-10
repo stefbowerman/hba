@@ -139,8 +139,8 @@
                   {% endif %}
                 </span>
             </button>
-            {% comment %} @TODO - only have the ajax cart trigger hooked up when something is added successfully{% endcomment %}
-            <div class="pdf-status" data-status data-ajax-cart-trigger></div>
+            <a href="#" class="pdf-status" data-status-success data-ajax-cart-trigger></a>
+            <div class="pdf-status" data-status-error></div>
           </div>
         {% else %}
           <div class="pdf-submit-wrapper">

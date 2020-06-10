@@ -28,28 +28,18 @@
         /<a href="/collections/{{ c.handle }}" data-crumb="collection">{{ c.handle }}</a>
       {%- endcapture -%}      
 
-      {%- capture crumb_collection_tags -%}
-        {% if current_tags %}
-          /<a href="/collections/{{ c.handle }}/{{ current_tags | join: '+' }}" data-crumb="collection-tags">{{ current_tags | join: '+' }}</a>
-        {% endif %}
-      {%- endcapture -%} 
-
       {%- capture crumb_collection_product -%}
         {% if product %}
-          {% if current_tags %}
-            /<a href="/collections/{{ c.handle }}/{{ current_tags | join: '+' }}/products/{{ product.handle }}" data-crumb="collection-product">products/{{ product.handle }}</a>
-          {% else %}
-            /<a href="/collections/{{ c.handle }}/products/{{ product.handle }}" data-crumb="collection-product">products/{{ product.handle }}</a>
+          /<a href="/collections/{{ c.handle }}/products/{{ product.handle }}" data-crumb="collection-product">{{ product.handle }}</a>
           {% endif %}
-        {% endif %}
       {%- endcapture -%}
 
       <p data-breadcrumbs>
-        {{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_tags | strip }}{{ crumb_collection_product | strip }}
+        {{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_product | strip }}
       </p>
       
       <p>
-        <a href="{{ c.url }}/lookbook">Lookbook</a>
+        <a href="{{ c.url }}/lookbook">/Lookbook</a>
       </p>
 
       <div class="d-none d-lg-block">
@@ -70,14 +60,14 @@
           {% assign product_types_array = product_types | split: '$$' | uniq %}
           <p>
             {% for type in product_types_array %}
-              <a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">{{ type }}</a>
+              <a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">/{{ type }}</a>
               {% unless forloop.last %}<br />{% endunless %}
             {% endfor %}
           <p>
         {% endif %}
 
         {% if sale_items %}
-          <a href="{{ c.url }}/sale" data-filter="sale">Sale</a>
+          <a href="{{ c.url }}/sale" data-filter="sale">/Sale</a>
         {% endif %}
       </div>
     {% endif %}

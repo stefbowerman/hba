@@ -8,5 +8,10 @@
   
   a {
     @include highlight-link;
+
+    // &.is-active {
+    //   background-color: $white;
+    //   color: $black;
+    // }
   }
 }
