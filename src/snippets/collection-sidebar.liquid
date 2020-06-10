@@ -16,61 +16,70 @@
   {%- endcomment -%}
   
   {% assign c = collections[collection_handle] %}
+
+  {% if c %}
+    {%- capture crumb_collections -%}
+      /<a href="/collections" data-crumb="collections">collections</a>
+    {%- endcapture -%}
+
+    {%- capture crumb_collection -%}
+      /<a href="/collections/{{ c.handle }}" data-crumb="collection">{{ c.handle }}</a>
+    {%- endcapture -%}      
+
+    {%- capture crumb_collection_product -%}
+      {% if product %}
+        /<a href="/collections/{{ c.handle }}/products/{{ product.handle }}" data-crumb="collection-product">{{ product.handle }}</a>
+        {% endif %}
+    {%- endcapture -%} 
+
+    {%- capture filters -%}
+      {%- comment -%} Collect product types + sale item check {%- endcomment -%}
+      {% assign sale_items = false %}
+      {% assign product_types = '' %}
+
+      {% for p in c.products %}
+        {% assign product_types = product_types | append: p.type | append: '$$' %}
+
+        {% if p.price_min < p.compare_at_price_min %}
+          {% assign sale_items = true %}
+        {% endif %}
+      {% endfor %}
+
+      {% if product_types %}
+        {% assign product_types_array = product_types | split: '$$' | uniq %}
+        <ul class="sidebar-menu">
+          {% for type in product_types_array %}
+            <li><a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">/{{ type }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if sale_items %}
+        <ul class="sidebar-menu">
+          <li><a href="{{ c.url }}/sale" data-filter="sale">/Sale</a></li>
+        </ul>
+      {% endif %}      
+    {%- endcapture -%}
   
-  <div class="sidebar" data-sidebar>
-    {% if c %}
-
-      {%- capture crumb_collections -%}
-        /<a href="/collections" data-crumb="collections">collections</a>
-      {%- endcapture -%}
-
-      {%- capture crumb_collection -%}
-        /<a href="/collections/{{ c.handle }}" data-crumb="collection">{{ c.handle }}</a>
-      {%- endcapture -%}      
-
-      {%- capture crumb_collection_product -%}
-        {% if product %}
-          /<a href="/collections/{{ c.handle }}/products/{{ product.handle }}" data-crumb="collection-product">{{ product.handle }}</a>
-          {% endif %}
-      {%- endcapture -%}
-
+    <div class="sidebar">
       <p data-breadcrumbs>
         {{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_product | strip }}
       </p>
       
-      <ul class="sidebar-menu">
-        <li><a href="{{ c.url }}/lookbook">/Lookbook</a></li>
-      </ul>
-
-      <div class="d-none d-lg-block">
-
-        {%- comment -%} Collect product types + sale item check {%- endcomment -%}
-        {% assign sale_items = false %}
-        {% assign product_types = '' %}
-
-        {% for p in c.products %}
-          {% assign product_types = product_types | append: p.type | append: '$$' %}
-
-          {% if p.price_min < p.compare_at_price_min %}
-            {% assign sale_items = true %}
-          {% endif %}
-        {% endfor %}
-
-        {% if product_types %}
-          {% assign product_types_array = product_types | split: '$$' | uniq %}
-          <ul class="sidebar-menu">
-            {% for type in product_types_array %}
-              <li><a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">/{{ type }}</a></li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-
-        {% if sale_items %}
-          <ul class="sidebar-menu">
-            <li><a href="{{ c.url }}/sale" data-filter="sale">/Sale</a></li>
-          </ul>
+      <div class="sidebar-row">
+        <ul class="sidebar-menu">
+          <li><a href="{{ c.url }}/lookbook">/Lookbook</a></li>
+        </ul>
+        {% if filters != blank %}
+          <a href="#" class="sidebar-filters-toggle" data-filters-toggle>Filter</a>        
         {% endif %}
       </div>
-    {% endif %}
-  </div>
+
+      {% if filters != blank %}
+        <div class="sidebar-filters" data-filter-container>
+          {{ filters }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
 {% endif %}

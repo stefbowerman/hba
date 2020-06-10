@@ -37,15 +37,15 @@
   
   <div class="container">
     <div class="row">
-      <div class="col-lg-2">
+      <div class="col-md-2">
         {% render 'collection-sidebar', collection_handle: collection.handle %}
       </div>
-      <div class="col-md-5 col-lg-4 order-md-2">
+      <div class="col-md-4 order-md-2">
         <div class="product-pane" data-product-pane>
           {{ product_pane_html }}
         </div>
       </div>
-      <div class="col-md-5 col-lg-4 order-md-1">
+      <div class="col-md-4 order-md-1">
         {% if content_grid_html != blank %}
           <div class="content-grid" data-product-card-grid>
             {{ content_grid_html }}

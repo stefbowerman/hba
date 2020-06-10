@@ -25,6 +25,11 @@ $content-grid-item-vertical-spacing: 31px;
   margin-bottom: $content-grid-item-vertical-spacing-mobile;
   padding: 0 $content-grid-item-horizontal-spacing/2;
 
+  @include media-breakpoint-only(md) {
+    flex-basis: percentage(1/2);
+    max-width: percentage(1/2);
+  }
+
   @include media-breakpoint-up(xl) {
     flex-basis: percentage(1/4);
     max-width: percentage(1/4);

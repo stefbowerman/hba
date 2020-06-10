@@ -1,12 +1,16 @@
 import $ from 'jquery';
-import CollectionSidebar from './collectionSidebar';
+import Typed from 'typed.js';
 import ProductPane from '../product/productPane';
 import ProductCardGrid from '../product/productCardGrid';
 
 const selectors = {
   productCardGrid: '[data-product-card-grid]',
   productPane:     '[data-product-pane]',
-  sidebar:         '[data-sidebar]'
+  filter: '[data-filter]',
+  filterContainer: '[data-filter-container]',
+  filtersToggle: '[data-filters-toggle]',
+  breadcrumbs: '[data-breadcrumbs]',
+  crumb: '[data-crumb]'
 };
 
 export default class Collection {
@@ -20,26 +24,47 @@ export default class Collection {
   constructor(container) {
     this.$container = $(container);
 
-    // Maybe we ditch collection sidebar and just go straight to collectionBreadcrumbs and collectionFilters
-    this.sidebar = new CollectionSidebar($(selectors.sidebar, this.$container), {
-      onFilterClick: this.onFilterClick.bind(this)
-    });
+    this.breadcrumbTyped = null;
 
-    this.productPane = new ProductPane($(selectors.productPane, this.$container));
+    this.$breadcrumbs = $(selectors.breadcrumbs, this.$container);
+    this.$crumbs = $(selectors.crumb, this.$container);
+    this.$filtersContainer = $(selectors.filterContainer, this.$container);
+    this.$filtersToggle = $(selectors.filtersToggle, this.$container);
 
+    this.productPane     = new ProductPane($(selectors.productPane, this.$container));
     this.productCardGrid = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
       onProductCardClick: this.onProductCardClick.bind(this)
     });
+
+    this.crumbMap = {
+      // collections: $crumb,
+      // collection-product: $crumb
+    };
+
+    this.$crumbs.each((i, el) => {
+      const $el = $(el);
+      this.crumbMap[$el.data('crumb')] = $el;
+    })
+
+    this.$container.on('click', selectors.filter, this.onFilterClick.bind(this));
+    this.$filtersToggle.on('click', this.onFiltersToggleClick.bind(this));
 
     // this.productPane.reveal();
     this.productCardGrid.reveal();
   }
 
-  onFilterClick(url) {
+  onFilterClick(e) {
+    e.preventDefault();
+    const url = e.currentTarget.getAttribute('href');
     console.log('clicked on ' + url);
 
     this.productCardGrid.filterBy(url);
-    this.sidebar.setSelectedFilter(url);
+    // this.sidebar.setSelectedFilter(url);
+  }
+
+  onFiltersToggleClick(e) {
+    e.preventDefault();
+    this.$filtersContainer.slideToggle(150);
   }
 
   onProductCardClick(e, card) {
@@ -54,7 +79,29 @@ export default class Collection {
         .navigate(card.url)
         .resumeRouter();
 
-      this.sidebar.setBreadCrumb('collection-product', card.handle, card.url);
+      this.setBreadCrumb('collection-product', card.handle, card.url);
     }
+  }
+
+  setBreadCrumb(part, text, url) {
+    if (!this.crumbMap.hasOwnProperty(part)) return;
+
+    // @TODO - This needs to be typed??
+    // Are we going to have to do some crazy string matching?
+
+    const $crumb = this.crumbMap[part];
+    
+    $crumb.attr('href', url).text('');
+    
+    if (this.breadcrumbTyped) {
+      this.breadcrumbTyped.destroy();
+    }
+
+    // Type out the text
+    this.breadcrumbTyped = new Typed($crumb.get(0), {
+      strings: [text],
+      typeSpeed: 10,
+      showCursor: false
+    });
   }
 }

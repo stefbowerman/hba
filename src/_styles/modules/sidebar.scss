@@ -16,17 +16,39 @@
   }
 }
 
+.sidebar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .sidebar-menu {
   list-style: none;
   margin: 0;
   padding: 0;
   margin-bottom: $spacer;
 
-  li {
-    margin-bottom: 2px;
+  &:not(:last-child) {
+    margin-bottom: $spacer;
+  }
 
-    &:last-child {
-      margin-bottom: 0;
+  li {
+    &:not(:last-child) {
+      margin-bottom: 2px;
     }
+  }
+}
+
+.sidebar-filters {
+  display: none;
+
+  @include media-breakpoint-up(md) {
+    display: block !important;
+  }
+}
+
+.sidebar-filters-toggle {
+  @include media-breakpoint-up(md) {
+    display: none;
   }
 }
