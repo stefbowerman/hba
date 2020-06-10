@@ -8,6 +8,10 @@ const selectors = {
   details: '[data-details]'
 };
 
+const classes = {
+  detailsHighlighted: 'highlighted'
+};
+
 export default class LookbookSection extends BaseSection {
   constructor(container) {
     super(container, 'lookbook');
@@ -24,12 +28,12 @@ export default class LookbookSection extends BaseSection {
   }
 
   onProductCardMouseenter(e, card) {
-    this.$details.filter((i, el) => $(el).data('id') === card.id).addClass('highlight');
+    this.$details.filter((i, el) => $(el).data('id') === card.id).addClass(classes.detailsHighlighted);
   }
 
   onProductCardMouseleave(e, card) {
     this.$details
-      .filter('.highlight')
-      .removeClass('highlight');
+      .filter(`.${classes.detailsHighlighted}`)
+      .removeClass(classes.detailsHighlighted);
   }
 }

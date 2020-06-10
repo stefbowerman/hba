@@ -6,14 +6,6 @@
 {% endcomment -%}
 {% paginate collection.products by 600 %}
 
-<style>
-/* @TODO - Create a look book scss file */
-
-[data-details].highlight {
-  color: white;
-}
-</style>
-
 <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="lookbook">
   {% assign page_title_text = collection.title | append: ' Lookbook' %}
 
@@ -37,20 +29,18 @@
                             linkable: 0
                 %}
 
-                {% comment %}
-                <div class="d-md-none">
-                  {% render 'lookbook-product-details', product: p %}
-                </div>
-                {% endcomment %}
+                {% render 'lookbook-product-details', product: p %}
               </div>
             </div>
           {% endfor %}
         </div>
       </div>
       <div class="d-none d-md-block col-md-3 col-lg-2">
-        {% for p in c.products %}
-          {% render 'lookbook-product-details', product: p %}
-        {% endfor %}
+        <div class="lookbook-sidebar">
+          {% for p in c.products %}
+            {% render 'lookbook-product-details', product: p %}
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>

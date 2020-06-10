@@ -12,7 +12,7 @@
 {% endcomment -%}
 
 {% if product %}
-  <div class="lookbook-product-details" style="margin-bottom: 30px" data-details data-id="{{ product.id }}">
+  <div class="lookbook-product-details" data-details data-id="{{ product.id }}">
     <div style="margin-bottom: 1rem">
       <h6 style="margin-bottom: 0;">{{ product.title }}</h6>
       {% if product.variants[0].sku != blank %}

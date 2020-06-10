@@ -15,7 +15,6 @@ export default class PageSection extends BaseSection {
     this.$rte.after($typedSpot);
 
     const stringsElement = this.$rte.get(0);
-    console.log(stringsElement)
 
     this.typed = new Typed($typedSpot.get(0), {
       stringsElement: stringsElement,

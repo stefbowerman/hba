@@ -246,7 +246,7 @@ export default class ProductDetailForm {
       contentType: null,
       typeSpeed: 5,
       backSpeed: 5,
-      showCursor: false,      
+      showCursor: false,
       onComplete: (typed) => {
         this.$statusSuccess.text('').removeClass(classes.statusVisible);
         this.$addToCartBtn.removeClass(classes.btnActive);
@@ -262,15 +262,15 @@ export default class ProductDetailForm {
     this.$addToCartBtn.removeClass(classes.btnActive);
 
     if (this.typers.statusError) {
-      this.typers.statusError.destroy()
-    }    
+      this.typers.statusError.destroy();
+    }
 
     this.typers.statusError = new Typed(this.$statusError.get(0), {
       strings: [`${e.message || 'something went wrong'} ^${STATUS_TIMEOUT_DURATION}`, ''],
       contentType: null,
       typeSpeed: 5,
       backSpeed: 5,
-      showCursor: false,      
+      showCursor: false,
       onComplete: (typed) => {
         this.$statusError.text('').removeClass(classes.statusVisible);
         typed.destroy();
