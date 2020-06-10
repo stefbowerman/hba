@@ -86,9 +86,6 @@ export default class Collection {
   setBreadCrumb(part, text, url) {
     if (!this.crumbMap.hasOwnProperty(part)) return;
 
-    // @TODO - This needs to be typed??
-    // Are we going to have to do some crazy string matching?
-
     const $crumb = this.crumbMap[part];
     
     $crumb.attr('href', url).text('');

@@ -18,6 +18,10 @@
   {% assign c = collections[collection_handle] %}
 
   {% if c %}
+    {% capture crumb_home %}
+      <a href="/">root</a>
+    {% endcapture %}
+
     {%- capture crumb_collections -%}
       /<a href="/collections" data-crumb="collections">collections</a>
     {%- endcapture -%}
@@ -63,7 +67,7 @@
   
     <div class="sidebar">
       <p data-breadcrumbs>
-        {{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_product | strip }}
+        {{ crumb_home | strip }}{{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_product | strip }}
       </p>
       
       <div class="sidebar-row">
