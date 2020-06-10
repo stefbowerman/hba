@@ -39,3 +39,29 @@
     }
   }
 }
+
+// .lookbook-product-details__content {
+//   .js & {
+//     display: none;
+//   }
+// }
+
+.lookbook-product-details__top {
+  margin-bottom: 1rem;
+
+  h6 {
+    margin: 0;
+  }
+
+  .sku {
+    font-size: 10px;
+  }
+}
+
+.lookbook-product-details__bottom {
+  font-size: 10px;
+
+  .manufactured-in {
+    margin-top: 15px;
+  }
+}

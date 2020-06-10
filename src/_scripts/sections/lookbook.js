@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import Typed from 'typed.js';
 import BaseSection from './base';
 import ProductCardGrid from '../product/productCardGrid';
 
@@ -25,6 +26,22 @@ export default class LookbookSection extends BaseSection {
     });
 
     this.productCardGrid.reveal();
+
+    // Type out each of the details
+    // This doesn't work, typedjs breaks on nested html?
+    
+    // this.$details.each((i, el) => {
+    //   const $el      = $(el);
+    //   const $content = $el.find('[data-details-content]');
+    //   const $typed   = $el.find('[data-details-typed]');
+
+    //   new Typed($typed.get(0), {
+    //     stringsElement: $content.get(0),
+    //     contentType: 'html',
+    //     typeSpeed: 5,
+    //     showCursor: false
+    //   });
+    // });
   }
 
   onProductCardMouseenter(e, card) {
