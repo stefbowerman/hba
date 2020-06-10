@@ -6,10 +6,9 @@ const $document = $(document);
 const SectionConstructorDictionary = {};
 
 export default class BaseView {
-  constructor($el, type, router) {
+  constructor($el, type) {
     this.$el = $el;
     this.type = type;
-    this.router = router;
     this.sections = [];
 
     $document.on({

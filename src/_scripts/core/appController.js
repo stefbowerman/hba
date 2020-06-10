@@ -121,7 +121,7 @@ export default class AppController {
     if (this.firstRoute) {
       // Can't cache here, at this point the DOM has been altered via JS.
       // We can only cache fresh HTML from the server
-      this.currentView = new ViewConstructor(this.$viewContainer, type, this);
+      this.currentView = new ViewConstructor(this.$viewContainer, type);
       this.settings.onViewReady(this.currentView);
       this.firstRoute = false;
       this.settings.onInitialViewReady(this.currentView);
@@ -193,7 +193,7 @@ export default class AppController {
     // Here's where we append the new dom, transition out the old dom, and then do cleanup
     this.$viewContainer.append($newViewContent);
 
-    const newView = new ViewConstructor($newViewContent, type, this);
+    const newView = new ViewConstructor($newViewContent, type);
 
     // Wait for everything to load before animating in?
     this.settings.onViewChangeStart(url, newView);
