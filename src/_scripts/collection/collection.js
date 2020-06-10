@@ -26,7 +26,7 @@ export default class Collection {
     this.$container = $(container);
 
     this.breadcrumbTyped = null;
-    this.mobileScreenWidth = getBreakpointMinWidth('xs') - 1;
+    this.mobileScreenWidthMax = getBreakpointMinWidth('xs') - 1;
 
     this.$breadcrumbs = $(selectors.breadcrumbs, this.$container);
     this.$crumbs = $(selectors.crumb, this.$container);
@@ -46,7 +46,7 @@ export default class Collection {
     this.$crumbs.each((i, el) => {
       const $el = $(el);
       this.crumbMap[$el.data('crumb')] = $el;
-    })
+    });
 
     this.$container.on('click', selectors.filter, this.onFilterClick.bind(this));
     this.$filtersToggle.on('click', this.onFiltersToggleClick.bind(this));
@@ -89,7 +89,7 @@ export default class Collection {
         .resumeRouter();
     }
 
-    const isMobile = window.innerWidth < this.mobileScreenWidth
+    const isMobile = window.innerWidth <= this.mobileScreenWidthMax;
 
     // Below this screen size, the grid is at the bottom of the page
     if (isMobile) {

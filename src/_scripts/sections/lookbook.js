@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Typed from 'typed.js';
+// import Typed from 'typed.js';
 import BaseSection from './base';
 import ProductCardGrid from '../product/productCardGrid';
 
