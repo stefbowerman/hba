@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { camelize } from '../core/utils';
 import ProductCard from './productCard';
 
 const selectors = {
@@ -40,7 +41,23 @@ export default class ProductCardGrid {
     this.revealed = true;
   }
 
-  filterBy(url) {
-    console.log(url);
+  // Filter is instance of collection filter
+  filterBy(filter = null) {
+    if (filter) {
+      const filterType = camelize(filter.type);
+
+      this.productCards.forEach((card) => {
+        // Product card has properties 'productType', 'sale'..
+        if (card[filterType] === filter.value) {
+          card.show();
+        }
+        else {
+          card.hide();
+        }
+      });
+    }
+    else {
+      this.productCards.forEach(card => card.show());
+    }
   }
 }

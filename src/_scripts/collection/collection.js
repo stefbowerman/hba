@@ -1,6 +1,8 @@
 import $ from 'jquery';
-import Typed from 'typed.js';
 import { getBreakpointMinWidth } from '../core/breakpoints';
+import Filter from './filter';
+import FilterController from './filterController';
+import Breadcrumbs from './breadcrumbs';
 import ProductPane from '../product/productPane';
 import ProductCardGrid from '../product/productCardGrid';
 
@@ -10,8 +12,7 @@ const selectors = {
   filter: '[data-filter]',
   filterContainer: '[data-filter-container]',
   filtersToggle: '[data-filters-toggle]',
-  breadcrumbs: '[data-breadcrumbs]',
-  crumb: '[data-crumb]'
+  breadcrumbs: '[data-breadcrumbs]'
 };
 
 export default class Collection {
@@ -25,27 +26,19 @@ export default class Collection {
   constructor(container) {
     this.$container = $(container);
 
-    this.breadcrumbTyped = null;
     this.mobileScreenWidthMax = getBreakpointMinWidth('xs') - 1;
-
-    this.$breadcrumbs = $(selectors.breadcrumbs, this.$container);
-    this.$crumbs = $(selectors.crumb, this.$container);
     this.$filtersContainer = $(selectors.filterContainer, this.$container);
     this.$filtersToggle = $(selectors.filtersToggle, this.$container);
-
-    this.productPane     = new ProductPane($(selectors.productPane, this.$container));
-    this.productCardGrid = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
+    
+    this.breadcrumbs      = new Breadcrumbs($(selectors.breadcrumbs, this.$container));
+    this.filterController = new FilterController();
+    this.productPane      = new ProductPane($(selectors.productPane, this.$container));
+    this.productCardGrid  = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
       onProductCardClick: this.onProductCardClick.bind(this)
     });
 
-    this.crumbMap = {
-      // collections: $crumb,
-      // collection-product: $crumb
-    };
-
-    this.$crumbs.each((i, el) => {
-      const $el = $(el);
-      this.crumbMap[$el.data('crumb')] = $el;
+    $(selectors.filter, this.$container).each((i, el) => {
+      this.filterController.registerFilter(new Filter(el));
     });
 
     this.$container.on('click', selectors.filter, this.onFilterClick.bind(this));
@@ -53,26 +46,6 @@ export default class Collection {
 
     // this.productPane.reveal();
     this.productCardGrid.reveal();
-  }
-
-  setBreadCrumb(part, text, url) {
-    if (!this.crumbMap.hasOwnProperty(part)) return;
-
-    const $crumb = this.crumbMap[part];
-    
-    $crumb.attr('href', url).text('');
-    
-    if (this.breadcrumbTyped) {
-      this.breadcrumbTyped.destroy();
-    }
-
-    // Type out the text
-    this.breadcrumbTyped = new Typed($crumb.get(0), {
-      strings: [text],
-      typeSpeed: 20,
-      showCursor: false,
-      startDelay: 100
-    });
   }
 
   activateProduct(id, url, handle) {
@@ -100,17 +73,16 @@ export default class Collection {
     }
 
     setTimeout(() => {
-      this.setBreadCrumb('collection-product', handle, url);
+      this.breadcrumbs.setCrumb('collection-product', handle, url);
     }, (isMobile ? 300 : 0));
   }
 
   onFilterClick(e) {
     e.preventDefault();
-    const url = e.currentTarget.getAttribute('href');
-    console.log('clicked on ' + url);
 
-    this.productCardGrid.filterBy(url);
-    // this.sidebar.setSelectedFilter(url);
+    this.filterController.toggleFilter($(e.currentTarget));
+    this.productCardGrid.filterBy(this.filterController.activeFilter);
+    this.productPane.deactivate(); // @TODO - This is dumb, we need to only deactivate if the currently activeProduct Detail doesn't pass the filter
   }
 
   onFiltersToggleClick(e) {

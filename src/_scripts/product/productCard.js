@@ -19,15 +19,15 @@ export default class ProductCard {
    */
   constructor(el, options) {
     this.name = 'productCard';
-    this.namespace = `.${this.name}`;
 
     const defaults = {
-      onClick: () => {},
+      onClick:      () => {},
       onMouseenter: () => {},
       onMouseleave: () => {}
     };
 
     this.$el = $(el);
+    this.$mainLazyImg = $(selectors.mainLazyImg, this.$el);
 
     if (this.$el === undefined || !this.$el.is(selectors.el)) {
       console.warn(`[${this.name}] - Element matching ${selectors.el} required to initialize.`);
@@ -35,13 +35,20 @@ export default class ProductCard {
     }
 
     this.settings = $.extend({}, defaults, options);
-    this.id = this.$el.data('id');
-    this.handle = this.$el.data('handle');
-    this.url = this.$el.data('url');
-    this.productType = this.$el.data('product-type');
-    this.sale = this.$el.data('sale');
 
-    this.$mainLazyImg = $(selectors.mainLazyImg, this.$el);
+    // @TODO - create these props from this.$el.get(0).dataSet?
+    this.id          = this.$el.data('id');
+    this.url         = this.$el.data('url');
+    this.handle      = this.$el.data('handle');
+    this.productType = this.$el.data('product-type');
+    this.sale        = this.$el.data('sale');
+
+    // Events
+    this.$el.on({
+      click:      e => this.settings.onClick(e, this),
+      mouseenter: e => this.settings.onMouseenter(e, this),
+      mouseleave: e => this.settings.onMouseleave(e, this)
+    });
 
     // Unveil plugin to lazy load main product card images
     this.$mainLazyImg.unveil(200, function() {
@@ -50,16 +57,13 @@ export default class ProductCard {
         $img.parents(selectors.gallery).addClass(classes.mainLoaded);
       });
     });
-
-    // Events
-    this.$el.on({
-      click: e => this.settings.onClick(e, this),
-      mouseenter: e => this.settings.onMouseenter(e, this),
-      mouseleave: e => this.settings.onMouseleave(e, this)
-    });
   }
 
   show() {
     this.$el.addClass(classes.visible);
+  }
+
+  hide() {
+    this.$el.removeClass(classes.visible);
   }
 }

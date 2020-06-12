@@ -53,14 +53,32 @@
         {% assign product_types_array = product_types | split: '$$' | uniq %}
         <ul class="sidebar-menu">
           {% for type in product_types_array %}
-            <li><a href="{{ c.url }}/{{ type | handle }}" data-filter="{{ type | handle }}">/{{ type }}</a></li>
+            <li>
+              <a
+                href="{{ c.url }}/{{ type | handle }}"
+                data-filter
+                data-type="product-type"
+                data-value="{{ type | handle }}"
+              >
+                /{{ type }}
+              </a>
+            </li>
           {% endfor %}
         </ul>
       {% endif %}
 
       {% if sale_items %}
         <ul class="sidebar-menu">
-          <li><a href="{{ c.url }}/sale" data-filter="sale">/Sale</a></li>
+          <li>
+            <a
+              href="{{ c.url }}/sale"
+              data-filter
+              data-type="sale"
+              data-value="true"
+            >
+              /sale
+            </a>
+          </li>
         </ul>
       {% endif %}      
     {%- endcapture -%}

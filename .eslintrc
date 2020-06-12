@@ -31,7 +31,7 @@
     "no-underscore-dangle": "off",
     "no-plusplus": "off",
     "no-trailing-spaces": "off",
-    "eol-last": "error",
+    "eol-last": "off",
     "no-multi-spaces": "off",
     "key-spacing": ["error", {
       "afterColon": true,

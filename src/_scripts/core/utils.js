@@ -400,6 +400,19 @@ export function isExternal(url) {
   /* eslint-enable */
 }
 
+/**
+ * Turns a string into camel case version
+ *
+ * @param {String} str
+ * @return {String}
+ */
+export function camelize(str) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => {
+    if (+match === 0) return ''; // or if (/\s+/.test(match)) for white spaces
+    return index === 0 ? match.toLowerCase() : match.toUpperCase();
+  }).replace('-', '');
+}
+
 export function credits() {
   if (window && window.location && window.location.hostname !== 'localhost') {
     // eslint-disable-next-line no-console, max-len
