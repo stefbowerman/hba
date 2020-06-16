@@ -42,7 +42,12 @@
 
   // Disabled comes first so active can properly restyle
   &:disabled {
+    cursor: $cursor-disabled;
 
+    &:hover {
+      color: $body-color;
+      background-color: transparent;
+    }
   }
 
   &:focus {

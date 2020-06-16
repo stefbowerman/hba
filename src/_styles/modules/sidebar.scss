@@ -14,6 +14,14 @@
       color: $black;
     }
   }
+
+  @include media-breakpoint-up(md) {
+    position: sticky;
+    top: 69px
+  }
+  @include media-breakpoint-up(xl) {
+    top: 109px;
+  }
 }
 
 .sidebar-row {

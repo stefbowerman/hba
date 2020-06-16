@@ -17,7 +17,8 @@ const selectors = {
   singleOptionSelector: '[data-single-option-selector]',
   variantOptionValueList: '[data-variant-option-value-list][data-option-position]',
   variantOptionValue: '[data-variant-option-value]',
-  variantSku: '[data-variant-sku]',
+  title: '[data-title]',
+  sku: '[data-sku]',
   statusSuccess: '[data-status-success]',
   statusError: '[data-status-error]'
 };
@@ -77,12 +78,15 @@ export default class ProductDetailForm {
     this.$compareEls = this.$comparePrice.add($(selectors.comparePriceText, this.$container));
     this.$singleOptionSelectors = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
     this.$variantOptionValueList = $(selectors.variantOptionValueList, this.$container); // Alternate UI that takes the place of a single option selector (could be swatches, dots, buttons, whatever..)
-    this.$variantSku = $(selectors.variantSku, this.$container);
+    this.$title = $(selectors.title, this.$container);
+    this.$sku = $(selectors.sku, this.$container);
     this.$statusSuccess = $(selectors.statusSuccess, this.$container);
     this.$statusError = $(selectors.statusError, this.$container);
     /* eslint-enable */
 
     this.typers = {
+      title: null,
+      sku: null,
       statusSuccess: null,
       statusError: null
     };
@@ -110,7 +114,7 @@ export default class ProductDetailForm {
     this.updateProductPrices(variant);
     this.updateAddToCartState(variant);
     this.updateVariantOptionValues(variant);
-    this.updateVariantSku(variant);
+    this.updateSku(variant.sku);
 
     this.settings.onVariantChange(variant);
   }
@@ -162,13 +166,41 @@ export default class ProductDetailForm {
   }
 
   /**
-   * Updates the DOM with sku for the selected variant
+   * Updates the SKU DOM element
    *
-   * @param {Object} variant - Shopify variant object
+   * @param {String} sku
    */
-  updateVariantSku(variant) {
-    if (variant && variant.sku) {
-      this.$variantSku.text(`SKU${variant.sku}`);
+  updateSku(sku) {
+    if (sku) {
+      this.$sku.text('');
+
+      if (this.typers.sku) {
+        this.typers.sku.destroy();
+      }
+
+      this.typers.sku = new Typed(this.$sku.get(0), {
+        strings: [`SKU${sku}`],
+        contentType: null,
+        typeSpeed: 20,
+        showCursor: false
+      });      
+    }
+  }
+
+  updateTitle(title) {
+    if (title) {
+      this.$title.text('');
+
+      if (this.typers.title) {
+        this.typers.title.destroy();
+      }
+
+      this.typers.title = new Typed(this.$title.get(0), {
+        strings: [title],
+        contentType: null,
+        typeSpeed: 20,
+        showCursor: false
+      });      
     }
   }
 
@@ -219,6 +251,12 @@ export default class ProductDetailForm {
 
     $option.addClass(classes.variantOptionValueActive);
     $option.siblings().removeClass(classes.variantOptionValueActive);
+  }
+
+  onReveal() {
+    // Do the animation to type everything out
+    this.updateSku(this.$sku.text());
+    this.updateTitle(this.$title.text());
   }
 
   onAJAXFormAddStart(e) {

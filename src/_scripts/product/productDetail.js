@@ -38,4 +38,8 @@ export default class ProductDetail {
       enableHistoryState: enableHistoryState
     });
   }
+
+  onReveal() {
+    this.form.onReveal();
+  }
 }

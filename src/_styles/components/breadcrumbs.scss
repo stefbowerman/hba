@@ -3,26 +3,19 @@
 // -----------------------------------------------------------------------------
 
 .breadcrumbs {
-  display: flex;
 
-  @include media-breakpoint-up('sm') {
-    display: block;
-  }
-}
+  .crumb {
+    display: inline-block;
 
-.breadcrumbs__crumb {
-  display: inline-block;
-
-  &:not(:last-child) {
-    &:after {
+    &:before {
+      content: '/';
       display: inline-block;
-      content: $breadcrumb-separator;
-      padding: 0 5px;
+      margin-right: -8px;
+    }    
+
+    &.is-hidden {
+      display: none;
     }
-  }
-
-  &:last-child:not(:only-child) {
-
-  }
+  }  
 }
 

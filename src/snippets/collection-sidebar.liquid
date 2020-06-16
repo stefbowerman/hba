@@ -19,21 +19,27 @@
 
   {% if c %}
     {% capture crumb_home %}
-      <a href="/">root</a>
+      <span class="crumb">
+        <a href="/">root</a>
+      </span>
     {% endcapture %}
 
     {%- capture crumb_collections -%}
-      /<a href="/collections" data-crumb="collections">collections</a>
+      <span class="crumb" data-crumb="collections">
+        <a href="/collections">collections</a>
+      </span>
     {%- endcapture -%}
 
     {%- capture crumb_collection -%}
-      /<a href="/collections/{{ c.handle }}" data-crumb="collection">{{ c.handle }}</a>
+      <span class="crumb" data-crumb="collection">
+        <a href="/collections/{{ c.handle }}">{{ c.handle }}</a>
+      </span>
     {%- endcapture -%}      
 
     {%- capture crumb_collection_product -%}
-      {% if product %}
-        /<a href="/collections/{{ c.handle }}/products/{{ product.handle }}" data-crumb="collection-product">{{ product.handle }}</a>
-        {% endif %}
+      <span class="crumb {% unless product %}is-hidden{% endunless %}" data-crumb="collection-product">
+        <a href="{% if product %}/collections/{{ c.handle }}/products/{{ product.handle }}{% endif %}">{% if product %}{{ product.handle }}{% endif %}</a>
+      </span>
     {%- endcapture -%} 
 
     {%- capture filters -%}
@@ -84,7 +90,7 @@
     {%- endcapture -%}
   
     <div class="sidebar">
-      <p data-breadcrumbs>
+      <p class="breadcrumbs" data-breadcrumbs>
         {{ crumb_home | strip }}{{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_product | strip }}
       </p>
       
