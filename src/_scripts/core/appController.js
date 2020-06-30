@@ -131,6 +131,7 @@ export default class AppController {
 
     const urlKey = hashFromString(url);
     const ajaxDeferred = $.Deferred();
+    const transitionDeferred = $.Deferred();
     const beforeRouteStartDeferred = $.Deferred();
 
     // If we already have the page HTML in our cache...
@@ -159,13 +160,20 @@ export default class AppController {
     $.when(beforeRouteStartDeferred).done(() => {
       this.settings.onRouteStart(url);
 
+      // Transition out as soon as the link is clicked?  Need to add min time before viewchage to allow the transitoin to complete?
+      this.$viewContainer.one('transitionend', () => {
+        transitionDeferred.resolve();
+      });
+      
+      this.$viewContainer.find(this.settings.viewContentSelector).addClass('transition-out');
+
       // Let the current view do it's 'out' transition and then apply the loading state
       // this.currentView.beforeTransitionOut(() => {
       //   this.settings.onViewTransitionOutDone(url, transitionDeferred);
       // });
 
       // Once AJAX *and* css animations are done, trigger the callback
-      $.when(ajaxDeferred).done((response) => {
+      $.when(ajaxDeferred, transitionDeferred).done((response) => {
         this.doViewChange(response, ViewConstructor, type, url);
       });
     });
@@ -210,8 +218,14 @@ export default class AppController {
       return $responseBody.attr('class').split(' ').map(classname => (classname.match(TEMPLATE_REGEX)) || classname.match(THEME_REGEX)).join(' ');
     });
 
-    setTimeout(() => {
-      $newViewContent.one('transitionend', () => {
+    // let now = Date.now();
+
+    // $oldViewContent.one('transitionend', (e) => {
+      $newViewContent.addClass('transition-in-active');
+
+      // I don't know what's going on
+      // $newViewContent.one('transitionend') was firing because of child product cards transitioning in?
+      setTimeout(() => {
         window.scrollTo && window.scrollTo(0, 0);
         $newViewContent.removeClass('transition-in transition-in-active');
         $oldViewContent.remove();
@@ -226,11 +240,12 @@ export default class AppController {
         this.settings.onViewReady(this.currentView);
 
         this.isTransitioning = false;
-      });
+      }, 800);      
+    // });
 
-      $newViewContent.addClass('transition-in-active');
-      $oldViewContent.addClass('transition-out');
-    }, 15);
+    // setTimeout(() => {
+    //   $oldViewContent.addClass('transition-out');
+    // }, 20);
   }
 
   navigate(url) {

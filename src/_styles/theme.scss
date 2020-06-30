@@ -95,6 +95,7 @@
 
 .view-content {
   transform-origin: top;
+  opacity: 1;
 
   &.transition-in {
     position: fixed;
@@ -109,7 +110,7 @@
 
     &.transition-in-active {
       opacity: 1;
-      transition: opacity 0.8s cubic-bezier(0.32, 0.09, 0.34, 0.96) 0.4s;
+      transition: opacity 0.8s cubic-bezier(0.32, 0.09, 0.34, 0.96);
     }
   }
 
