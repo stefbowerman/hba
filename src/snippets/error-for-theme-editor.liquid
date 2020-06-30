@@ -1,0 +1,20 @@
+{%- comment %}
+
+  Error For Theme Editor
+  ------------------------------------------------------------------------------
+  
+  - Creates an error message that only displays inside the theme editor
+
+  Usage:
+
+  {% include 'error-for-theme-editor' with content_variable %}
+
+{% endcomment -%}
+
+{% capture error_message %}
+  <div class="errors">
+    {{ error-for-theme-editor }}
+  </div>
+{% endcapture %}
+
+{% include 'content-for-theme-editor' with error_message %}

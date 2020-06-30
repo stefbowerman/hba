@@ -1,19 +1,16 @@
 import $ from 'jquery';
-import {
-  whichTransitionEnd,
-  isThemeEditor
-} from '../core/utils';
+import Typed from 'typed.js';
+import { isThemeEditor } from '../core/utils';
 import {
   generateCookie,
   hasCookie,
   setCookie
 } from '../core/user';
-import { getTransitionTimingDuration } from '../core/animations';
 
 const selectors = {
   form: 'form',
   formContents: '[data-form-contents]',
-  formMessage: '[data-form-message][data-message-success][data-message-fail]'
+  formMessage: '[data-form-message]' // needs data-success, data-already-subscribed, data-fail
 };
 
 const classes = {
@@ -35,12 +32,10 @@ export default class NewsletterForm {
     };
 
     this.settings = $.extend({}, defaults, options);
-    this.transitionEndEvent     = whichTransitionEnd();
-    this.supportsCssTransitions = !!Modernizr.csstransitions;
+    this.typed = null;
 
     this.$el = $(el);
     this.$form = this.$el.is(selectors.form) ? this.$el : this.$el.find(selectors.form);
-    this.timeout = null;
     
     if (!this.$form.length) {
       console.warn(`[${this.name}] - Form element required to initialize`);
@@ -65,20 +60,29 @@ export default class NewsletterForm {
   /**
    * Temporarily shows the form message
    *
-   * @param {Boolean} reset - If set, will call this.reset
+   * @param {Boolean} reset - If true, will call this.reset when finished
    */  
-  showMessageWithTimeout(reset = false) {
+  showMessageWithAnimation(reset = false) {
+    if (this.typed) {
+      this.typed.destroy();
+    }
+
+    // At this point, the message has already been set inside the element
+    // Let's empty it out into a var and then type it onto the page
+    const string = this.$formMessage.html();
+
+    this.$formMessage.html('');
     this.$formContents.addClass(classes.showMessage);
 
-    window.clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      if (reset) {
-        this.reset();
+    this.typed = new Typed(this.$formMessage.get(0), {
+      strings: [`${string} ^2000`, ''],
+      typeSpeed: 10,
+      backSpeed: 10,
+      showCursor: false,
+      onComplete: () => {
+        reset ? this.reset() : this.$formContents.removeClass(classes.showMessage);
       }
-      else {
-        this.$formContents.removeClass(classes.showMessage);
-      }
-    }, 4000);
+    });
   }
 
   /**
@@ -86,23 +90,14 @@ export default class NewsletterForm {
    */
   reset() {
     this.$form.find('input[type="email"]').val('');
-    this.$form.find('input[type="checkbox"]').prop('checked', false);
-
-    const cb = this.$formMessage.html.bind(this.$formMessage, '');
-
-    if (this.supportsCssTransitions) {
-      this.$formContents.one(this.transitionEndEvent, cb);
-    }
-    else {
-      setTimeout(cb, getTransitionTimingDuration('base'));
-    }
 
     this.$formContents.removeClass(classes.showMessage);
+    this.$formMessage.html('');
   }
 
   onSubscribeSuccess(response) {
     const isSubscribed = response && response.data && response.data.is_subscribed;
-    const successMsg = this.$formMessage.data(isSubscribed ? 'message-already-subscribed' : 'message-success');
+    const successMsg = this.$formMessage.data(isSubscribed ? 'already-subscribed' : 'success');
 
     if (!isThemeEditor() && this.settings.setCookies) {
       setCookie(this.cookies.emailCollected);
@@ -111,16 +106,16 @@ export default class NewsletterForm {
     this.$formMessage.html(successMsg);
 
     // Don't reset the form if they're already subscribed, they might want to just enter a different email
-    this.showMessageWithTimeout(!isSubscribed);
+    this.showMessageWithAnimation(!isSubscribed);
   }
 
   onSubmitFail(errors) {
     this.$formMessage.html(Array.isArray(errors) ? errors.join('  ') : errors);
-    this.showMessageWithTimeout();
+    this.showMessageWithAnimation();
   }
 
   onSubscribeFail() {
-    this.$formMessage.html(this.$formMessage.data('message-fail'));
-    this.showMessageWithTimeout();
+    this.$formMessage.html(this.$formMessage.data('fail'));
+    this.showMessageWithAnimation();
   }
 }
