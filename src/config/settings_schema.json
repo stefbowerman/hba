@@ -82,5 +82,20 @@
         "info": "Displays if someone is already signed up to the mailing list.  Leave blank for a generic message."
       }
     ]
+  },
+  {
+    "name": "Integrations",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Google Tag Manager"
+      },      
+      {
+        "type": "text",
+        "id": "gtm_container_id",
+        "label": "GTM Container ID",
+        "info": "e.g. GTM-XXXXXXX"
+      }
+    ]
   }
 ]

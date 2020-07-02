@@ -43,6 +43,8 @@
   <!--[if lt IE 9]><script src="{{ 'theme.js' | asset_url }}"></script><![endif]-->
 
   {{ content_for_header }}
+
+  {% render 'third-party-scripts-head' %}
 </head>
 
 {% capture body_class %}
@@ -54,6 +56,11 @@
 
 <body id="{{ page_title | handle }}" class="{{ body_class | strip | strip_newlines }}">
   <script type="text/javascript">document.body.className += ' is-loading';</script>
+
+  {% if settings.gtm_container_id != blank %}
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.gtm_container_id }}"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  {% endif %} 
 
   <a class="in-page-link visually-hidden skip-link" href="#view-container">
     {{ 'general.accessibility.skip_to_content' | t }}
