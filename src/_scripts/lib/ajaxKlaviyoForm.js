@@ -63,10 +63,11 @@ export default class AJAXKlaviyoForm {
       return false;
     }
 
-    this.$form    = form instanceof $ ? form : $(form);
-    this.$input   = this.$form.find('input[type="email"]');
-    this.$submit  = this.$form.find('[type="submit"]');
+    this.$form = form instanceof $ ? form : $(form);
+    this.$input = this.$form.find('input[type="email"]');
+    this.$submit = this.$form.find('[type="submit"]');
     this.settings = $.extend({}, defaults, options);
+    this.isSubmitting = false;
 
     if (!this.settings.listId) {
       console.warn(`[${this.name}] - Valid Klaviyo List ID required to initialize`);
@@ -93,9 +94,11 @@ export default class AJAXKlaviyoForm {
 
     if (this.$input.val() && this.$input.val().length) {
       this.$submit.prop('disabled', true);
+      this.isSubmitting = true;
+
       return true;
     }
-    
+
     this.$input.parents('.form-group').addClass('alert-info');
 
     return false;
@@ -151,6 +154,9 @@ export default class AJAXKlaviyoForm {
         }
 
         this.onSubmitFail(errors);
+      })
+      .always(() => {
+        this.isSubmitting = false;
       });
 
     return false;

@@ -85,6 +85,10 @@
 @import 'templates/challenge.scss';
 @import 'templates/password.scss';
 
+html {
+  padding-bottom: 0 !important; // Shopify admin bar messes this up
+}
+
 .development-mode {
   /* stylelint-disable-next-line selector-max-id */
   #preview-bar-iframe,

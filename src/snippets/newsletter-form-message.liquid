@@ -1,0 +1,26 @@
+{%- comment %}
+
+  Newsletter Form Message
+  ------------------------------------------------------------------------------
+
+  Usage:
+
+  {% include 'newsletter-form-message',
+              type: { string } - required,
+  %}
+
+{% endcomment -%}
+
+{%- capture message -%}
+
+  {% case type %}
+    {% when 'success' %}
+      {{ settings.newsletter_success_text | default: 'Thank you for subscribing' }}
+    {% when 'already-subscribed' %}
+      {{ settings.newsletter_already_subscribed_text | default: 'This email is already subscribed' }}
+    {% when 'fail' %}
+      Please enter a valid email
+  {%- endcase -%}
+
+{% endcapture %}
+{{ message | strip | strip_newlines }}

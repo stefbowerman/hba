@@ -1,21 +1,6 @@
-<!--
-{% comment %} Newsletter messaging {% endcomment %}
-{% assign message_already_subscribed = section.settings.subscribe_already_subscribed_text %}
-{% if message_already_subscribed == blank %}
-  {% assign message_already_subscribed = 'general.newsletter.already_subscribed' | t %}
-{% endif %}
-
-{% assign message_success = section.settings.subscribe_success_text %}
-{% if message_success == blank %}
-  {% assign message_success = 'general.newsletter.subscribe_success' | t %}
-{% endif %}            
-
-{% assign message_fail = 'general.newsletter.subscribe_fail' | t %}
--->
-
 {%- capture footer_blocks_html -%}
   {% for block in section.blocks %}
-    <div class="footer-block">
+    <div class="footer-block" {{ block.shopfy_attributes }}>
       <h6 class="footer-block__title">
         {{ block.settings.title }}
       </h6>
@@ -36,9 +21,39 @@
           {{ block.settings.info | replace: '$year$', year }}
         </div>
       {% elsif block.type == 'mailing_list' %}
-        <div class="footer-mailing-list">
-          Sign up
-        </div>
+        {% if settings.klaviyo_list_id == blank %}
+          {% include 'error-for-theme-editor' with 'Klaviyo List ID required for mailing list sign up' %}
+        {% else %}
+          <form method="post"
+                class="newsletter-form"
+                data-newsletter-form
+                data-klaviyo-list-id="{{ settings.klaviyo_list_id }}"
+                data-klaviyo-source="Footer"
+            >
+              <a href="#" class="newsletter-form-contents-trigger" data-form-contents-trigger>
+                Signup
+              </a>
+              <div class="newsletter-form-contents" data-form-contents>
+                <div class="newsletter-form-inputs">
+                  <div class="minimal-input-box">
+                    <label for="newsletter-{{ block.id }}" class="sr-only"></label>
+                    <div class="form-control-container">
+                      <input type="email" id="newsletter-{{ block.id }}" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="newsletter-form-message"
+                    data-form-message
+                    data-success="{% render 'newsletter-form-message', type: 'success' %}"
+                    data-already-subscribed="{% render 'newsletter-form-message', type: 'already-subscribed' %}"
+                    data-fail="{% render 'newsletter-form-message', type: 'fail' %}">
+                </div>  
+              </div>
+            </form>          
+        {% endif %}
       {% endif %}
     </div>
   {% endfor %}
@@ -56,40 +71,6 @@
   {
     "name": "Footer",
     "max_blocks": 5,
-    "settings": [   
-      {
-        "type": "header",
-        "content": "Mailing List"
-      },
-      {
-        "type": "text",
-        "id": "subscribe_heading",
-        "label": "Heading"
-      },
-      {
-        "type": "textarea",
-        "id": "subscribe_text",
-        "label": "Text"
-      },
-      {
-        "type": "text",
-        "id": "placeholder_text",
-        "label": "Placeholder Text",
-        "default": "Enter your email"
-      },
-      {
-        "type": "textarea",
-        "id": "subscribe_success_text",
-        "label": "Success Message",
-        "info": "Displays when someone signs up successfully.  Leave blank for a generic message."
-      },
-      {
-        "type": "textarea",
-        "id": "subscribe_already_subscribed_text",
-        "label": "Already Subscribed Message",
-        "info": "Displays if someone is already signed up to the mailing list.  Leave blank for a generic message."
-      }
-    ],
     "blocks": [
       {
         "type": "menu",

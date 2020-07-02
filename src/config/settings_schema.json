@@ -62,8 +62,24 @@
     "settings": [
       {
         "type": "text",
-        "id": "newsletter_form_action",
-        "label": "Newsletter Form Action URL"
+        "id": "klaviyo_list_id",
+        "label": "Klaviyo List ID"
+      },
+      {
+        "type": "header",
+        "content": "Messaging"
+      },
+      {
+        "type": "textarea",
+        "id": "newsletter_success_text",
+        "label": "Success Message",
+        "info": "Displays when someone signs up successfully.  Leave blank for a generic message."
+      },
+      {
+        "type": "textarea",
+        "id": "newsletter_already_subscribed_text",
+        "label": "Already Subscribed Message",
+        "info": "Displays if someone is already signed up to the mailing list.  Leave blank for a generic message."
       }
     ]
   }

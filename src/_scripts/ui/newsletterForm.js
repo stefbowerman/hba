@@ -1,23 +1,16 @@
 import $ from 'jquery';
-import {
-  whichTransitionEnd,
-  isThemeEditor
-} from '../core/utils';
-import {
-  generateCookie,
-  hasCookie,
-  setCookie
-} from '../core/user';
-import { getTransitionTimingDuration } from '../core/animations';
+import Typed from 'typed.js';
 
 const selectors = {
   form: 'form',
   formContents: '[data-form-contents]',
-  formMessage: '[data-form-message][data-message-success][data-message-fail]'
+  formContentsTrigger: '[data-form-contents-trigger]',
+  formMessage: '[data-form-message]' // needs data-success, data-already-subscribed, data-fail
 };
 
 const classes = {
-  showMessage: 'show-message',
+  showContents: 'show-contents',
+  showMessage: 'show-message'
 };
 
 export default class NewsletterForm {
@@ -35,12 +28,10 @@ export default class NewsletterForm {
     };
 
     this.settings = $.extend({}, defaults, options);
-    this.transitionEndEvent     = whichTransitionEnd();
-    this.supportsCssTransitions = !!Modernizr.csstransitions;
+    this.typed    = null;
 
     this.$el = $(el);
     this.$form = this.$el.is(selectors.form) ? this.$el : this.$el.find(selectors.form);
-    this.timeout = null;
     
     if (!this.$form.length) {
       console.warn(`[${this.name}] - Form element required to initialize`);
@@ -49,78 +40,79 @@ export default class NewsletterForm {
 
     this.$formContents = $(selectors.formContents, this.$el);
     this.$formMessage  = $(selectors.formMessage, this.$el);
+    this.$formInput    = $('input[type="email"]', this.$el);
 
-    /**
-     * These are the cookies that we'll use to keep track of how much the user has interacted with the footer
-     */
-    this.cookies = {};
-
-    this.cookies.emailCollected = generateCookie('emailCollected');
-  }
-
-  emailCollected() {
-    return hasCookie(this.cookies.emailCollected.name);
+    this.$form.on('click', selectors.formContentsTrigger, (e) => {
+      e.preventDefault();
+      this.$form.addClass(classes.showContents);
+      this.$formInput.focus();
+    });
   }
 
   /**
    * Temporarily shows the form message
    *
-   * @param {Boolean} reset - If set, will call this.reset
+   * @param {Boolean} reset - If true, will call this.reset when finished
+   * @param {Boolean} error - If true, will show the message in an error state
    */  
-  showMessageWithTimeout(reset = false) {
+  showMessageWithAnimation(reset = false, error = false) {
+    // At this point, the message has already been set inside the element
+    // Let's empty it out into a var and then type it onto the page
+    const string = this.$formMessage.html();
+
+    if (this.typed) {
+      this.typed.destroy();
+    }    
+
+    this.$formMessage.html('');
     this.$formContents.addClass(classes.showMessage);
 
-    window.clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      if (reset) {
-        this.reset();
-      }
-      else {
+    if (error) {
+      this.$formMessage.addClass('error');
+    }
+
+    this.typed = new Typed(this.$formMessage.get(0), {
+      strings: [`${string} ^2000`, ''],
+      typeSpeed: 10,
+      backSpeed: 20,
+      showCursor: false,
+      onComplete: () => {
         this.$formContents.removeClass(classes.showMessage);
+        this.$formMessage.removeClass('error');
+
+        if (reset) {
+          this.reset();
+        }
       }
-    }, 4000);
+    });
   }
 
   /**
    * Resets everything to it's initial state.  Only call when form content isn't visible
    */
   reset() {
-    this.$form.find('input[type="email"]').val('');
-    this.$form.find('input[type="checkbox"]').prop('checked', false);
-
-    const cb = this.$formMessage.html.bind(this.$formMessage, '');
-
-    if (this.supportsCssTransitions) {
-      this.$formContents.one(this.transitionEndEvent, cb);
-    }
-    else {
-      setTimeout(cb, getTransitionTimingDuration('base'));
-    }
-
-    this.$formContents.removeClass(classes.showMessage);
+    this.$formInput.val('');
+    this.$formMessage.html('');
   }
 
   onSubscribeSuccess(response) {
     const isSubscribed = response && response.data && response.data.is_subscribed;
-    const successMsg = this.$formMessage.data(isSubscribed ? 'message-already-subscribed' : 'message-success');
-
-    if (!isThemeEditor() && this.settings.setCookies) {
-      setCookie(this.cookies.emailCollected);
-    }
+    const successMsg = this.$formMessage.data(isSubscribed ? 'already-subscribed' : 'success');
 
     this.$formMessage.html(successMsg);
 
     // Don't reset the form if they're already subscribed, they might want to just enter a different email
-    this.showMessageWithTimeout(!isSubscribed);
+    // Show the state as an error if they're subscribed
+    this.showMessageWithAnimation(!isSubscribed, isSubscribed);
   }
 
   onSubmitFail(errors) {
     this.$formMessage.html(Array.isArray(errors) ? errors.join('  ') : errors);
-    this.showMessageWithTimeout();
+    this.showMessageWithAnimation(false, true);
   }
 
   onSubscribeFail() {
-    this.$formMessage.html(this.$formMessage.data('message-fail'));
-    this.showMessageWithTimeout();
+    this.$formMessage.html(this.$formMessage.data('fail'));
+    this.showMessageWithAnimation(false, true);
   }
 }
