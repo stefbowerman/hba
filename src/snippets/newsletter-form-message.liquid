@@ -19,7 +19,7 @@
     {% when 'already-subscribed' %}
       {{ settings.newsletter_already_subscribed_text | default: 'This email is already subscribed' }}
     {% when 'fail' %}
-      Something went wrong, please check your email and try again
+      Please enter a valid email
   {%- endcase -%}
 
 {% endcapture %}

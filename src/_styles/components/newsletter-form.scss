@@ -2,28 +2,35 @@
 // Newsletter Form
 // -------------------------
 
+.newsletter-form {
+
+}
+.newsletter-form-contents-trigger {
+  .show-contents & {
+    display: none;
+  }
+}
+
 .newsletter-form-contents {
-  position: relative;
+  display: none;
+
+  .show-contents & {
+    display: block;
+  }
 }
 
 .newsletter-form-inputs {
+  .form-control {
+    text-transform: uppercase;
+  }
 }
 
 .newsletter-form-message {
-  @include stretch-within();
-  z-index: 1;
-  opacity: 0;
-  pointer-events: none;
-}
+  margin-top: 3px;
+  text-transform: uppercase;
+  display: none;
 
-.newsletter-form-contents.show-message {
-  .newsletter-form-inputs {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .newsletter-form-message {
-    opacity: 1;
-    pointer-events: auto;
+  .show-message & {
+    display: block;
   }
 }

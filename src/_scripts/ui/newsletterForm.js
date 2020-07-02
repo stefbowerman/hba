@@ -1,20 +1,16 @@
 import $ from 'jquery';
 import Typed from 'typed.js';
-import { isThemeEditor } from '../core/utils';
-import {
-  generateCookie,
-  hasCookie,
-  setCookie
-} from '../core/user';
 
 const selectors = {
   form: 'form',
   formContents: '[data-form-contents]',
+  formContentsTrigger: '[data-form-contents-trigger]',
   formMessage: '[data-form-message]' // needs data-success, data-already-subscribed, data-fail
 };
 
 const classes = {
-  showMessage: 'show-message',
+  showContents: 'show-contents',
+  showMessage: 'show-message'
 };
 
 export default class NewsletterForm {
@@ -32,7 +28,7 @@ export default class NewsletterForm {
     };
 
     this.settings = $.extend({}, defaults, options);
-    this.typed = null;
+    this.typed    = null;
 
     this.$el = $(el);
     this.$form = this.$el.is(selectors.form) ? this.$el : this.$el.find(selectors.form);
@@ -44,43 +40,49 @@ export default class NewsletterForm {
 
     this.$formContents = $(selectors.formContents, this.$el);
     this.$formMessage  = $(selectors.formMessage, this.$el);
+    this.$formInput    = $('input[type="email"]', this.$el);
 
-    /**
-     * These are the cookies that we'll use to keep track of how much the user has interacted with the footer
-     */
-    this.cookies = {};
-
-    this.cookies.emailCollected = generateCookie('emailCollected');
-  }
-
-  emailCollected() {
-    return hasCookie(this.cookies.emailCollected.name);
+    this.$form.on('click', selectors.formContentsTrigger, (e) => {
+      e.preventDefault();
+      this.$form.addClass(classes.showContents);
+      this.$formInput.focus();
+    });
   }
 
   /**
    * Temporarily shows the form message
    *
    * @param {Boolean} reset - If true, will call this.reset when finished
+   * @param {Boolean} error - If true, will show the message in an error state
    */  
-  showMessageWithAnimation(reset = false) {
-    if (this.typed) {
-      this.typed.destroy();
-    }
-
+  showMessageWithAnimation(reset = false, error = false) {
     // At this point, the message has already been set inside the element
     // Let's empty it out into a var and then type it onto the page
     const string = this.$formMessage.html();
 
+    if (this.typed) {
+      this.typed.destroy();
+    }    
+
     this.$formMessage.html('');
     this.$formContents.addClass(classes.showMessage);
+
+    if (error) {
+      this.$formMessage.addClass('error');
+    }
 
     this.typed = new Typed(this.$formMessage.get(0), {
       strings: [`${string} ^2000`, ''],
       typeSpeed: 10,
-      backSpeed: 10,
+      backSpeed: 20,
       showCursor: false,
       onComplete: () => {
-        reset ? this.reset() : this.$formContents.removeClass(classes.showMessage);
+        this.$formContents.removeClass(classes.showMessage);
+        this.$formMessage.removeClass('error');
+
+        if (reset) {
+          this.reset();
+        }
       }
     });
   }
@@ -89,9 +91,7 @@ export default class NewsletterForm {
    * Resets everything to it's initial state.  Only call when form content isn't visible
    */
   reset() {
-    this.$form.find('input[type="email"]').val('');
-
-    this.$formContents.removeClass(classes.showMessage);
+    this.$formInput.val('');
     this.$formMessage.html('');
   }
 
@@ -99,23 +99,20 @@ export default class NewsletterForm {
     const isSubscribed = response && response.data && response.data.is_subscribed;
     const successMsg = this.$formMessage.data(isSubscribed ? 'already-subscribed' : 'success');
 
-    if (!isThemeEditor() && this.settings.setCookies) {
-      setCookie(this.cookies.emailCollected);
-    }
-
     this.$formMessage.html(successMsg);
 
     // Don't reset the form if they're already subscribed, they might want to just enter a different email
-    this.showMessageWithAnimation(!isSubscribed);
+    // Show the state as an error if they're subscribed
+    this.showMessageWithAnimation(!isSubscribed, isSubscribed);
   }
 
   onSubmitFail(errors) {
     this.$formMessage.html(Array.isArray(errors) ? errors.join('  ') : errors);
-    this.showMessageWithAnimation();
+    this.showMessageWithAnimation(false, true);
   }
 
   onSubscribeFail() {
     this.$formMessage.html(this.$formMessage.data('fail'));
-    this.showMessageWithAnimation();
+    this.showMessageWithAnimation(false, true);
   }
 }

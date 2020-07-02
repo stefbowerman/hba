@@ -1,18 +1,3 @@
-<!--
-{% comment %} Newsletter messaging {% endcomment %}
-{% assign message_already_subscribed = section.settings.subscribe_already_subscribed_text %}
-{% if message_already_subscribed == blank %}
-  {% assign message_already_subscribed = 'general.newsletter.already_subscribed' | t %}
-{% endif %}
-
-{% assign message_success = section.settings.subscribe_success_text %}
-{% if message_success == blank %}
-  {% assign message_success = 'general.newsletter.subscribe_success' | t %}
-{% endif %}            
-
-{% assign message_fail = 'general.newsletter.subscribe_fail' | t %}
--->
-
 {%- capture footer_blocks_html -%}
   {% for block in section.blocks %}
     <div class="footer-block" {{ block.shopfy_attributes }}>
@@ -45,6 +30,9 @@
                 data-klaviyo-list-id="{{ settings.klaviyo_list_id }}"
                 data-klaviyo-source="Footer"
             >
+              <a href="#" class="newsletter-form-contents-trigger" data-form-contents-trigger>
+                Signup
+              </a>
               <div class="newsletter-form-contents" data-form-contents>
                 <div class="newsletter-form-inputs">
                   <div class="minimal-input-box">
