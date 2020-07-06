@@ -13,11 +13,12 @@ export default class FooterSection extends BaseSection {
 
     this.$form = $(selectors.newsletterForm, this.$container);
 
-    this.newsletterForm = new NewsletterForm(this.$form, { setCookies: false });
+    this.newsletterForm = new NewsletterForm(this.$form);
 
     this.ajaxForm = new AJAXKlaviyoForm(this.$form, {
       listId: this.$form.data('klaviyo-list-id'),
       source: this.$form.data('klaviyo-source'),
+      onSubmitStart: () => this.newsletterForm.onSubmitStart(),
       onSubmitFail: errors => this.newsletterForm.onSubmitFail(errors),
       onSubscribeSuccess: response => this.newsletterForm.onSubscribeSuccess(response),
       onSubscribeFail: response => this.newsletterForm.onSubscribeFail(response)

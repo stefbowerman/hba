@@ -10,6 +10,13 @@
   50% { opacity: 0.7; }
 }
 
+header {
+  // This is just for the "notify me" button in the top right
+  @include media-breakpoint-down(sm) {
+    font-size: $font-size-xs;
+  }
+}
+
 .header-logo {
   display: block;
   position: fixed;
@@ -45,98 +52,114 @@
   transform: translateZ(0); // Prevent bluriness from scaling
 }
 
-.header-cart {
+// This is temp
+header .newsletter-form {
   position: fixed;
   z-index: $zindex-header-cart;
   top: 24px;
   right: $outer-gutter-mobile;
+  max-width: 55%;
+  max-width: calc(100vw - 173px); // Logo width + a little more
 
   @include media-breakpoint-up(lg) {
     top: 34px;
     right: $outer-gutter;
-  }
-
-  display: none;
-
-  &.has-items,
-  .ajax-cart-open & {
-    display: inline-block;
+    padding-right: 12vw;
   }
 }
 
-.header-nav {
-  font-family: $font-family-sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 36px;
-  letter-spacing: -1px;
+// .header-cart {
+//   position: fixed;
+//   z-index: $zindex-header-cart;
+//   top: 24px;
+//   right: $outer-gutter-mobile;
 
-  @include media-breakpoint-up(lg) {
-    font-size: 60px;
-  }
-}
+//   @include media-breakpoint-up(lg) {
+//     top: 34px;
+//     right: $outer-gutter;
+//   }
 
-.header-nav__link {
-  position: relative;
-  display: block;
-  text-shadow: 0 0 2px currentColor;
-  opacity: 1;
+//   display: none;
 
-  &.faded-out {
-    opacity: 0;
-    transition: opacity 0.7s linear;
-  }
+//   &.has-items,
+//   .ajax-cart-open & {
+//     display: inline-block;
+//   }
+// }
 
-  &:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 3px;
-    background-color: transparent;
-    filter: blur(1px);
-  }
+// .header-nav {
+//   font-family: $font-family-sans-serif;
+//   font-weight: bold;
+//   text-transform: uppercase;
+//   font-size: 36px;
+//   letter-spacing: -1px;
 
-  &.is-active:after {
-    background-color: $white;
-    animation-play-state: running;
-    animation: strobeline 60ms steps(1, end) infinite;
-  }
+//   @include media-breakpoint-up(lg) {
+//     font-size: 60px;
+//   }
+// }
 
-  .header-nav__subnav &:after {
-    bottom: -2px;
-    height: 3px;
-  }
+// .header-nav__link {
+//   position: relative;
+//   display: block;
+//   text-shadow: 0 0 2px currentColor;
+//   opacity: 1;
 
-  .ajax-cart-open &.is-active:after {
-    background-color: $black;
-  }  
-}
+//   &.faded-out {
+//     opacity: 0;
+//     transition: opacity 0.7s linear;
+//   }
 
-.header-nav__item {
-  margin-bottom: 20px;
-  padding-bottom: 5px;
+//   &:after {
+//     content: '';
+//     position: absolute;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     height: 3px;
+//     background-color: transparent;
+//     filter: blur(1px);
+//   }
 
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
+//   &.is-active:after {
+//     background-color: $white;
+//     animation-play-state: running;
+//     animation: strobeline 60ms steps(1, end) infinite;
+//   }
 
-.header-nav__subnav {
-  margin-left: 34%;
-  padding-top: 21px;
-  padding-bottom: 6px;
-  font-size: 24px;
-  display: none; // jQuery will display it for us
-}
+//   .header-nav__subnav &:after {
+//     bottom: -2px;
+//     height: 3px;
+//   }
 
-.header-nav__subnav-contents {
-  width: 0;
-  overflow: hidden;
-  transition: width 0.5s linear;
+//   .ajax-cart-open &.is-active:after {
+//     background-color: $black;
+//   }  
+// }
 
-  .is-revealed & {
-    width: 100%;
-  }
-}
+// .header-nav__item {
+//   margin-bottom: 20px;
+//   padding-bottom: 5px;
+
+//   &:last-child {
+//     margin-bottom: 0;
+//   }
+// }
+
+// .header-nav__subnav {
+//   margin-left: 34%;
+//   padding-top: 21px;
+//   padding-bottom: 6px;
+//   font-size: 24px;
+//   display: none; // jQuery will display it for us
+// }
+
+// .header-nav__subnav-contents {
+//   width: 0;
+//   overflow: hidden;
+//   transition: width 0.5s linear;
+
+//   .is-revealed & {
+//     width: 100%;
+//   }
+// }

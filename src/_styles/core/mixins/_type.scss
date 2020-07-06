@@ -62,19 +62,25 @@
 
 // RTE styling for long form content
 @mixin article-content {
-  margin-bottom: $grid-gutter-width;
+  // margin-bottom: $grid-gutter-width;
 
   h1, h2, h3, h4, h5, h6 {
-    margin: $spacer*2.5 0 $spacer*2;
+    margin: $spacer*2 0 $spacer*1.5;
   }
 
   p + p {
-    margin-top: $spacer*2;
+    margin-top: $spacer;
   }
 
-  p {
-    > img:only-child {
-      margin: $spacer*2 0;
+  // p {
+  //   > img:only-child {
+  //     margin: $spacer*2 0;
+  //   }
+  // }
+
+  @include media-breakpoint-down(sm) {
+    p {
+      font-size: $font-size-sm;
     }
   }
 }

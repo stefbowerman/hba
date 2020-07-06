@@ -423,3 +423,7 @@ export function credits() {
 export function isTouch() {
   return ((Modernizr && Modernizr.touchevents) || 'ontouchstart' in window);
 }
+
+export function random(min = 0, max = 1) {
+  return Math.floor(Math.random() * (max - min + 1) + min);     
+}

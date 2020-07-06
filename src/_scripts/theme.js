@@ -1,11 +1,11 @@
 // jQuery
 import $ from 'jquery';
-import 'jquery-zoom';
-import 'jquery-unveil';
+// import 'jquery-zoom';
+// import 'jquery-unveil';
 
 // Bootstrap JS
-import 'bootstrap/js/dist/collapse';
-import 'bootstrap/js/dist/modal';
+// import 'bootstrap/js/dist/collapse';
+// import 'bootstrap/js/dist/modal';
 
 // Core
 import {
@@ -15,83 +15,53 @@ import {
   isExternal
 } from './core/utils';
 import { pageLinkFocus } from './core/a11y';
-import * as Animations   from './core/animations';
-import * as Breakpoints  from './core/breakpoints';
+// import * as Animations   from './core/animations';
+// import * as Breakpoints  from './core/breakpoints';
 import AppController     from './core/appController';
 
 // Views
-import ProductView    from './views/product';
-import CollectionView from './views/collection';
+import IndexView      from './views/index';
 import PageView       from './views/page';
 
 // Sections
 import HeaderSection   from './sections/header';
 import FooterSection   from './sections/footer';
-import AJAXCartSection from './sections/ajaxCart';
+// import AJAXCartSection from './sections/ajaxCart';
+import VideoBackgroundSection from './sections/videoBackground';
 
 // Do this ASAP
-Animations.initialize();
-Breakpoints.initialize();
+// Animations.initialize();
+// Breakpoints.initialize();
 
-window.HBA = {};
+window.HBA = {
+  appController: null,
+  videoBackgroundAudioPlaying: false // Allow other parts of the app to check if the video is playing or not
+};
 
 ((Modernizr) => {
+  const $window = $(window);
   const $body = $(document.body);
 
   // Instantiate sections that live *outside* of content_for_layout
   const sections = {
     header:   new HeaderSection($('[data-section-type="header"]')),
     footer:   new FooterSection($('[data-section-type="footer"]')),
-    ajaxCart: new AJAXCartSection($('[data-section-type="ajax-cart"]'))
+    videobackground: new VideoBackgroundSection($('[data-section-type="video-background"]'))
   };
-
-  // @TODO - Remove this at some point
-  window.HBA.sections = sections;
 
   // Create the app controller for routing
   const appController = new AppController({
     viewConstructors: {
-      product: ProductView,
-      collection: CollectionView,
+      index: IndexView,
       page: PageView
     },
-    onSameRoute: (url, currentView) => {
-      sections.header.menuOverlay.hide();
-    },
-    onInitialViewReady: (view) => {
-      console.log('onInitialViewReady');
-    },
-    onBeforeRouteStart: (deferred) => {
-      console.log('onBeforeRouteStart');
-      // sections.header.menuOverlay.hide();
-      deferred.resolve();
-    },
-    onRouteStart: (url) => {
-      console.log('on route start');
-    },
-    onViewChangeStart: (url, newView) => {
-      console.log('onViewChangeStart');
-    },
-    onViewChangeComplete: (newView) => {
-      console.log('onViewChangeComplete');
-      sections.header.menuOverlay.hide();      
-    },
-    onViewReady: (view) => {
-      console.log('onViewReady');
-      console.log(view);
-
-      if (view.type === 'index') {
-        setTimeout(() => {
-          sections.header.menuOverlay.show();
-        }, 1000);
-      }
-      else if (view.type === 'cart') {
-        sections.ajaxCart.open();
-      }
+    onRouteStart: () => {
+      sections.header.newsletterForm.hideFormContents();
+      sections.footer.newsletterForm.hideFormContents();
     }
   });
 
-  // Expose the controller for the rest of the app
+  // Expose the router to the rest of the application
   window.HBA.appController = appController;
 
   $('.in-page-link').on('click', evt => pageLinkFocus($(evt.currentTarget.hash)));
@@ -107,7 +77,16 @@ window.HBA = {};
     document.documentElement.className = document.documentElement.className.replace('supports-no-cookies', 'supports-cookies');
   }
 
-  $body.removeClass('is-loading');
+  $window.on('audioPlay.videoBackground',  () => {
+    window.HBA.videoBackgroundAudioPlaying = true;
+  });
+  $window.on('audioPause.videoBackground', () => {
+    window.HBA.videoBackgroundAudioPlaying = false;
+  });
+
+  $body
+    .addClass('is-loaded')
+    .removeClass('is-loading');
 
   // Stop here...no AJAX navigation inside the theme editor
   // eslint-disable-next-line no-undef
@@ -130,7 +109,6 @@ window.HBA = {};
 
       return true;
     });
-
 
     // Prevents browser from restoring scroll position when hitting the back button
     if ('scrollRestoration' in window.history) {

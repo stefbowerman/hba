@@ -1,6 +1,7 @@
 <!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
+{% include 'ascii-art' %}
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -67,18 +68,22 @@
   </a>  
 
   <div class="layout-wrapper">
-    {% section 'header' %}
+    <div class="layout">
+      {% section 'header' %}
 
-    <main id="view-container" class="view-container" role="main">
-      <div class="view-content">
-        {{ content_for_layout }}
-      </div>
-    </main>
+      <main id="view-container" class="view-container" role="main">
+        <div class="view-content">
+          {{ content_for_layout }}
+        </div>
+      </main>
 
-    {% section 'footer' %}
+      {% section 'footer' %}
+    </div>
   </div>
 
+  {% comment %}
   {% section 'ajax-cart' %}
+  {% endcomment %}
   {% section 'video-background' %}
 </body>
 </html>

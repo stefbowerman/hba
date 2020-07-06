@@ -4,7 +4,7 @@
  * Import these up here to allow overrides down below
  *
  */
-@import 'vendor/swiper.scss';
+// @import 'vendor/swiper.scss';
 
 /**
  * CORE
@@ -23,12 +23,12 @@
 // @import 'core/code';
 @import 'core/grid';
 @import 'core/layout';
-@import 'core/tables';
+// @import 'core/tables';
 @import 'core/forms';
 @import 'core/buttons';
-@import 'core/transitions';
+// @import 'core/transitions';
 // @import 'core/button-group';
-@import 'core/custom-forms';
+// @import 'core/custom-forms';
 // @import 'core/card';
 @import 'core/alert';
 // @import 'core/close';
@@ -42,18 +42,18 @@
  *
  */
 @import 'components/icon';
-@import 'components/breadcrumbs';
+// @import 'components/breadcrumbs';
 @import 'components/page';
 @import 'components/rte';
-@import 'components/pagination';
-@import 'components/content';
-@import 'components/card';
+// @import 'components/pagination';
+// @import 'components/content';
+// @import 'components/card';
 @import 'components/minimal-input';
-@import 'components/arrows';
-@import 'components/slideshow';
+// @import 'components/arrows';
+// @import 'components/slideshow';
 // @import 'components/video-player';
 @import 'components/newsletter-form';
-@import 'components/overlay';
+// @import 'components/overlay';
 
 /**
  * MODULES
@@ -64,10 +64,10 @@
  */
 @import 'modules/header';
 @import 'modules/footer';
-@import 'modules/ajax-cart';
-@import 'modules/product-detail';
+// @import 'modules/ajax-cart';
+// @import 'modules/product-detail';
 @import 'modules/video-background';
-@import 'modules/sidebar';
+// @import 'modules/sidebar';
 
 /**
  * Templates
@@ -77,24 +77,32 @@
  * Try to use the body template class as a CSS hook
  *
  */
-@import 'templates/collection.scss';
-@import 'templates/lookbook.scss';
-@import 'templates/404.scss';
-@import 'templates/gift-card.scss';
-@import 'templates/customer.scss';
-@import 'templates/challenge.scss';
-@import 'templates/password.scss';
+// @import 'templates/collection.scss';
+// @import 'templates/lookbook.scss';
+// @import 'templates/404.scss';
+// @import 'templates/gift-card.scss';
+// @import 'templates/customer.scss';
+// @import 'templates/challenge.scss';
+// @import 'templates/password.scss';
 
 html {
   padding-bottom: 0 !important; // Shopify admin bar messes this up
 }
 
-.development-mode {
-  /* stylelint-disable-next-line selector-max-id */
-  #preview-bar-iframe,
-  .shopify-preview-bar {
-    display: none;
+html.js {
+  body.is-loading {
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.33, 0.01, 0.49, 1.02) 0.25s;
   }
+
+  body.is-loaded {
+    opacity: 1;
+  }
+}
+
+body.effect-active .layout-wrapper {
+  overflow-x: hidden;
+  text-shadow: 0 0 0.4em transparentize($white, 0.3);
 }
 
 .view-content {
@@ -121,5 +129,13 @@ html {
   &.transition-out {
     opacity: 0;
     transition: opacity 0.6s cubic-bezier(0.3, 0.46, 0.17, 0.9);
+  }
+}
+
+.development-mode {
+  /* stylelint-disable-next-line selector-max-id */
+  #preview-bar-iframe,
+  .shopify-preview-bar {
+    display: none;
   }
 }

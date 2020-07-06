@@ -1,9 +1,12 @@
 import $ from 'jquery';
 import BaseSection from '../sections/base';
+import StatementSection from '../sections/statement';
 
 const $document = $(document);
 
-const SectionConstructorDictionary = {};
+const SectionConstructorDictionary = {
+  statement: StatementSection
+};
 
 export default class BaseView {
   constructor($el, type) {

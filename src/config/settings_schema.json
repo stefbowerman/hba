@@ -26,23 +26,17 @@
     "settings": [
       {
         "type": "header",
-        "content": "Sharing Images",
-        "info": "These will appear as options when someone shares the website."
+        "content": "Sharing Images"
       },
       {
         "type": "image_picker",
-        "id": "sharing_image_1",
-        "label": "Image #1"
+        "id": "sharing_image",
+        "label": "Image"
       },
       {
-        "type": "image_picker",
-        "id": "sharing_image_2",
-        "label": "Image #2"
-      },
-      {
-        "type": "image_picker",
-        "id": "sharing_image_3",
-        "label": "Image #3"
+        "type": "url",
+        "id": "sharing_video",
+        "label": "Video"
       }
     ]
   },

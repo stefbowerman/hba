@@ -1,0 +1,55 @@
+<div data-section-id="{{ section.id }}" data-section-type="statement">
+  <div style="display: none !important" data-input>
+    {{ section.settings.statement_text }}
+  </div>  
+
+  <div class="container rte" style="text-transform: uppercase;">
+    <div style="max-width: 500px;">
+      <div class="row">
+        <div class="col-4 col-md-5">
+          <p>
+            <span data-step="connection"></span>
+            <br />
+            {% comment %} Add an empty slot for this text so it doesn't reflow content during typing {% endcomment %}
+            <span style="position: relative">
+              <span style="pointer-events: none; visibility: hidden">&nbsp;</span>
+              <a href="#" data-audio-control data-toggle-background-audio class="highlight-link" style="position: absolute; top: 0; left: 0;"></a>  
+            </span>
+          </p>
+          <p>
+            <span data-step="ip"></span>
+          </p>
+        </div>
+        <div class="col-6 col-md-5">
+          <p>
+            <span data-step="search"></span>
+          </p>
+          <p>
+            <span data-step="run"></span>
+          </p>
+        </div>
+      </div>
+      <div style="margin-top: 15px;" data-output></div>
+    </div>   
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Statement",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "statement_text",
+        "label": "Statement Text"
+      }
+    ],
+    "presets": [{
+      "name": "Statement",
+      "category": "Content",
+      "settings": {
+        "statement_text": "<p>Statement text goes here<\/p>"
+      }
+    }]
+  }
+{% endschema %}

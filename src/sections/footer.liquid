@@ -10,7 +10,11 @@
           {% if block.settings.link_list and linklists[block.settings.link_list].links.size > 0 %}
             <ul class="footer-menu">
               {% for link in linklists[block.settings.link_list].links %}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                <li>
+                  <a href="{{ link.url }}" {% if link.url contains 'http' %}target="_blank"{% endif %}>
+                    {{ link.title }}
+                  </a>
+                </li>
               {% endfor %}
             </ul>
           {% endif %}

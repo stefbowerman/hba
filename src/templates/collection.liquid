@@ -1,3 +1,8 @@
+{% layout 'none' %}
+<script type="text/javascript">window.location = "/";</script>
+{% break %}
+
+
 {%- comment -%} Overload the collection filtering functionality so we can use the /collections/{{ handle }}/lookbook url {%- endcomment -%}
 {% if current_tags contains 'lookbook' %}
   {% section 'lookbook' %}
