@@ -54,10 +54,7 @@ export default class VideoBackgroundSection extends BaseSection {
         this.$videoSource.get(0).src = dataSrc;
         this.$videoSource.attr('data-src', null).removeAttr('data-src');
 
-        this.$video.one('loadeddata loadedmetadata play', () => {
-          this.startMedia();
-        });
-
+        this.$video.one('loadeddata', () => this.startMedia());
         this.video.load();
       }
       else {
@@ -188,7 +185,7 @@ export default class VideoBackgroundSection extends BaseSection {
     this.audioPlaying = false;
 
     const e = $.Event('audioPause.videoBackground');
-    $window.trigger(e);    
+    $window.trigger(e);
   }
 
   onToggleBackgroundAudioClick(e) {
