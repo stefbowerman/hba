@@ -12,7 +12,7 @@
     @include highlight-link;
   }
 
-  .minimal-input-box {
+  .minimal-input-box .form-control {
     height: 11px;
     font-size: $footer-font-size;
   }

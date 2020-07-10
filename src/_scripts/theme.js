@@ -1,5 +1,6 @@
 // jQuery
 import $ from 'jquery';
+import { throttle } from 'throttle-debounce';
 // import 'jquery-zoom';
 // import 'jquery-unveil';
 
@@ -39,7 +40,6 @@ window.HBA = {
 };
 
 ((Modernizr) => {
-  const $window = $(window);
   const $body = $(document.body);
 
   // Instantiate sections that live *outside* of content_for_layout
@@ -77,12 +77,20 @@ window.HBA = {
     document.documentElement.className = document.documentElement.className.replace('supports-no-cookies', 'supports-cookies');
   }
 
-  $window.on('audioPlay.videoBackground',  () => {
-    window.HBA.videoBackgroundAudioPlaying = true;
-  });
-  $window.on('audioPause.videoBackground', () => {
-    window.HBA.videoBackgroundAudioPlaying = false;
-  });
+  const setViewportHeightProperty = () => {
+    // If mobile / tablet, set var to window height. This fixes the 100vh iOS bug/feature.
+    const v = window.innerWidth <= 1024 ? `${window.innerHeight}px` : '100vh';
+    document.documentElement.style.setProperty('--viewport-height', v);
+  };
+
+  window.addEventListener('resize', throttle(100, setViewportHeightProperty));
+  document.addEventListener('scroll', throttle(100, () => {
+    if (window.innerWidth > 1024) return;
+
+    setViewportHeightProperty();
+  }));
+  
+  setViewportHeightProperty();  
 
   $body
     .addClass('is-loaded')
@@ -117,7 +125,7 @@ window.HBA = {
   }
 
   // Add "development mode" class for CSS hook
-  $body.addClass('development-mode');
+  // $body.addClass('development-mode');
 
   credits();
 })(Modernizr);

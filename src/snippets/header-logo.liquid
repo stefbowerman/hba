@@ -3,17 +3,3 @@
 {% else %}
   <div class="h1" itemscope itemtype="http://schema.org/Organization" style="display: none !important;">{{ shop.name }}</div>
 {% endif %}
-
-<div class="header-logo" data-logo>
-  {% comment %}
-   {% assign logo_img = 'logo.png' %}
-   {% assign logo_img_size = '200x' %}
-    <img src="{{ logo_img | asset_img_url: logo_img_size }}"
-         srcset="{{ logo_img | asset_img_url: logo_img_size }} 1x, {{ logo_img | asset_img_url: logo_img_size, scale: 2 }} 2x"
-         alt="{{ shop.name }}"
-         class="header-logo__image"
-         itemprop="logo">
-  {% endcomment %}
-  {% include 'icon-logo' %}
-  <span class="visually-hidden">{{ shop.name }} logo</span>
-</div>
