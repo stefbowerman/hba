@@ -1,5 +1,10 @@
 <div data-section-id="{{ section.id }}" data-section-type="statement">
   <div style="display: none !important" data-input>
+    {% if section.settings.statement_date != blank %}
+      <p style="margin-bottom: 2rem;">
+        {{ section.settings.statement_date }}
+      </p>
+    {% endif %}
     {{ section.settings.statement_text }}
   </div>  
 
@@ -10,11 +15,9 @@
           <p>
             <span data-step="connection"></span>
             <br />
-            {% comment %} Add an empty slot for this text so it doesn't reflow content during typing {% endcomment %}
-            <span style="position: relative">
-              <span style="pointer-events: none; visibility: hidden">&nbsp;</span>
-              <a href="#" data-audio-control data-toggle-background-audio class="highlight-link" style="position: absolute; top: 0; left: 0;"></a>  
-            </span>
+            <span data-step="audio"></span>
+            <a href="#" class="btn btn-highlight hide is-active" style="vertical-align: top" data-toggle-background-audio="false">Off</a>
+            <a href="#" class="btn btn-highlight hide" style="vertical-align: top" data-toggle-background-audio="true">On</a>
           </p>
           <p>
             <span data-step="ip"></span>
@@ -29,7 +32,7 @@
           </p>
         </div>
       </div>
-      <div style="margin-top: 15px;" data-output></div>
+      <div class="statement-output" data-output></div>
     </div>   
   </div>
 </div>
@@ -38,6 +41,11 @@
   {
     "name": "Statement",
     "settings": [
+      {
+        "type": "text",
+        "id": "statement_date",
+        "label": "Statement Date"
+      },
       {
         "type": "richtext",
         "id": "statement_text",

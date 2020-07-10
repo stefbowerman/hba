@@ -18,12 +18,12 @@
       <!-- ALERT: Your video is invalid -->
     {% else %}
       <div class="video-background">
-        <video autoplay muted loop playsinline>
-          <source src="{{ src }}" type="video/{{ video_type }}" />
+        <video muted loop playsinline>
+          <source data-src="{{ src }}" type="video/{{ video_type }}" />
         </video>
       </div>
 
-      <audio autoplay loop>
+      <audio loop>
         {% if section.settings.audio_file_url_mp3 != blank %}
           <source src="{{ section.settings.audio_file_url_mp3 }}" type="audio/mpeg">
         {% endif %}

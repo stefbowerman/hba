@@ -1,5 +1,6 @@
 // jQuery
 import $ from 'jquery';
+import { throttle } from 'throttle-debounce';
 // import 'jquery-zoom';
 // import 'jquery-unveil';
 
@@ -84,9 +85,22 @@ window.HBA = {
     window.HBA.videoBackgroundAudioPlaying = false;
   });
 
+  const setViewportHeightProperty = () => {
+    // If mobile / tablet, set var to window height. This fixes the 100vh iOS bug/feature.
+    const v = window.innerWidth <= 1024 ? `${window.innerHeight}px` : '100vh';
+    document.documentElement.style.setProperty('--viewport-height', v);
+  };
+  
+  window.addEventListener('resize', throttle(100, setViewportHeightProperty));
+  document.addEventListener('scroll', throttle(100, () => {
+    if (window.innerWidth > 1024) return;
+    setViewportHeightProperty();
+  }));
+
+  setViewportHeightProperty();   
+
   $body
-    .addClass('is-loaded')
-    .removeClass('is-loading');
+    .addClass('is-loaded');
 
   // Stop here...no AJAX navigation inside the theme editor
   // eslint-disable-next-line no-undef

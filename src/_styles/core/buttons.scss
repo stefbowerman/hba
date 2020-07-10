@@ -68,6 +68,25 @@
   }
 }
 
+// Highlight buttons only show the pseudo elements when an active state is applied to them
+.btn-highlight {
+  &:before,
+  &:after {
+    opacity: 0;
+  }
+
+  &.is-active {
+    background-color: transparent;
+
+    &:before,
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+
+
+
 // Future-proof disabling of clicks on `<a>` elements
 a.btn.disabled,
 fieldset:disabled a.btn {

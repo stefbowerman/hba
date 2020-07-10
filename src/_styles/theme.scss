@@ -92,7 +92,7 @@ html {
 html.js {
   body.is-loading {
     opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.33, 0.01, 0.49, 1.02) 0.25s;
+    transition: opacity 1s cubic-bezier(0.33, 0.01, 0.49, 1.02) 0.25s;
   }
 
   body.is-loaded {
@@ -137,5 +137,14 @@ body.effect-active .layout-wrapper {
   #preview-bar-iframe,
   .shopify-preview-bar {
     display: none;
+  }
+}
+
+// Temp styles for the statement
+.statement-output {
+  margin-top: 20px;
+
+  @include media-breakpoint-up(md) {
+    margin-top: 50px;
   }
 }

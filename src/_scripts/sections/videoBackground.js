@@ -21,6 +21,7 @@ export default class VideoBackgroundSection extends BaseSection {
 
     this.$video = $('video', this.$container);
     this.$audio = $('audio', this.$audio);
+    this.$videoSource = $('source', this.$video);
 
     this.video  = this.$video.get(0);
     this.audio  = this.$audio.get(0);
@@ -39,16 +40,30 @@ export default class VideoBackgroundSection extends BaseSection {
 
     // Events
     this.$video.on('timeupdate', this.onVideoTimeUpdate.bind(this));
-    this.$audio.on('canplay loadedmetadata', this.attemptToStartAudio.bind(this));
     this.$audio.on('play', this.onAudioPlay.bind(this)); // Happens on page load when the audio starts playing for the first time
     this.$audio.on('pause stalled', this.onAudioPause.bind(this));
 
     $body.on('click', '[data-toggle-background-audio]', this.onToggleBackgroundAudioClick.bind(this));
 
-    // Last ditch effect to start the audio
-    if (this.audio.currentTime === 0) {
-      setTimeout(() => this.attemptToStartAudio(), 500);
-    }
+    // Delaying the load + playback of the video
+    // frees up some performance for the statement typing effect
+    setTimeout(() => {
+      const dataSrc = this.$videoSource.attr('data-src');
+
+      if (dataSrc) {
+        this.$videoSource.get(0).src = dataSrc;
+        this.$videoSource.attr('data-src', null).removeAttr('data-src');
+
+        this.$video.one('loadeddata loadedmetadata play', () => {
+          this.startMedia();
+        });
+
+        this.video.load();
+      }
+      else {
+        this.startMedia();
+      }
+    }, 1500);
   }
 
   get initialFxProps() {
@@ -148,17 +163,17 @@ export default class VideoBackgroundSection extends BaseSection {
     this.fxRunning = false;
   }
 
-  attemptToStartAudio() {
-    if (!this.audio) return;
+  startMedia() {
+    const p1 = this.video.play();
+    const p2 = this.audio.play();
 
-    const p = this.audio.play();
-
-    if (p !== undefined) {
-      // Autoplay prevented - listen for a user interaction event
-      p.catch((e) => {
-        $body.one('click touchstart', () => this.audio.play());
-      });
+    if (p1) {
+      p1.catch(e => false);
     }
+
+    if (p2) {
+      p2.catch(e => false);
+    }    
   }
 
   onAudioPlay() {
@@ -178,7 +193,10 @@ export default class VideoBackgroundSection extends BaseSection {
 
   onToggleBackgroundAudioClick(e) {
     e.preventDefault();
-    this.audioPlaying ? this.audio.pause() : this.audio.play();
+
+    const $toggle = $(e.currentTarget);
+    const toggleOn = !!$toggle.data('toggle-background-audio'); // data attribute should be bool
+    toggleOn ? this.audio.play() : this.audio.pause();
   }
 
   onVideoTimeUpdate() {
