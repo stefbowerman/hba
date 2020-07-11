@@ -1,5 +1,8 @@
 import $ from 'jquery';
-import { random } from '../core/utils';
+import {
+  random,
+  isTouch
+} from '../core/utils';
 import BaseSection from './base';
 
 const $window = $(window);
@@ -43,7 +46,14 @@ export default class VideoBackgroundSection extends BaseSection {
     this.$audio.on('play', this.onAudioPlay.bind(this)); // Happens on page load when the audio starts playing for the first time
     this.$audio.on('pause stalled', this.onAudioPause.bind(this));
 
-    $body.on('click', '[data-toggle-background-audio]', this.onToggleBackgroundAudioClick.bind(this));
+    if (isTouch()) {
+      $body.on('touchstart', '[data-toggle-background-audio]', this.onToggleBackgroundAudioClick.bind(this));
+      $body.on('click', '[data-toggle-background-audio]', e => e.preventDefault());
+    }
+    else {
+      $body.on('click', '[data-toggle-background-audio]', this.onToggleBackgroundAudioClick.bind(this));
+    }
+    
 
     // Delaying the load + playback of the video
     // frees up some performance for the statement typing effect
@@ -165,11 +175,11 @@ export default class VideoBackgroundSection extends BaseSection {
     const p2 = this.audio.play();
 
     if (p1) {
-      p1.catch(e => false);
+      p1.catch(e => console.log(e)); // eslint-disable-line no-console
     }
 
     if (p2) {
-      p2.catch(e => false);
+      p2.catch(e => console.log(e)); // eslint-disable-line no-console
     }    
   }
 

@@ -1,0 +1,23 @@
+{% if settings.touch_icon != blank %}
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ settings.touch_icon | img_url: '180x180' }}">
+{% elsif settings.favicon != blank %}
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ settings.favicon | img_url: '180x180' }}">
+{% endif %}
+
+{% if settings.favicon != blank %}
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | img_url: '32x32' }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ settings.favicon | img_url: '16x16' }}">
+{% endif %}
+
+{% comment %}
+  Due to Shopify limtations, asset paths inside this file have been hard coded.
+  If you need to change, upload new assets in the file settings and then change the values in this file
+{% endcomment %}
+<link rel="manifest" href="{{ 'site.manifest.json | asset_url }}">
+
+{% if settings.safari_pinned_tab_svg_path != blank %}
+  <link rel="mask-icon" href="{{ settings.safari_pinned_tab_svg_path }}" color="{{ settings.theme_color }}">
+{% endif %}
+
+<meta name="msapplication-TileColor" content="{{ settings.theme_color }}">
+<meta name="theme-color" content="{{ settings.theme_color }}">

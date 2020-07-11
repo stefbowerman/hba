@@ -23,10 +23,13 @@
     flex-direction: column;
   }
    
-  /* stylelint-disable-next-line selector-max-id */
-  main#view-container {
+  .view-container {
     flex: 1 0 0; // All three need to be specified for IE11
     flex-direction: column;
+    min-height: 100vh;
+    min-height: var(#{'--viewport-height'});
+    // min-height: 100vh;
+    // min-height: var(#{'--viewport-height'});    
   }
 }
 

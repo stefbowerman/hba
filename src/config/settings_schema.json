@@ -46,8 +46,26 @@
       {
         "type": "image_picker",
         "id": "favicon",
-        "label": "Favicon image",
+        "label": "Favicon Image",
+        "info": "Should be at least 32px x 32px"
+      },
+      {
+        "type": "image_picker",
+        "id": "touch_icon",
+        "label": "Touch Icon",
         "info": "Should be at least 180px x 180px"
+      },
+      {
+        "type": "url",
+        "id": "safari_pinned_tab_svg_path",
+        "label": "Safari Pinned Tab SVG Path",
+        "info": "Upload this on the Shopify file settings screen"
+      },      
+      {
+        "type": "color",
+       "id": "theme_color",
+       "label": "Theme Color",
+       "default": "#000000"
       }
     ]
   }, 
