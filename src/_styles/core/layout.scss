@@ -26,10 +26,11 @@
   .view-container {
     flex: 1 0 0; // All three need to be specified for IE11
     flex-direction: column;
+  }
+
+  .view-content {
     min-height: 100vh;
     min-height: var(#{'--viewport-height'});
-    // min-height: 100vh;
-    // min-height: var(#{'--viewport-height'});    
   }
 }
 
