@@ -37,13 +37,13 @@
 // Use this as the only direct child of main#MainContent on pages where you don't want the content flush to the header and footer
 // Or use the modifier classes to get flush on top or bottom
 .layout-content-wrapper {
-  margin-top: 91px;
+  padding-top: 91px;
   
   @include media-breakpoint-up(lg) {
-    margin-top: 100px;  
+    padding-top: 100px;  
   }
 
   &.flush-top {
-    margin-top: 0;
+    padding-top: 0;
   }
 }

@@ -5,7 +5,8 @@ import BaseSection from './base';
 
 const selectors = {
   input: '[data-input]',
-  output: '[data-output]'
+  output: '[data-output]',
+  statementDate: '[data-statement-date]'
 };
 
 const $window = $(window);
@@ -19,7 +20,7 @@ export default class StatementSection extends BaseSection {
 
     this.$input  = $(selectors.input, this.$container); // Hidden statement
     this.$output = $(selectors.output, this.$container); // Where the statment gets output
-    this.$paragraphs = this.$input.find('p').clone().hide();
+    this.$statementDate = $(selectors.statementDate, this.$container);
     this.$backgroundAudioToggleOn = $('[data-toggle-background-audio="true"]', this.$container);
     this.$backgroundAudioToggleOff = $('[data-toggle-background-audio="false"]', this.$container);
 
@@ -46,6 +47,12 @@ export default class StatementSection extends BaseSection {
         typed: null
       }
     };
+
+    const formatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    this.$statementDate.text(formatter.format(new Date()));
+
+    this.$paragraphs = this.$input.find('p').clone().hide();
 
     this.$output.html(this.$paragraphs);
 

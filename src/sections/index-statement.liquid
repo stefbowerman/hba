@@ -1,10 +1,6 @@
 <div data-section-id="{{ section.id }}" data-section-type="statement">
   <div style="display: none !important" data-input>
-    {% if section.settings.statement_date != blank %}
-      <p style="margin-bottom: 2rem;">
-        {{ section.settings.statement_date }}
-      </p>
-    {% endif %}
+    <p style="margin-bottom: 2rem;" data-statement-date></p>
     {{ section.settings.statement_text }}
   </div>  
 
@@ -41,11 +37,6 @@
   {
     "name": "Statement",
     "settings": [
-      {
-        "type": "text",
-        "id": "statement_date",
-        "label": "Statement Date"
-      },
       {
         "type": "richtext",
         "id": "statement_text",
