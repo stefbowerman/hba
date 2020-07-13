@@ -32,13 +32,13 @@
 
   &:hover,
   &:focus {
-    background-color: $white;
+    background-color: $red;
     color: $black;
   }
 
   &.is-active {
     background-color: $black;
-    color: $white;
+    color: $red;
   }
 
   // Disabled comes first so active can properly restyle
@@ -57,14 +57,14 @@
 }
 
 .btn-alt {
-  background-color: $white;
+  background-color: $red;
   color: $black;
 
   &:hover,
   &:focus,
   &.active {
     background-color: $black;
-    color: $white;
+    color: $red;
   }
 }
 

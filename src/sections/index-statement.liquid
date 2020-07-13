@@ -28,6 +28,39 @@
           </p>
         </div>
       </div>
+    </div>
+      
+    {% if section.blocks.size > 0 %}
+      <p style="margin: 2rem 0;">July 17, 2020</p>
+      <div class="row">
+        {% for block in section.blocks %}
+          <div class="col-md-4">
+            {% if block.type == "content_block" %}
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.image.alt | default: block.settings.title | escape }}" />
+              {% endif %}
+              <h4>{{ block.settings.title }}</h4>
+              <div class="rte">
+                {{ block.settings.description }}
+              </div>
+              {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+                <a href="{{ block.settings.button_link }}" class="btn" {% if block.settings.button_link contains 'http' %}target="_blank"{% endif %}>
+                  {{ block.settings.button_text }}
+                </a>
+              {% endif %}
+            {% elsif block.type == "product" and block.settings.product != blank %}
+              {% assign product = all_products[block.settings.product] %}
+              {% if product.featured_image %}
+                <img src="{{ product.featured_image | img_url: '1000x' }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" />
+              {% endif %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <hr style="border-top-color: red; margin: 5rem 0;" />
+    {% endif %}
+
+    <div style="max-width: 500px;">
       <div class="statement-output" data-output></div>
     </div>   
   </div>
@@ -36,6 +69,7 @@
 {% schema %}
   {
     "name": "Statement",
+    "max_blocks": 2,
     "settings": [
       {
         "type": "richtext",
@@ -43,12 +77,62 @@
         "label": "Statement Text"
       }
     ],
+    "blocks" : [
+      {
+        "type": "product",
+        "name": "Product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          },
+          {
+            "type": "richtext",
+            "id": "product_details",
+            "label": "Product Details"
+          }
+        ]
+      },
+      {
+        "type": "content_block",
+        "name": "Content Block",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Text"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button Link"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
     "presets": [{
       "name": "Statement",
       "category": "Content",
       "settings": {
         "statement_text": "<p>Statement text goes here<\/p>"
-      }
+      },
+      "blocks": []
     }]
   }
 {% endschema %}

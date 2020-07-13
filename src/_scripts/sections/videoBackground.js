@@ -42,7 +42,7 @@ export default class VideoBackgroundSection extends BaseSection {
     this.filterTimeout    = null;
 
     // Events
-    this.$video.on('timeupdate', this.onVideoTimeUpdate.bind(this));
+    // this.$video.on('timeupdate', this.onVideoTimeUpdate.bind(this));
     this.$audio.on('play', this.onAudioPlay.bind(this)); // Happens on page load when the audio starts playing for the first time
     this.$audio.on('pause stalled', this.onAudioPause.bind(this));
 
@@ -172,15 +172,15 @@ export default class VideoBackgroundSection extends BaseSection {
 
   startMedia() {
     const p1 = this.video.play();
-    const p2 = this.audio.play();
+    // const p2 = this.audio.play();
 
     if (p1) {
       p1.catch(e => console.log(e)); // eslint-disable-line no-console
     }
 
-    if (p2) {
-      p2.catch(e => console.log(e)); // eslint-disable-line no-console
-    }    
+    // if (p2) {
+    //   p2.catch(e => console.log(e)); // eslint-disable-line no-console
+    // }    
   }
 
   onAudioPlay() {

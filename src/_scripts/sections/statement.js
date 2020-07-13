@@ -15,7 +15,7 @@ export default class StatementSection extends BaseSection {
   constructor(container) {
     super(container, 'statement');
 
-    this.fileName = 'STATEMENT.exe';
+    this.fileName = 'INITIAL-START.exe';
     this.timeouts = [];
 
     this.$input  = $(selectors.input, this.$container); // Hidden statement
