@@ -72,6 +72,10 @@
     margin-top: $spacer;
   }
 
+  > :first-child {
+    margin-top: 0;
+  }
+
   // p {
   //   > img:only-child {
   //     margin: $spacer*2 0;
