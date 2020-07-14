@@ -52,10 +52,9 @@ header {
   transform: translateZ(0); // Prevent bluriness from scaling
 }
 
-// This is temp
-header .newsletter-form {
+.header__controls {
   position: fixed;
-  z-index: $zindex-header-cart;
+  z-index: $zindex-header-controls;
   top: 24px;
   right: $outer-gutter-mobile;
   max-width: 55%;
@@ -64,28 +63,39 @@ header .newsletter-form {
   @include media-breakpoint-up(lg) {
     top: 34px;
     right: $outer-gutter;
-    padding-right: 12vw;
+  }
+
+  .newsletter-form {
+    display: inline-block;
+    
+    @include media-breakpoint-up(lg) {
+      padding-right: 12vw;
+    }  
+  }
+
+  .ajax-cart-open & .newsletter-form {
+    display: none;
   }
 }
 
-// .header-cart {
-//   position: fixed;
-//   z-index: $zindex-header-cart;
-//   top: 24px;
-//   right: $outer-gutter-mobile;
+.header-cart {
+  // position: fixed;
+  // z-index: $zindex-header-cart;
+  // top: 24px;
+  // right: $outer-gutter-mobile;
 
-//   @include media-breakpoint-up(lg) {
-//     top: 34px;
-//     right: $outer-gutter;
-//   }
+  // @include media-breakpoint-up(lg) {
+  //   top: 34px;
+  //   right: $outer-gutter;
+  // }
 
-//   display: none;
+  display: none;
 
-//   &.has-items,
-//   .ajax-cart-open & {
-//     display: inline-block;
-//   }
-// }
+  &.has-items,
+  .ajax-cart-open & {
+    display: inline-block;
+  }
+}
 
 // .header-nav {
 //   font-family: $font-family-sans-serif;

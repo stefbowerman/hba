@@ -37,6 +37,7 @@ export default class NewsletterForm {
     this.$formInput    = $('input[type="email"]', this.$el);
 
     this.$form.on('click', selectors.formContentsTrigger, this.onFormContentsTriggerClick.bind(this));
+    this.$formInput.on('keydown', this.onFormInputKeyDown.bind(this));
   }
 
   /**
@@ -115,5 +116,11 @@ export default class NewsletterForm {
   onFormContentsTriggerClick(e) {
     e.preventDefault();
     this.showFormContents();
+  }
+
+  onFormInputKeyDown(e) {
+    if (e && e.which === 27) {
+      this.hideFormContents();
+    }
   }
 }

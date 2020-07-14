@@ -1,7 +1,7 @@
 // jQuery
 import $ from 'jquery';
 import { throttle } from 'throttle-debounce';
-// import 'jquery-zoom';
+import 'jquery-zoom';
 // import 'jquery-unveil';
 
 // Bootstrap JS
@@ -23,11 +23,12 @@ import AppController     from './core/appController';
 // Views
 import IndexView      from './views/index';
 import PageView       from './views/page';
+import ProductView    from './views/product';
 
 // Sections
 import HeaderSection   from './sections/header';
 import FooterSection   from './sections/footer';
-// import AJAXCartSection from './sections/ajaxCart';
+import AJAXCartSection from './sections/ajaxCart';
 import VideoBackgroundSection from './sections/videoBackground';
 
 // Do this ASAP
@@ -45,8 +46,9 @@ window.HBA = {
 
   // Instantiate sections that live *outside* of content_for_layout
   const sections = {
-    header:   new HeaderSection($('[data-section-type="header"]')),
-    footer:   new FooterSection($('[data-section-type="footer"]')),
+    header: new HeaderSection($('[data-section-type="header"]')),
+    footer: new FooterSection($('[data-section-type="footer"]')),
+    ajaxCart: new AJAXCartSection($('[data-section-type="ajax-cart"]')),
     videobackground: new VideoBackgroundSection($('[data-section-type="video-background"]'))
   };
 
@@ -54,11 +56,21 @@ window.HBA = {
   const appController = new AppController({
     viewConstructors: {
       index: IndexView,
-      page: PageView
+      page: PageView,
+      product: ProductView
     },
     onRouteStart: () => {
       sections.header.newsletterForm.hideFormContents();
       sections.footer.newsletterForm.hideFormContents();
+    },
+    onBeforeRouteStart: (deferred) => {
+      sections.ajaxCart.close();
+      deferred.resolve();
+    },
+    onViewReady: (view) => {
+      if (view.type === 'cart') {
+        sections.ajaxCart.open();
+      }
     }
   });
 

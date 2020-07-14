@@ -53,6 +53,11 @@
               {% if product.featured_image %}
                 <img src="{{ product.featured_image | img_url: '1000x' }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" />
               {% endif %}
+              <h4>{{ product.title }}</h4>
+              <p>{{ product.selected_or_first_available_variant.sku | prepend: 'SKU' }}</p>
+              <a href="{{ product.url }}" class="btn">
+                Link To Purchase
+              </a>              
             {% endif %}
           </div>
         {% endfor %}

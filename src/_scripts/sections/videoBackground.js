@@ -41,6 +41,8 @@ export default class VideoBackgroundSection extends BaseSection {
     this.scaleTimeout     = null;
     this.filterTimeout    = null;
 
+    return;
+
     // Events
     // this.$video.on('timeupdate', this.onVideoTimeUpdate.bind(this));
     this.$audio.on('play', this.onAudioPlay.bind(this)); // Happens on page load when the audio starts playing for the first time

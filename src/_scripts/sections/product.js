@@ -1,10 +1,15 @@
+import $ from 'jquery';
 import BaseSection from './base';
-import Collection from '../collection/collection';
+import ProductPane from '../product/productPane';
+
+const selectors = {
+  productPane: '[data-product-pane]'
+};
 
 export default class ProductSection extends BaseSection {
   constructor(container) {
     super(container, 'product');
 
-    this.collection = new Collection(this.$container);
+    this.productPane = new ProductPane($(selectors.productPane, this.$container));
   }
 }

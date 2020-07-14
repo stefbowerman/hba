@@ -4,43 +4,43 @@
       {% include 'header-logo' %}
     </a>
 
-    {% if settings.klaviyo_list_id == blank %}
-      {% include 'error-for-theme-editor' with 'Klaviyo List ID required for mailing list sign up' %}
-    {% else %}
-      <form method="post"
-            class="newsletter-form"
-            data-newsletter-form
-            data-klaviyo-list-id="{{ settings.klaviyo_list_id }}"
-            data-klaviyo-source="Header"
-        >
-        <a href="#" class="newsletter-form-contents-trigger btn" data-form-contents-trigger>Notify Me</a>  
-        <div class="newsletter-form-contents" data-form-contents>
-          <div class="newsletter-form-inputs">
-            <div class="minimal-input-box">
-              <label for="newsletter-{{ section.id }}" class="sr-only"></label>
-              <div class="form-control-container">
-                <input type="email" id="newsletter-{{ section.id }}" class="form-control" />
+    <div class="header__controls">
+      {% if settings.klaviyo_list_id == blank %}
+        {% include 'error-for-theme-editor' with 'Klaviyo List ID required for mailing list sign up' %}
+      {% else %}
+        <form method="post"
+              class="newsletter-form"
+              data-newsletter-form
+              data-klaviyo-list-id="{{ settings.klaviyo_list_id }}"
+              data-klaviyo-source="Header"
+          >
+          <a href="#" class="newsletter-form-contents-trigger btn" data-form-contents-trigger>Notify Me</a>  
+          <div class="newsletter-form-contents" data-form-contents>
+            <div class="newsletter-form-inputs">
+              <div class="minimal-input-box">
+                <label for="newsletter-{{ section.id }}" class="sr-only"></label>
+                <div class="form-control-container">
+                  <input type="email" id="newsletter-{{ section.id }}" class="form-control" />
+                </div>
+                <button type="submit" class="btn">
+                  Submit
+                </button>
               </div>
-              <button type="submit" class="btn">
-                Submit
-              </button>
             </div>
+            <div class="newsletter-form-message"
+                data-form-message
+                data-success="{% render 'newsletter-form-message', type: 'success' %}"
+                data-already-subscribed="{% render 'newsletter-form-message', type: 'already-subscribed' %}"
+                data-fail="{% render 'newsletter-form-message', type: 'fail' %}">
+            </div>  
           </div>
-          <div class="newsletter-form-message"
-              data-form-message
-              data-success="{% render 'newsletter-form-message', type: 'success' %}"
-              data-already-subscribed="{% render 'newsletter-form-message', type: 'already-subscribed' %}"
-              data-fail="{% render 'newsletter-form-message', type: 'fail' %}">
-          </div>  
-        </div>
-      </form>
-    {% endif %}      
+        </form>
+      {% endif %}      
 
-    {% comment %}
-    <a href="/cart" class="header-cart btn {% if cart.item_count > 0 %} has-items{% endif %}" data-ajax-cart-trigger>
+      <a href="/cart" class="header-cart btn {% if cart.item_count > 0 %} has-items{% endif %}" data-ajax-cart-trigger>
         Cart <span data-cart-count>{{ cart.item_count }}</span>
-    </a>
-    {% endcomment %}
+      </a>
+    </div>
   </header>
 </div>
 

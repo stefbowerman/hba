@@ -20,7 +20,7 @@
 {% assign current_variant = current_variant | default: product.selected_or_first_available_variant %}
 
 {% comment %} Make one gallery for all the images {% endcomment %}
-<div class="product-gallery" data-product-gallery>
+<div class="product-gallery" style="display: none !important" data-product-gallery>
   <div id="slideshow-{{ product.id }}" class="product-gallery__slideshow swiper-container" data-product-gallery-slideshow>
     <div class="swiper-wrapper">
       {% for image in product.images %}
