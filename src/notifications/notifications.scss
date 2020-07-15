@@ -1,15 +1,17 @@
-@font-face{
+/* Style sheet for transaction notifications */
+
+@font-face {
   font-family: 'HBA Mono';
-  src: url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff?v=1594683590) format("woff"),
-       url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff2?v=1594683590) format("woff2");
+  src: url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff?v=1594683590') format("woff"),
+       url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff2?v=1594683590') format("woff2");
   font-weight:400;
   font-style:normal
 }
 
-@font-face{
+@font-face {
   font-family: 'HBA Mono';
-  src: url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff?v=1594683590) format("woff"),
-       url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff2?v=1594683590) format("woff2");
+  src: url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff?v=1594683590') format("woff"),
+       url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff2?v=1594683590') format("woff2");
   font-weight:700;
   font-style:normal;
 }
@@ -30,6 +32,7 @@ body, .body {
 .order-list__item-variant,
 .order-list__item-quantity,
 .order-list__item-sku,
+.order-list__item-refunded,
 .subtotal-line__title span,
 .subtotal-line__value,
 .subtotal-line__value strong,
@@ -45,7 +48,7 @@ body, .body {
   line-height: 1.23;
   font-weight: 400;
   color: #FFF;
-  font-family: 'HBA Mono', Courier New, Courier, monospace;
+  font-family: 'HBA Mono', Monaco, Courier, monospace;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -118,6 +121,10 @@ h6 {
 
 .subtotal-line__title {
   text-transform: uppercase;
+
+  small {
+    font-size: 11px;
+  }
 }
 
 .subtotal-line .subtotal-line__title,
@@ -142,12 +149,19 @@ h6 {
   margin-left: 0 !important;
 }
 
-.footer .disclaimer__subtext {
-  font-size: 11px;
+.disclaimer__subtext {
+  &, a {
+    font-size: 12px;
+  }
+  
+  a {
+    color: #FFF;
+    border-bottom: 1px solid #FFF;
+  }
 }
 
-.footer .disclaimer__subtext a {
-  font-size: 11px;
-  color: #FFF;
-  border-bottom: 1px solid #FFF;
+.footer .disclaimer__subtext {
+  &, a {
+    font-size: 11px;
+  }
 }
