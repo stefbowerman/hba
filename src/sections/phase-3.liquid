@@ -7,6 +7,11 @@
     {% if section.blocks.size > 0 %}
       <div class="row" style="margin-top: 30px;">
         {% for block in section.blocks %}
+          {% assign multiple_images = false %}
+          {% if block.settings.image_1 != blank and block.settings.image_2 != blank %}
+            {% assign multiple_images = true %}
+          {% endif %}
+
           <div class="col-md-6">
             {% if block.type == "content_card" %}
               <div class="content-card">
@@ -14,9 +19,32 @@
                   <a href="{{ block.settings.link }}" {% if block.settings.link contains 'http' %}target="_blank"{% endif %}>
                 {% endif %}
 
-                {% if block.settings.image != blank %}
-                  <img src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.image.alt | default: block.settings.title | escape }}" />
-                {% endif %}
+                <div class="content-card__gallery{% if multiple_images %} has-multiple-images{% endif %}">
+                  {% if block.settings.image_1 != blank %}
+                    <img srcset="{{ block.settings.image_1 | img_url: '500x' }} 400w,
+                                 {{ block.settings.image_1 | img_url: '600x' }} 800w,
+                                 {{ block.settings.image_1 | img_url: '800x' }} 1200w"
+                         sizes="100vw,
+                                (min-width: 800px) 60vw,
+                                (min-width: 1400px) 40vw"
+                         src="{{ block.settings.image_1 | img_url: '800x' }}"
+                         class="content-card__gallery-image content-card__gallery-image--main"
+                         alt="{{ block.settings.image_1.alt | default: block.settings.title | escape }}"
+                    />                  
+                  {% endif %}
+                  {% if block.settings.image_2 != blank %}
+                    <img srcset="{{ block.settings.image_2 | img_url: '500x' }} 400w,
+                                 {{ block.settings.image_2 | img_url: '600x' }} 800w,
+                                 {{ block.settings.image_2 | img_url: '800x' }} 1200w"
+                         sizes="100vw,
+                                (min-width: 800px) 60vw,
+                                (min-width: 1400px) 40vw"
+                         src="{{ block.settings.image_2 | img_url: '800x' }}"
+                         class="content-card__gallery-image content-card__gallery-image--alt"
+                         alt="{{ block.settings.image_2.alt | default: block.settings.title | escape }}"
+                    />                  
+                  {% endif %}                  
+                </div>
                 <div class="content-card__copy">
                   <h4>{{ block.settings.title }}</h4>
                   {% if block.settings.button_text != blank and block.settings.link != blank %}
@@ -73,8 +101,13 @@
           },
           {
             "type": "image_picker",
-            "id": "image",
-            "label": "Image"
+            "id": "image_1",
+            "label": "Image 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image 2"
           }
         ]
       }
