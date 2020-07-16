@@ -4,16 +4,21 @@
       <div class="layout-content-wrapper">
         <div class="container">
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-9">
               <div class="ajax-cart__body" data-ajax-cart-body>
                 {% comment %} Filled in via JS {% endcomment %}
               </div>              
             </div>
-            <div class="col-5 offset-5 col-md-2 offset-md-0">
+            <div class="col-6 offset-6 col-md-3 offset-md-0 col-md-lg-2">
               <div class="ajax-cart__footer" data-ajax-cart-footer>
                 <div class="ajax-cart__footer-top">
+                  {% if section.settings.checkout_text %}
+                    <div class="ajax-cart__footer-row">
+                      {{ section.settings.checkout_text }}
+                    </div>
+                  {% endif %}
                   <div class="ajax-cart__footer-row">
-                    Total: <span data-ajax-cart-total-price></span>
+                    Sub total: <span data-ajax-cart-total-price></span>
                   </div>
                 </div>
                 <div class="ajax-cart__footer-bottom">
@@ -46,7 +51,7 @@
     {{#if items}}
       <div class="row">
         {{#each items}}
-          <div class="ajax-cart__item col-md-5" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
+          <div class="ajax-cart__item col-md-6" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
             <div class="ajax-cart__item-child">
               <img src="{{ image }}" class="ajax-cart__item-image">
             </div>
@@ -55,13 +60,19 @@
                 <h3>{{ product_title }}</h3>
                 <div>{{ price }}</div>
                 {{#if sku}}
-                  <div>SKU{{ sku }}</div>
+                  <div>{{ sku }}</div>
                 {{/if}}
                 <div>{{ variant_title }}</div>
-                {{#if multiple_quantities}}
-                <div>QTY{{ quantity }}</div>
-                {{/if}}
-                <a href="#" class="btn btn-alt" data-ajax-cart-item-remove>Remove</a>
+                <div class="ajax-cart__item-quantity">
+                  <div class="quantity-adjuster" data-quantity-adjuster>
+                    <button class="btn btn-alt" data-decrement>-</button>
+                    <input type="number" value="{{ quantity }}" min="0" max="{{ max_quantity }}" />
+                    <button class="btn btn-alt" data-increment>+</button>
+                  </div>
+                  {{#if max_quantity_reached }}
+                    <span class="error text-uppercase">Max Quantity Reached</span>
+                  {{/if}}
+                </div>          
               </div>
             </div>
           </div>
@@ -81,6 +92,12 @@
         "type": "richtext",
         "label": "Empty Text",
         "default": "<p>Cart Empty</p>"
+      },
+      {
+        "id": "checkout_text",
+        "type": "richtext",
+        "label": "Checkout Text",
+        "default": "<p>Presale<br />Please allow 6-8 weeks for delivery</p>"
       }
     ]
   }

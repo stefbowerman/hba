@@ -43,6 +43,11 @@
     padding-top: 100px;  
   }
 
+  // Because we have the program output now...
+  .template-index & {
+    padding-top: 30px;    
+  }
+
   &.flush-top {
     padding-top: 0;
   }

@@ -131,7 +131,7 @@
           <span class="order-list__item-price">{{ line.final_line_price | money }}</span><br />
 
           {% if line.sku != blank %}
-            <span class="order-list__item-sku">{{ line.sku | prepend: 'SKU' }}</span><br/>
+            <span class="order-list__item-sku">{{ line.sku }}</span><br/>
           {% endif %}
 
           {% if line.variant_title != 'Default Title' and line.variant_title != blank %}

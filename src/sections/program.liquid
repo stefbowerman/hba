@@ -1,0 +1,51 @@
+<div data-section-id="{{ section.id }}" data-section-type="program">
+  <div class="program">
+    <div class="container">
+      <div class="row rte">
+        <div class="col-5 col-sm-3 col-lg-2">
+          <p>
+            <span data-step="connection"></span>
+            <br />
+            <span data-step="audio"></span>
+            <a href="#" class="btn btn-highlight hide is-active" style="vertical-align: top" data-toggle-background-audio="false">Off</a>
+            <a href="#" class="btn btn-highlight hide" style="vertical-align: top" data-toggle-background-audio="true">On</a>
+          </p>
+          <p>
+            <span data-step="ip"></span>
+          </p>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <p>
+            <span data-step="search-1"></span>
+          </p>
+          <p>
+            <span data-step="run-1"></span>
+          </p>
+        </div>
+        <div class="d-none d-md-block col-md-3 col-lg-2" data-step="file-2">
+          <p>
+            <span data-step="search-2"></span>
+          </p>
+          <p>
+            <span data-step="run-2"></span>
+          </p>
+        </div>
+        <div class="d-none d-md-block col-md-3 col-lg-2" data-step="file-3">
+          <p>
+            <span data-step="search-3"></span>
+          </p>
+          <p>
+            <span data-step="run-3"></span>
+          </p>
+        </div>        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Program",
+    "settings": []
+  }
+{% endschema %}

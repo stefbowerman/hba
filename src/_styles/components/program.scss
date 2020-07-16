@@ -1,0 +1,13 @@
+// -------------------------
+// Program
+// -------------------------
+
+.program {
+  margin-top: 116px;
+  text-transform: uppercase;
+
+  @include media-breakpoint-down(sm) {
+    margin-top: 92px;
+    font-size: $font-size-sm;
+  }
+}

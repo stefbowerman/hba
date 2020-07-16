@@ -14,11 +14,11 @@ let cachedWindowWidth = $window.width();
 
 // Match those set in variables.scss
 const breakpointMinWidths = {
-  xs: 576,
-  sm: 768,
-  md: 992,
-  lg: 1200,
-  xl: 1480
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+  xxl: 1480
 };
 
 const events = {

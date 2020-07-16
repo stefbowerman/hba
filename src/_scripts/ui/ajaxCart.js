@@ -1,7 +1,9 @@
 import $ from 'jquery';
 import Handlebars from 'handlebars';
+import Typed from 'typed.js';
 import { whichTransitionEnd } from '../core/utils';
 import CartAPI from '../core/cartAPI';
+import QuantityAdjuster from './quantityAdjuster';
 
 const $window = $(window);
 const $body = $(document.body);
@@ -42,23 +44,28 @@ export default class AJAXCart {
 
     this.events = {
       CLICK: `click${this.namespace}`,
-      CHANGE: `change${this.namespace}`,
+      UPDATE: `update${this.namespace}`,
       RENDER: `render${this.namespace}`,
       DESTROY: `destroy${this.namespace}`,
       UPDATE_AND_OPEN: `updateAndOpen${this.namespace}`
     };
 
-    this.templateData = templateData;
+    this.typers = {
+      totalPrice: null
+    };
 
     this.$el = $(selectors.container);
     this.$acBody = $(selectors.body, this.$el);
     this.$totalPrice = $(selectors.totalPrice, this.$el);
     this.$bodyTemplate = $(selectors.bodyTemplate);
     this.$cartCount = $(selectors.cartCount);
-
+    
+    this.templateData = templateData;
     this.stateIsOpen = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
     this.hasBeenRendered = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
     this.transitionEndEvent = whichTransitionEnd();
+    this.qaInteractionTimeout = null;
+    this.qaInteractionDelay   = 200; // Delay before triggering the quantityadjuster change event (allows user to increment / decrement quickly)        
 
     if (!this.$bodyTemplate.length) {
       console.warn(`[${this.name}] - Handlebars template required to initialize`);
@@ -68,9 +75,11 @@ export default class AJAXCart {
     // Compile this once during initialization
     this.bodyTemplate = Handlebars.compile(this.$bodyTemplate.html());
 
+    this.$el.on('change.quantityAdjuster', this.onQuantityAdjusterChange.bind(this));
+
     $body.on(this.events.CLICK, selectors.trigger, this.onTriggerClick.bind(this));
     $body.on(this.events.CLICK, selectors.close, this.onCloseClick.bind(this));
-    $body.on(this.events.CLICK, selectors.itemRemove, this.onItemRemoveClick.bind(this));
+    // $body.on(this.events.CLICK, selectors.itemRemove, this.onItemRemoveClick.bind(this));
     $window.on(this.events.RENDER, this.onRender.bind(this));
     $window.on(this.events.DESTROY, this.onDestroy.bind(this));
     $window.on(this.events.UPDATE_AND_OPEN, this.onUpdateAndOpen.bind(this));
@@ -148,16 +157,28 @@ export default class AJAXCart {
       this.$acBody.empty().append(this.bodyTemplate(templateData));
     }
     else if (slot === 'footer') {
-      this.$totalPrice.text(cart.total_price);
+      this.setTotalPrice(cart.total_price);
     }
     else {
       this.$acBody.empty().append(this.bodyTemplate(templateData));
-      this.$totalPrice.text(cart.total_price);
+      this.setTotalPrice(cart.total_price);
     }
 
     $window.trigger($.Event(this.events.RENDER, { cart }));
 
     return this;
+  }
+
+  setTotalPrice(price) {
+    if (this.typers.totalPrice) {
+      this.typers.totalPrice.destroy();
+    }
+
+    this.typers.totalPrice = new Typed(this.$totalPrice.get(0), {
+      strings: [price],
+      typeSpeed: 35,
+      showCursor: false
+    });
   }
 
   /**
@@ -213,6 +234,8 @@ export default class AJAXCart {
       this.$el.toggleClass(classes.cartIsEmpty, e.cart.item_count === 0);
     }
 
+    QuantityAdjuster.refresh(this.$el);
+
     // Just in case
     this.unlockUI();
     this.hasBeenRendered = true;
@@ -231,30 +254,80 @@ export default class AJAXCart {
    *
    * @param {event} e - Click event
    */
-  onItemRemoveClick(e) {
-    e.preventDefault();
+  // onItemRemoveClick(e) {
+  //   e.preventDefault();
 
-    const attrs = this.getItemRowAttributes(e.target);
+  //   const attrs = this.getItemRowAttributes(e.target);
 
-    this.lockUI();
+  //   this.lockUI();
 
-    CartAPI.changeLineItemQuantityByKey(attrs.key, 0).then((cart) => {
-      if (cart.item_count > 0) {
-        // We only need to re-render the footer
-        attrs.$row.remove();
-        this.render(cart, 'footer');
-      }
-      else {
-        this.render(cart);
-      }
-    })
-      .fail(() => {
-        console.warn('something went wrong...');
+  //   CartAPI.changeLineItemQuantityByKey(attrs.key, 0).then((cart) => {
+  //     if (cart.item_count > 0) {
+  //       // We only need to re-render the footer
+  //       attrs.$row.remove();
+  //       this.render(cart, 'footer');
+  //     }
+  //     else {
+  //       this.render(cart);
+  //     }
+  //   })
+  //     .fail(() => {
+  //       console.warn('something went wrong...');
+  //     })
+  //     .always(() => {
+  //       this.unlockUI();
+  //     });
+  // }
+
+  /**
+   * Triggered when someone changes the value of the quantity input through the quantity adjuster
+   * Event is triggered by the qa instance *on* the qa element.  The instance is passed as a property on the event
+   *
+   * @param {event} e - Change event
+   * @param {QuantityAdjuster} e.instance
+   */
+  onQuantityAdjusterChange(e) {
+    const instance = e.instance;
+
+    if (!instance) return;
+    
+    const $qa = instance.$el;
+    const attrs = this.getItemRowAttributes($qa);
+    const qty = instance.getVal();
+
+    let d = this.qaInteractionDelay;
+
+    // If we hit the max or min on the input, trigger the quantity update request immediately;
+    if (instance.isMax() || instance.isMin()) {
+      d = 0;
+    }
+
+    clearTimeout(this.qaInteractionTimeout);
+
+    this.qaInteractionTimeout = setTimeout(() => {
+      this.lockUI();
+
+      CartAPI.changeLineItemQuantityByKey(attrs.key, qty).then((cart) => {
+        // If we removed that product and the cart isn't empty, just remove the element and update the footer
+        if (qty === 0 && cart.item_count > 0) {
+          // We only need to re-render the footer
+          attrs.$row.remove();
+          this.render(cart, 'footer');
+        }
+        else {
+          this.render(cart);
+        }
+
+        $window.trigger($.Event(this.events.UPDATE, { cart }));
       })
-      .always(() => {
-        this.unlockUI();
-      });
-  }
+        .fail(() => {
+          console.warn('something went wrong...');
+        })
+        .always(() => {
+          this.unlockUI();
+        });
+    }, d);
+  }  
 
   /**
    * Click the 'ajaxCart - trigger' selector

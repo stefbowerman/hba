@@ -1,6 +1,6 @@
 @mixin highlight-link {
   &:hover {
-    background-color: $white;
+    background-color: $body-color;
     color: $black;
   }
 }

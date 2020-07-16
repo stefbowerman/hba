@@ -12,22 +12,19 @@
 
 {% endcomment -%}
 
-{% assign photo_thumb_dimension = '200x200' %}
-{% assign photo_main_dimension  = '900x900' %}
-{% assign photo_zoom_dimension  = '1400x1400' %}
+{% assign photo_thumb_dimension = '200x' %}
+{% assign photo_main_dimension  = '900x' %}
 
 {% comment %} Defaults {% endcomment %}
 {% assign current_variant = current_variant | default: product.selected_or_first_available_variant %}
 
 {% comment %} Make one gallery for all the images {% endcomment %}
-<div class="product-gallery" style="display: none !important" data-product-gallery>
+<div class="product-gallery" data-product-gallery>
   <div id="slideshow-{{ product.id }}" class="product-gallery__slideshow swiper-container" data-product-gallery-slideshow>
     <div class="swiper-wrapper">
       {% for image in product.images %}
         <div class="swiper-slide" data-image="{{ image.id }}" {% if image.id == current_variant.featured_image.id %} data-initial-slide{% endif %}>
-          <a href="{{ image | img_url: photo_zoom_dimension }}">
-            <img src="{{ image | img_url: photo_main_dimension }}" alt="{{ image.alt | escape }}" class="img-fluid">
-          </a>
+          <img src="{{ image | img_url: photo_main_dimension }}" alt="{{ image.alt | escape }}" class="img-fluid">
         </div>
       {% endfor %}
     </div>

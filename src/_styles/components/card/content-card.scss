@@ -1,0 +1,39 @@
+// -------------------------
+// Content Card
+// -------------------------
+
+.content-card {
+  display: block;
+  max-width: 532px;
+  margin-bottom: 40px;
+
+  pointer-events: none;
+
+  &.is-active {
+    pointer-events: auto;
+  }
+
+  img, 
+  .content-card__copy {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    margin-bottom: 25px;
+  }
+
+  &.is-hovered img {
+    filter: invert(1);
+  }
+
+  &.show-image img {
+    opacity: 1;
+  }
+
+  &.show-copy .content-card__copy {
+    opacity: 1;
+  }
+}

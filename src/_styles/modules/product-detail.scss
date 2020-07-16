@@ -2,11 +2,19 @@
 // Product Detail
 // --------------------------------------------------------
 
+.product-detail {
+  margin-bottom: 50px;
+  
+  @include media-breakpoint-up(sm) {
+    margin-bottom: 0;
+  }
+}
+
 // Slideshow / Zoom
 // --------------------------------------------------------
 
 .product-gallery {
-  margin-bottom: 53px;
+  margin-bottom: 29px;
 
   @include media-breakpoint-up(lg) {
     padding-right: 115px;
@@ -30,16 +38,16 @@
   .swiper-slide {
     display: inline-block;
 
-    &.is-zoomable {
-      cursor: zoom-in;
-      cursor: -webkit-zoom-in;
-    }
+    // &.is-zoomable {
+    //   cursor: zoom-in;
+    //   cursor: -webkit-zoom-in;
+    // }
 
-    &.is-zoomed {
-      cursor: zoom-out;
-      cursor: -webkit-zoom-out;
-      border: 1px solid #ccc;
-    }    
+    // &.is-zoomed {
+    //   cursor: zoom-out;
+    //   cursor: -webkit-zoom-out;
+    //   border: 1px solid #ccc;
+    // }    
 
     &:focus { outline: 0; }
 
@@ -47,13 +55,13 @@
       width: 100%;
       &:focus { outline: 0; }
 
-      @include media-breakpoint-up('md') {
-        width: 100%;
-        height: 100%;
-        max-height: 60vh;
-        object-fit: contain;
-        object-position: left;
-      }
+      // @include media-breakpoint-up('md') {
+      //   width: 100%;
+      //   height: 100%;
+      //   max-height: 60vh;
+      //   object-fit: contain;
+      //   object-position: left;
+      // }
     }
   }
 }
@@ -64,8 +72,8 @@
 
 .product-gallery__thumbnails-slide {
   display: inline-block;
-  width: 72px;
-  margin-right: 7px; // @TODO ? or is it flex and we fit a certain number per row?
+  width: 81px;
+  margin-right: 19px; // @TODO ? or is it flex and we fit a certain number per row?
 
   &:hover {
     filter: invert(1);

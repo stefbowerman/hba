@@ -16,11 +16,33 @@
   {% assign current_variant = product.selected_or_first_available_variant %}
 {% endif %}
 
-<div data-product-detail-form>
-  <h1 data-title>{{ product.title }}</h1>
-  <p data-sku>{{ current_variant.sku }}</p>
+{% assign product_quantity_in_cart = 0 %}
+{% for item in cart.items %}
+  {% if item.product_id == product.id %}
+    {% assign product_quantity_in_cart = product_quantity_in_cart | plus: item.quantity %}
+    {% break %}
+  {% endif %}
+{% endfor %}
 
-  <div class="product-description rte">
+{% assign max_quantity_in_cart = false %}
+{% if product_quantity_in_cart >= 5 %}
+  {% assign max_quantity_in_cart = true %}
+{% endif %}
+
+<div data-product-detail-form>
+  <h2>
+  {{ product.title }}
+  {% for option in product.options_with_values %}
+    {% assign option_name_upcase = option.name | upcase | strip %}
+    {% if option_name_upcase == "COLOR" and option.values.size == 1 %}
+      <br />{{ option.values[0] }}
+    {% endif %}
+  {% endfor %}
+  </h2>
+
+  <div class="text-uppercase" data-sku>{{ current_variant.sku }}</div>
+
+  <div class="product-description rte text-uppercase">
     {{ product.description }}
   </div>  
 
@@ -130,7 +152,7 @@
               name="add"
               class="btn"
               data-add-to-cart
-              {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+              {% if current_variant.available == false or max_quantity_in_cart %}disabled="disabled"{% endif %}>
                 <span data-add-to-cart-text>
                   {% if current_variant.available %}
                     {{ 'products.product.add_to_cart' | t }}
@@ -144,9 +166,14 @@
           </div>
         {% else %}
           <div class="pdf-submit-wrapper">
-            <button class="btn">{{ 'products.product.sold_out' | t }}</button>
+            <button class="btn" disabled="disabled" style="text-transform: lowercase;">{{ 'products.product.sold_out' | t }}</button>
           </div>
         {% endif %}
+        <div class="error text-uppercase" style="margin-top: 3px;" data-max-quantity-notice>
+          {% if max_quantity_in_cart %}
+            Max quantity reached
+          {% endif %}
+        </div>
       </form>
     </div>
   </div>

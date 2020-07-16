@@ -1,4 +1,5 @@
 <div data-section-id="{{ section.id }}" data-section-type="video-background">
+  {% comment %}
   {% assign src = section.settings.video_file_url %}
 
   {% if src != blank %}
@@ -22,17 +23,18 @@
           <source data-src="{{ src }}" type="video/{{ video_type }}" />
         </video>
       </div>
-
-      <audio loop>
-        {% if section.settings.audio_file_url_mp3 != blank %}
-          <source src="{{ section.settings.audio_file_url_mp3 }}" type="audio/mpeg">
-        {% endif %}
-        {% if section.settings.audio_file_url_ogg != blank %}
-          <source src="{{ section.settings.audio_file_url_ogg }}" type="audio/ogg">
-        {% endif %}
-      </audio>
     {% endif %}
   {% endif %}
+  {% endcomment %}
+
+  <audio loop>
+    {% if section.settings.audio_file_url_mp3 != blank %}
+      <source src="{{ section.settings.audio_file_url_mp3 }}" type="audio/mpeg">
+    {% endif %}
+    {% if section.settings.audio_file_url_ogg != blank %}
+      <source src="{{ section.settings.audio_file_url_ogg }}" type="audio/ogg">
+    {% endif %}
+  </audio>  
 </div>
 
 {% schema %}

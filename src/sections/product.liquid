@@ -1,30 +1,80 @@
-{%- assign current_variant = product.selected_or_first_available_variant -%}
-{%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+{% assign product_handle_a = blank %}
+{% assign product_handle_b = blank %}
+
+{% assign page_for_block_product = false %}
+
+{% for block in section.blocks %}
+  {% if block.settings.product == product.handle %}
+    {% assign page_for_block_product = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if page_for_block_product %}
+  {% for block in section.blocks %}
+    {% if block.settings.product == product.handle %}
+      {% assign product_handle_a = block.settings.product %}
+    {% else %}
+      {% assign product_handle_b = block.settings.product %}
+    {% endif %}
+  {% endfor %}
+{% else %}
+  {% assign product_handle_a = section.blocks[0].settings.product %}
+  {% assign product_handle_b = section.blocks[1].settings.product %}
+{% endif %}
 
 <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product">
-  <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
-  <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
-  <meta itemprop="brand" content="{{ product.vendor }}">
-  <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
-  <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
-
   <div class="container">
     <div class="row">
-      <div class="col-sm-5 col-md-4 order-sm-2">
-        <div class="product-pane" data-product-pane>
-          {% render 'product-detail',
-                     product: product,
-                     selected: true
-          %}
+      {% if product_handle_a != blank %}
+        <div class="col-sm-6">
+          {% render 'product-detail', product: all_products[product_handle_a] %}
+        </div>
+      {% endif %}
+      {% if product_handle_b != blank %}
+        <div class="col-sm-6">
+          {% render 'product-detail', product: all_products[product_handle_b] %}
+        </div>
+      {% endif %}      
+    </div>
+  </div>
+
+  {% if section.settings.footer_copy != blank %}
+    <div class="container" style="margin-top: 100px;">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="rte text-uppercase">
+            {{ section.settings.footer_copy }}
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
 </div>
 
 {% schema %}
   {
     "name": "Product Page",
-    "settings": []
+    "max_blocks": 2,
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "footer_copy",
+        "label": "Footer Copy"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "product",
+        "name": "product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          }
+        ]
+      }
+    ]
   }
 {% endschema %}

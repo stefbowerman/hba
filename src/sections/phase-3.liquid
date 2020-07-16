@@ -1,6 +1,5 @@
-<div data-section-id="{{ section.id }}" data-section-type="statement">
+<div data-section-id="{{ section.id }}" data-section-type="phase-3">
   <div style="display: none !important" data-input>
-    <p data-statement-date></p>
     {{ section.settings.statement_text }}
   </div>  
 
@@ -18,12 +17,14 @@
                 {% if block.settings.image != blank %}
                   <img src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.image.alt | default: block.settings.title | escape }}" />
                 {% endif %}
-                <h4>{{ block.settings.title }}</h4>
-                {% if block.settings.button_text != blank and block.settings.link != blank %}
-                  <a href="{{ block.settings.link }}" class="btn" {% if block.settings.link contains 'http' %}target="_blank"{% endif %}>
-                    {{ block.settings.button_text }}
-                  </a>
-                {% endif %}
+                <div class="content-card__copy">
+                  <h4>{{ block.settings.title }}</h4>
+                  {% if block.settings.button_text != blank and block.settings.link != blank %}
+                    <a href="{{ block.settings.link }}" class="btn" {% if block.settings.link contains 'http' %}target="_blank"{% endif %}>
+                      {{ block.settings.button_text }}
+                    </a>
+                  {% endif %}
+                </div>
 
                 {% if block.settings.link != blank %}
                   </a>
@@ -41,7 +42,7 @@
 
 {% schema %}
   {
-    "name": "Statement",
+    "name": "Phase 3",
     "max_blocks": 2,
     "settings": [
       {
@@ -77,14 +78,6 @@
           }
         ]
       }
-    ],
-    "presets": [{
-      "name": "Statement",
-      "category": "Content",
-      "settings": {
-        "statement_text": "<p>Statement text goes here<\/p>"
-      },
-      "blocks": []
-    }]
+    ]
   }
 {% endschema %}

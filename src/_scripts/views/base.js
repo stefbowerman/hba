@@ -1,11 +1,13 @@
 import $ from 'jquery';
 import BaseSection from '../sections/base';
 import StatementSection from '../sections/statement';
+import Phase3Section from '../sections/phase3';
 
 const $document = $(document);
 
 const SectionConstructorDictionary = {
-  statement: StatementSection
+  'statement': StatementSection,
+  'phase-3': Phase3Section
 };
 
 export default class BaseView {
@@ -20,6 +22,11 @@ export default class BaseView {
     });
     
     // console.log('BaseView - contructing view - ' + type);
+  }
+
+  // Called once once the page is ready to display the view
+  display() {
+    //
   }
 
   _createSectionInstance($container) {

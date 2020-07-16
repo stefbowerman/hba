@@ -4,7 +4,7 @@
  * Import these up here to allow overrides down below
  *
  */
-// @import 'vendor/swiper.scss';
+@import 'vendor/swiper.scss';
 
 /**
  * CORE
@@ -47,13 +47,15 @@
 @import 'components/rte';
 // @import 'components/pagination';
 // @import 'components/content';
-// @import 'components/card';
+@import 'components/card';
 @import 'components/minimal-input';
 // @import 'components/arrows';
 // @import 'components/slideshow';
 // @import 'components/video-player';
 @import 'components/newsletter-form';
 // @import 'components/overlay';
+@import 'components/quantity-adjuster';
+@import 'components/program';
 
 /**
  * MODULES
@@ -145,6 +147,6 @@ body.effect-active .layout-wrapper {
   margin-top: 20px;
 
   @include media-breakpoint-up(md) {
-    margin-top: 50px;
+    margin-top: 34px;
   }
 }

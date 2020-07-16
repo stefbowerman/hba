@@ -16,6 +16,7 @@ $black:        #000 !default;
 
 $red:          #FF0000 !default;
 $green:        #00A651 !default;
+$absinthe:     #C9D446 !default;
 
 $blue:    #4e85e6 !default;
 $indigo:  #6610f2 !default;
@@ -164,7 +165,7 @@ $sizes: map-merge(
 // Settings for the `<body>` element.
 
 $body-bg:                   $black !default;
-$body-color:                $red !default;
+$body-color:                $absinthe !default;
 
 
 // Links
@@ -223,7 +224,7 @@ $largest-container-width: map-get($container-max-widths, last(map_keys($containe
 //
 // Set the number of columns and specify the width of the gutters.
 
-$grid-columns:                10 !default;
+$grid-columns:                12 !default;
 $grid-gutter-width:           30px !default;
 
 $outer-gutter-mobile:         20px;
@@ -302,10 +303,10 @@ $font-weight-base:            $font-weight-normal !default;
 $line-height-base:            1.23 !default;
 
 // Headings
-$h1-font-size:                (12/16) * 1rem !default;
-$h2-font-size:                (12/16) * 1rem !default;
-$h3-font-size:                (12/16) * 1rem !default;
-$h4-font-size:                (12/16) * 1rem !default;
+$h1-font-size:                (13/16) * 1rem !default;
+$h2-font-size:                (13/16) * 1rem !default;
+$h3-font-size:                (13/16) * 1rem !default;
+$h4-font-size:                (13/16) * 1rem !default;
 $h5-font-size:                (11/16) * 1rem !default;
 $h6-font-size:                (10/16) * 1rem !default;
 
@@ -316,10 +317,10 @@ $h4-letter-spacing:           0 !default;
 $h5-letter-spacing:           0 !default;
 $h6-letter-spacing:           0 !default;
 
-$h1-line-height:              1.2 !default;
-$h2-line-height:              1.2 !default;
-$h3-line-height:              1.2 !default;
-$h4-line-height:              1.2 !default;
+$h1-line-height:              1.1 !default;
+$h2-line-height:              1.1 !default;
+$h3-line-height:              1.1 !default;
+$h4-line-height:              1.1 !default;
 $h5-line-height:              1.2 !default;
 $h6-line-height:              1.2 !default;
 

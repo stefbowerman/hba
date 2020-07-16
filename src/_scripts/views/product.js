@@ -9,4 +9,8 @@ export default class ProductView extends BaseView {
 
     this.sections.push(this.productSection);
   }
+
+  display() {
+    this.productSection.display();
+  }
 }

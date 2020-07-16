@@ -20,7 +20,8 @@ const selectors = {
   title: '[data-title]',
   sku: '[data-sku]',
   statusSuccess: '[data-status-success]',
-  statusError: '[data-status-error]'
+  statusError: '[data-status-error]',
+  maxQuantityNotice: '[data-max-quantity-notice]'
 };
 
 const classes = {
@@ -82,13 +83,15 @@ export default class ProductDetailForm {
     this.$sku = $(selectors.sku, this.$container);
     this.$statusSuccess = $(selectors.statusSuccess, this.$container);
     this.$statusError = $(selectors.statusError, this.$container);
+    this.$maxQuantityNotice = $(selectors.maxQuantityNotice, this.$container);
     /* eslint-enable */
 
     this.typers = {
       title: null,
       sku: null,
       statusSuccess: null,
-      statusError: null
+      statusError: null,
+      maxQuantityNotice: null
     };
 
     this.productSingleObject = JSON.parse($(selectors.productJson, this.$container).html());
@@ -106,6 +109,7 @@ export default class ProductDetailForm {
     $window.on(AJAXFormManager.events.ADD_START, this.onAJAXFormAddStart.bind(this));
     $window.on(AJAXFormManager.events.ADD_SUCCESS, this.onAJAXFormAddSuccess.bind(this));
     $window.on(AJAXFormManager.events.ADD_FAIL, this.onAJAXFormAddFail.bind(this));
+    $window.on('update.ajaxCart', this.onAJAXCartUpdate.bind(this));
   }
 
   onVariantChange(evt) {
@@ -179,7 +183,7 @@ export default class ProductDetailForm {
       }
 
       this.typers.sku = new Typed(this.$sku.get(0), {
-        strings: [`SKU${sku}`],
+        strings: [`${sku}`],
         contentType: null,
         typeSpeed: 20,
         showCursor: false
@@ -228,6 +232,31 @@ export default class ProductDetailForm {
     }
   }
 
+  setMaxQuantityStatus(cart) {
+    const productCount = cart.items.reduce((total, item) => {
+      return item.product_id === this.productSingleObject.id ? item.quantity : 0;
+    }, 0);
+
+    if (this.typers.maxQuantityNotice) {
+      this.typers.maxQuantityNotice.destroy();
+    }    
+
+    if (productCount >= 5) {
+      this.$addToCartBtn.prop('disabled', true);
+
+      this.typers.maxQuantityNotice = new Typed(this.$maxQuantityNotice.get(0), {
+        strings: ['Max quantity reached'],
+        typeSpeed: 5,
+        backSpeed: 5,
+        showCursor: false
+      });
+    }
+    else {
+      this.$addToCartBtn.prop('disabled', false);
+      this.$maxQuantityNotice.text('');
+    }
+  }
+
   /**
    * Handle variant option value click event.
    * Update the associated select tag and update the UI for this value
@@ -261,6 +290,18 @@ export default class ProductDetailForm {
 
   onAJAXFormAddStart(e) {
     this.$addToCartBtn.addClass(classes.btnActive);
+
+    // Kill the status text when we start a request
+    this.$statusSuccess.removeClass(classes.statusVisible);
+    if (this.typers.statusSuccess) {
+      this.typers.statusSuccess.destroy();
+    }
+
+    this.$statusError.removeClass(classes.statusVisible);
+
+    if (this.typers.statusError) {
+      this.typers.statusError.destroy();
+    }    
   }
 
   /**
@@ -275,7 +316,7 @@ export default class ProductDetailForm {
     this.$statusSuccess.addClass(classes.statusVisible);
 
     if (this.typers.statusSuccess) {
-      this.types.statusSuccess.destroy();
+      this.typers.statusSuccess.destroy();
     }
 
     // @TODO - Stuff around making sure the statused are hidden / destroyed in case we click things fast
@@ -291,6 +332,8 @@ export default class ProductDetailForm {
         typed.destroy();
       }
     });
+
+    this.setMaxQuantityStatus(e.cart);
   }
 
   onAJAXFormAddFail(e) {
@@ -314,5 +357,9 @@ export default class ProductDetailForm {
         typed.destroy();
       }
     });
+  }
+
+  onAJAXCartUpdate(e) {
+    this.setMaxQuantityStatus(e.cart);
   }
 }

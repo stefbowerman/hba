@@ -8,8 +8,6 @@ const selectors = {
 };
 
 const classes = {
-  zoomReady: 'is-zoomable',
-  zoomedIn: 'is-zoomed',
   thumbnailSlideActive: 'is-active'
 };
 
@@ -35,7 +33,6 @@ export default class ProductDetailGallery {
       speed: 0,
       simulateTouch: false,
       on: {
-        init: this.onSlideShowInit.bind(this),
         slideChangeTransitionEnd: this.onSlideChangeTransitionEnd.bind(this)
       }
     });
@@ -45,41 +42,8 @@ export default class ProductDetailGallery {
     this.$thumbnailSlides.on('click', e => this.swiper.slideToLoop($(e.currentTarget).index()));
   }
 
-  initHoverZoom($zoomTarget) {
-    this.destroyHoverZoom($zoomTarget);
-
-    $zoomTarget.zoom({
-      url: $zoomTarget.find('a').attr('href'),
-      on: 'click',
-      touch: false,
-      escToClose: true,
-      magnify: 1.2,
-      duration: 300,
-      callback: () => {
-        $zoomTarget.addClass(classes.zoomReady);
-      },
-      onZoomIn: () => {
-        $zoomTarget.addClass(classes.zoomedIn);
-      },
-      onZoomOut: () => {
-        $zoomTarget.removeClass(classes.zoomedIn);
-      }
-    });
-  }
-
-  destroyHoverZoom($el) {
-    $el.trigger('zoom.destroy');
-  }
-
-  onSlideShowInit() {
-    const sw = this.swiper;
-    this.initHoverZoom($(sw.slides[sw.activeIndex]));
-  }
-
   onSlideChangeTransitionEnd() {
     const sw = this.swiper;
-    this.destroyHoverZoom($(sw.slides[sw.previousIndex]));
-    this.initHoverZoom($(sw.slides[sw.activeIndex]));
     this.$thumbnailSlides.removeClass(classes.thumbnailSlideActive);
     this.$thumbnailSlides.eq(sw.activeIndex - 1).addClass(classes.thumbnailSlideActive);
   }

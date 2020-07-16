@@ -33,6 +33,11 @@
         {% endif %}
       {% endif %}
 
+      {% assign max_quantity = 5 %}
+      {% if item.quantity > 5 %}
+        {% assign max_quantity = item.quantity %}
+      {% endif %}
+
       {
         "id": {{ item.variant_id }},
         "key": {{ item.key | json }},
@@ -44,6 +49,8 @@
         "original_price": {{ item.original_price }},
         "discounted_price": {{ item.original_price | minus: item.total_discount }},        
         "quantity": {{ item.quantity }},
+        "max_quantity": {{ max_quantity }},
+        "max_quantity_reached": {% if item.quantity == max_quantity %}true{% else %}false{% endif %},
         "sku": {{ item.sku | json }},
         "vendor": {{ item.vendor | json }},
         "properties": {

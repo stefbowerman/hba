@@ -76,15 +76,7 @@
     margin-top: 0;
   }
 
-  // p {
-  //   > img:only-child {
-  //     margin: $spacer*2 0;
-  //   }
-  // }
-
-  @include media-breakpoint-down(sm) {
-    p {
-      font-size: $font-size-sm;
-    }
+  a {
+    @include highlight-link;
   }
 }

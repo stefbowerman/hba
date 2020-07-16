@@ -4,23 +4,12 @@
 
 .video-background {
   position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;  
   z-index: $zindex-video-background;
   background-color: $body-bg;
-
-  &,
-  &:before {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    background-color: $red;
-    mix-blend-mode: multiply;
-  }
 
   video {
     height: 100%;

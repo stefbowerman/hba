@@ -1,6 +1,6 @@
 {%- capture footer_blocks_html -%}
   {% for block in section.blocks %}
-    <div class="footer-block" {{ block.shopfy_attributes }}>
+    <div class="footer-block col-4 col-sm-3 col-md-2" {{ block.shopfy_attributes }}>
       <h6 class="footer-block__title">
         {{ block.settings.title }}
       </h6>
@@ -65,7 +65,7 @@
 
 <footer class="footer" data-section-id="{{ section.id }}" data-section-type="footer">
   <div class="container">
-    <div class="footer-blocks">
+    <div class="footer-blocks row">
       {{ footer_blocks_html }}
     </div>
   </div>

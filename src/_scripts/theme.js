@@ -1,7 +1,7 @@
 // jQuery
 import $ from 'jquery';
 import { throttle } from 'throttle-debounce';
-import 'jquery-zoom';
+// import 'jquery-zoom';
 // import 'jquery-unveil';
 
 // Bootstrap JS
@@ -27,6 +27,7 @@ import ProductView    from './views/product';
 
 // Sections
 import HeaderSection   from './sections/header';
+import ProgramSection  from './sections/program'; 
 import FooterSection   from './sections/footer';
 import AJAXCartSection from './sections/ajaxCart';
 import VideoBackgroundSection from './sections/videoBackground';
@@ -47,6 +48,7 @@ window.HBA = {
   // Instantiate sections that live *outside* of content_for_layout
   const sections = {
     header: new HeaderSection($('[data-section-type="header"]')),
+    program: new ProgramSection($('[data-section-type="program"]')),
     footer: new FooterSection($('[data-section-type="footer"]')),
     ajaxCart: new AJAXCartSection($('[data-section-type="ajax-cart"]')),
     videobackground: new VideoBackgroundSection($('[data-section-type="video-background"]'))
@@ -59,18 +61,51 @@ window.HBA = {
       page: PageView,
       product: ProductView
     },
-    onRouteStart: () => {
-      sections.header.newsletterForm.hideFormContents();
+    onInitialViewReady: (view) => {
+      if (view.type === 'index') {
+        setTimeout(() => {
+          sections.program.boot()
+            .then(() => view.display());
+        }, 1000);
+      }
+      else {
+        sections.program.$container.hide();
+        view.display();
+      }
+    },
+    onRouteStart: (url, type) => {
       sections.footer.newsletterForm.hideFormContents();
+
+      if (type !== 'index') {
+        sections.program.$container.fadeOut(600);
+      }
     },
     onBeforeRouteStart: (deferred) => {
       sections.ajaxCart.close();
       deferred.resolve();
     },
+    onViewTransitionOutDone: (url, deferred) => {
+      window.scrollTo && window.scrollTo(0, 0);
+      deferred.resolve();
+    },
+    onViewChangeStart: (url, view) => {
+      if (view.type === 'index') {
+        sections.program.$container.fadeIn(700);
+      }
+    },    
+    onViewChangeComplete: (view) => {
+      if (view.type === 'index') {
+        sections.program.boot()
+          .then(() => view.display());
+      }
+      else {
+        view.display();
+      }
+    },
     onViewReady: (view) => {
       if (view.type === 'cart') {
         sections.ajaxCart.open();
-      }
+      }     
     }
   });
 

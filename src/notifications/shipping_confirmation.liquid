@@ -185,7 +185,7 @@
           <span class="order-list__item-title">{{ line.line_item.title }}</span><br/>
 
           {% if line.line_item.sku != blank %}
-            <span class="order-list__item-sku">{{ line.line_item.sku | prepend: 'SKU' }}</span><br/>
+            <span class="order-list__item-sku">{{ line.line_item.sku }}</span><br/>
           {% endif %}          
 
            {% if line.line_item.variant_title != 'Default Title'  and line.line_item.variant_title != blank %}

@@ -17,6 +17,10 @@ export default class BaseSection {
     };
   }
 
+  display() {
+    //
+  }
+
   onUnload(e) {
     
   }

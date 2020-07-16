@@ -31,14 +31,15 @@
   }
 
   &:hover,
-  &:focus {
-    background-color: $red;
+  &:focus,
+  &.is-hovered {
+    background-color: $body-color;
     color: $black;
   }
 
   &.is-active {
     background-color: $black;
-    color: $red;
+    color: $body-color;
   }
 
   // Disabled comes first so active can properly restyle
@@ -62,9 +63,17 @@
 
   &:hover,
   &:focus,
-  &.active {
+  &.is-hovered,
+  &.is-active {
     background-color: $black;
-    color: $red;
+    color: $white;
+  }
+
+  &:disabled {
+    &:hover {
+      background-color: $white;
+      color: $black;
+    }
   }
 }
 
