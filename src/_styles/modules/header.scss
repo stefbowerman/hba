@@ -47,11 +47,12 @@
 
 .header__controls {
   position: fixed;
+  display: flex;
   z-index: $zindex-header-controls;
   top: 24px;
   right: $outer-gutter-mobile;
-  // max-width: 55%;
-  // max-width: calc(100vw - 173px); // Logo width + a little more
+  max-width: 55%;
+  max-width: calc(100vw - 173px); // Logo width + a little more
 
   @include media-breakpoint-up(lg) {
     top: 34px;

@@ -74,6 +74,7 @@ window.HBA = {
       }
     },
     onRouteStart: (url, type) => {
+      sections.header.newsletterForm.hideFormContents();
       sections.footer.newsletterForm.hideFormContents();
 
       if (type !== 'index') {
