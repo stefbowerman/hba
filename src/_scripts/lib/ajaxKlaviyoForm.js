@@ -37,6 +37,7 @@ const noop = () => {};
  * @param {String} options.source - Klaviyo custom $source property
  * @param {Function} options.onInit
  * @param {Function} options.onBeforeSend - Prevent AJAX submission by returning false here
+ * @param {Function} options.onSubmitStart - Triggered once the AJAX request kicks off
  * @param {Function} options.onSubmitFail  
  * @param {Function} options.onSubscribeSuccess
  * @param {Function} options.onSubscribeFail
@@ -54,6 +55,7 @@ export default class AJAXKlaviyoForm {
       source: 'Shopify Form',
       onInit: noop,
       onBeforeSend: noop,
+      onSubmitStart: noop,
       onSubmitFail: noop,
       onSubscribeSuccess: noop,
       onSubscribeFail: noop
@@ -95,6 +97,8 @@ export default class AJAXKlaviyoForm {
     if (this.$input.val() && this.$input.val().length) {
       this.$submit.prop('disabled', true);
       this.isSubmitting = true;
+
+      this.settings.onSubmitStart();
 
       return true;
     }

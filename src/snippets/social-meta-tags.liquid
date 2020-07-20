@@ -55,12 +55,14 @@
 <meta name="twitter:description" content="{{ og_description }}">
 
 {% comment %}
-  Output share images defined in the theme settings
+  Output sharing content defined in the theme settings
 {% endcomment %}
-{% for i in (1..3) %}
-  {% capture setting_name %}sharing_image_{{i}}{% endcapture %}
-  {% if settings[setting_name] %}
-    <meta property="og:image" content="http:{{ settings[setting_name] | img_url: '1200x' }}" />
-    <meta property="og:image:secure_url" content="https:{{ settings[setting_name] | img_url: '1200x' }}" />
-  {% endif %}
-{% endfor %}
+{% if settings.sharing_image %}
+  <meta property="og:image" content="http:{{ settings.sharing_image | img_url: '1200x' }}" />
+  <meta property="og:image:secure_url" content="https:{{ settings.sharing_image | img_url: '1200x' }}" />
+{% endif %}
+
+{% if settings.sharing_video %}
+  <meta property="og:video" content="{{ settings.sharing_video | replace: 'https', 'http' }}" />
+  <meta property="og:video:secure_url" content="{{ settings.sharing_video }}" />
+{% endif %}

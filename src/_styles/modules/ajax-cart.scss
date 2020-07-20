@@ -48,10 +48,9 @@ body.ajax-cart-open {
     content: '';
     @include stretch-within;
     z-index: 1;
-    background: transparentize($ajax-cart-bg, 0.25);
+    background: transparentize($ajax-cart-bg, 0.75);
     opacity: 0;
     pointer-events: none;
-    transition: opacity $transition-duration-base $transition-timing-function-base;
   }
 
   .ajax-cart-container.lock-ui &:before {
@@ -109,16 +108,34 @@ body.ajax-cart-open {
 }
 
 .ajax-cart__footer {
-  position: fixed;  
-  bottom: 54px;
+  margin-top: 50px;
+
+  @include media-breakpoint-up(md) {
+    position: fixed;  
+    bottom: 54px;
+  }
 
   @include media-breakpoint-up(xl) {
-    bottom: 68px
+    bottom: 68px;
+    padding-left: 5%;
   }
+
+  // Below this screen size, the footer isn't fixed so it collapses up to the top which we don't want
+  @include media-breakpoint-down(sm) {
+    .is-empty & {
+      display: none;
+    }
+  }  
 }
 
 .ajax-cart__footer-bottom {
   margin-top: 31px;
+}
+
+.ajax-cart__footer-row {
+  & + & {
+    margin-top: 31px;
+  }
 }
 
 .ajax-cart__empty-message {

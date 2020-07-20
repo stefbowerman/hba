@@ -51,12 +51,16 @@ export default class AJAXCartSection extends BaseSection {
     }
   }
 
+  close() {
+    this.ajaxCartUI.close();
+  }
+
   onSelect() {
-    this.ajaxCartUI.open();
+    this.open();
   }
 
   onDeselect() {
-    this.ajaxCartUI.close();
+    this.close();
   }
 
   onUnload() {

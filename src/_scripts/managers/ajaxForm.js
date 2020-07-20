@@ -44,6 +44,14 @@ class AJAXFormManager {
       requestInProgress = true;
 
       CartAPI.addItemFromForm($form)
+        // Always needs to go before then / fail because the window event callbacks can cause a change to the disabled state of the button
+        .always(() => {
+          // Reset button state
+          $submitButton.prop('disabled', false);
+          $submitButtonText.html(submitButtonText);
+
+          requestInProgress = false;
+        })      
         .then((data) => {
           const event = $.Event(this.events.ADD_SUCCESS, { cart: data, relatedTarget: $form });
           $window.trigger(event);
@@ -56,13 +64,6 @@ class AJAXFormManager {
           });
           
           $window.trigger(event);
-        })
-        .always(() => {
-          // Reset button state
-          $submitButton.prop('disabled', false);
-          $submitButtonText.html(submitButtonText);
-
-          requestInProgress = false;
         });
     });
   }

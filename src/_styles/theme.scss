@@ -89,6 +89,17 @@ html {
   padding-bottom: 0 !important; // Shopify admin bar messes this up
 }
 
+html.js {
+  body.is-loading {
+    opacity: 0;
+    transition: opacity 1s cubic-bezier(0.33, 0.01, 0.49, 1.02) 0.25s;
+  }
+
+  body.is-loaded {
+    opacity: 1;
+  }
+}
+
 .development-mode {
   /* stylelint-disable-next-line selector-max-id */
   #preview-bar-iframe,

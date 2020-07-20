@@ -1,29 +1,29 @@
 import $ from 'jquery';
-import Typed from 'typed.js';
 import BaseSection from './base';
 
 export default class PageSection extends BaseSection {
   constructor(container) {
     super(container, 'page');
 
-    this.$rte = $('.rte', this.$container).first();
+    this.timeouts = [];
 
-    this.$rte.hide();
+    const $rte = $('.rte', this.$container).first();
+    const $children = $rte.children();
 
-    // @TODO - This is done poorly, just getting a basic implementation down
-    const $typedSpot = $(document.createElement('div')).css('max-width', '40em').addClass('rte');
-    this.$rte.after($typedSpot);
+    $children.hide();
 
-    const stringsElement = this.$rte.get(0);
+    const delay = $children.length <= 10 ? 250 : 50; // If it's a long page output quickly (legal..)
 
-    this.typed = new Typed($typedSpot.get(0), {
-      stringsElement: stringsElement,
-      typeSpeed: 5,
-      showCursor: false
-    });
+    setTimeout(() => {
+      this.timeouts = $.map($children, (child, i) => {
+        return setTimeout(() => {
+          $(child).show();
+        }, (delay * i));
+      });
+    }, 1000);
   }
 
   onUnload() {
-    this.typed.destroy();
+    this.timeouts.forEach(tO => clearTimeout(tO));
   }
 }

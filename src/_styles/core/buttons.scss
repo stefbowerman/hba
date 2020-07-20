@@ -60,10 +60,19 @@
   color: $black;
 
   &:hover,
-  &.active {
+  &:focus,
+  &.is-hovered,
+  &.is-active {
     background-color: $black;
     color: $white;
   }
+
+  &:disabled {
+    &:hover {
+      background-color: $white;
+      color: $black;
+    }
+  }  
 }
 
 // Future-proof disabling of clicks on `<a>` elements

@@ -18,16 +18,10 @@ export default class NewsletterForm {
    * NewsletterForm constructor
    *
    * @param {HTMLElement} el - Element used for scoping any element selection.  Can either be a containing element or the form element itself
-   * @param {Object} options
    */  
-  constructor(el, options) {
+  constructor(el) {
     this.name = 'newsletterForm';
 
-    const defaults = {
-      setCookies: true // toggle setting of browser cookies
-    };
-
-    this.settings = $.extend({}, defaults, options);
     this.typed    = null;
 
     this.$el = $(el);
@@ -42,11 +36,8 @@ export default class NewsletterForm {
     this.$formMessage  = $(selectors.formMessage, this.$el);
     this.$formInput    = $('input[type="email"]', this.$el);
 
-    this.$form.on('click', selectors.formContentsTrigger, (e) => {
-      e.preventDefault();
-      this.$form.addClass(classes.showContents);
-      this.$formInput.focus();
-    });
+    this.$form.on('click', selectors.formContentsTrigger, this.onFormContentsTriggerClick.bind(this));
+    this.$formInput.on('keydown', this.onFormInputKeyDown.bind(this));
   }
 
   /**
@@ -55,11 +46,7 @@ export default class NewsletterForm {
    * @param {Boolean} reset - If true, will call this.reset when finished
    * @param {Boolean} error - If true, will show the message in an error state
    */  
-  showMessageWithAnimation(reset = false, error = false) {
-    // At this point, the message has already been set inside the element
-    // Let's empty it out into a var and then type it onto the page
-    const string = this.$formMessage.html();
-
+  showMessageWithAnimation(message, reset = false, error = false) {
     if (this.typed) {
       this.typed.destroy();
     }    
@@ -72,7 +59,7 @@ export default class NewsletterForm {
     }
 
     this.typed = new Typed(this.$formMessage.get(0), {
-      strings: [`${string} ^2000`, ''],
+      strings: [`${message} ^2000`, ''],
       typeSpeed: 10,
       backSpeed: 20,
       showCursor: false,
@@ -87,6 +74,15 @@ export default class NewsletterForm {
     });
   }
 
+  showFormContents() {
+    this.$form.addClass(classes.showContents);
+    this.$formInput.focus();
+  }
+
+  hideFormContents() {
+    this.$form.removeClass(classes.showContents);
+  }  
+
   /**
    * Resets everything to it's initial state.  Only call when form content isn't visible
    */
@@ -99,20 +95,32 @@ export default class NewsletterForm {
     const isSubscribed = response && response.data && response.data.is_subscribed;
     const successMsg = this.$formMessage.data(isSubscribed ? 'already-subscribed' : 'success');
 
-    this.$formMessage.html(successMsg);
-
     // Don't reset the form if they're already subscribed, they might want to just enter a different email
     // Show the state as an error if they're subscribed
-    this.showMessageWithAnimation(!isSubscribed, isSubscribed);
+    this.showMessageWithAnimation(successMsg, !isSubscribed, isSubscribed);
   }
 
+  onSubmitStart() {
+    this.showMessageWithAnimation('Submitting', false);
+  }  
+
   onSubmitFail(errors) {
-    this.$formMessage.html(Array.isArray(errors) ? errors.join('  ') : errors);
-    this.showMessageWithAnimation(false, true);
+    const msg = Array.isArray(errors) ? errors.join('  ') : errors;
+    this.showMessageWithAnimation(msg, false, true);
   }
 
   onSubscribeFail() {
-    this.$formMessage.html(this.$formMessage.data('fail'));
-    this.showMessageWithAnimation(false, true);
+    this.showMessageWithAnimation(this.$formMessage.data('fail'), false, true);
+  }
+
+  onFormContentsTriggerClick(e) {
+    e.preventDefault();
+    this.showFormContents();
+  }
+
+  onFormInputKeyDown(e) {
+    if (e && e.which === 27) {
+      this.hideFormContents();
+    }
   }
 }

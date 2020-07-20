@@ -1,6 +1,6 @@
 {%- capture footer_blocks_html -%}
   {% for block in section.blocks %}
-    <div class="footer-block" {{ block.shopfy_attributes }}>
+    <div class="footer-block col-4 col-sm-3 col-md-2" {{ block.shopfy_attributes }}>
       <h6 class="footer-block__title">
         {{ block.settings.title }}
       </h6>
@@ -10,7 +10,11 @@
           {% if block.settings.link_list and linklists[block.settings.link_list].links.size > 0 %}
             <ul class="footer-menu">
               {% for link in linklists[block.settings.link_list].links %}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                <li>
+                  <a href="{{ link.url }}" {% if link.url contains 'http' %}target="_blank"{% endif %}>
+                    {{ link.title }}
+                  </a>
+                </li>
               {% endfor %}
             </ul>
           {% endif %}
@@ -61,7 +65,7 @@
 
 <footer class="footer" data-section-id="{{ section.id }}" data-section-type="footer">
   <div class="container">
-    <div class="footer-blocks">
+    <div class="footer-blocks row">
       {{ footer_blocks_html }}
     </div>
   </div>
