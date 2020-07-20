@@ -16,7 +16,7 @@ export default class AppController {
       redirectTimeoutMs: 5000,
       onSameRoute: () => {},
       onBeforeRouteStart: d => d.resolve(),
-      onRouteStart: () => {},
+      onRouteStart: (url, type) => {},
       onViewTransitionOutDone: (url, d) => d.resolve(), // eslint-disable-line brace-style
       onViewChangeStart: () => {},
       onViewChangeComplete: () => {},
@@ -158,11 +158,12 @@ export default class AppController {
     this.settings.onBeforeRouteStart(beforeRouteStartDeferred);
 
     $.when(beforeRouteStartDeferred).done(() => {
-      this.settings.onRouteStart(url);
+      this.settings.onRouteStart(url, type);
 
       // Transition out as soon as the link is clicked?  Need to add min time before viewchage to allow the transitoin to complete?
       this.$viewContainer.one('transitionend', () => {
-        transitionDeferred.resolve();
+        // transitionDeferred.resolve();
+        this.settings.onViewTransitionOutDone(url, transitionDeferred);
       });
       
       this.$viewContainer.find(this.settings.viewContentSelector).addClass('transition-out');
@@ -226,7 +227,7 @@ export default class AppController {
       // I don't know what's going on
       // $newViewContent.one('transitionend') was firing because of child product cards transitioning in?
       setTimeout(() => {
-        window.scrollTo && window.scrollTo(0, 0);
+        // window.scrollTo && window.scrollTo(0, 0);
         $newViewContent.removeClass('transition-in transition-in-active');
         $oldViewContent.remove();
 
@@ -234,7 +235,7 @@ export default class AppController {
 
         this.currentView = newView;
 
-        this.settings.onViewChangeComplete();
+        this.settings.onViewChangeComplete(this.currentView);
 
         // Is there a callback for this?
         this.settings.onViewReady(this.currentView);

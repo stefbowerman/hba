@@ -179,7 +179,7 @@ export default class ProductDetailForm {
       }
 
       this.typers.sku = new Typed(this.$sku.get(0), {
-        strings: [`SKU${sku}`],
+        strings: [sku],
         contentType: null,
         typeSpeed: 20,
         showCursor: false
@@ -261,6 +261,18 @@ export default class ProductDetailForm {
 
   onAJAXFormAddStart(e) {
     this.$addToCartBtn.addClass(classes.btnActive);
+
+    // Kill the status text when we start a request
+    this.$statusSuccess.removeClass(classes.statusVisible);
+    if (this.typers.statusSuccess) {
+      this.typers.statusSuccess.destroy();
+    }
+
+    this.$statusError.removeClass(classes.statusVisible);
+
+    if (this.typers.statusError) {
+      this.typers.statusError.destroy();
+    }     
   }
 
   /**
@@ -275,7 +287,7 @@ export default class ProductDetailForm {
     this.$statusSuccess.addClass(classes.statusVisible);
 
     if (this.typers.statusSuccess) {
-      this.types.statusSuccess.destroy();
+      this.typers.statusSuccess.destroy();
     }
 
     // @TODO - Stuff around making sure the statused are hidden / destroyed in case we click things fast

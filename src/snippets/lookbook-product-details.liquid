@@ -17,7 +17,7 @@
       <div class="lookbook-product-details__top">
         <h6>{{ product.title }}</h6>
         {% if product.variants[0].sku != blank %}
-          <div class="sku">{{ product.variants[0].sku | prepend: 'SKU' }}</div>
+          <div class="sku">{{ product.variants[0].sku }}</div>
         {% endif %}
       </div>
       <div class="lookbook-product-details__bottom">

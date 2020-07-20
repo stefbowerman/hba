@@ -12,8 +12,13 @@
             <div class="col-5 offset-5 col-md-2 offset-md-0">
               <div class="ajax-cart__footer" data-ajax-cart-footer>
                 <div class="ajax-cart__footer-top">
+                  {% if section.settings.checkout_text %}
+                    <div class="ajax-cart__footer-row">
+                      {{ section.settings.checkout_text }}
+                    </div>
+                  {% endif %}                  
                   <div class="ajax-cart__footer-row">
-                    Total: <span data-ajax-cart-total-price></span>
+                    Sub total: <span data-ajax-cart-total-price></span>
                   </div>
                 </div>
                 <div class="ajax-cart__footer-bottom">
@@ -55,7 +60,7 @@
                 <h3>{{ product_title }}</h3>
                 <div>{{ price }}</div>
                 {{#if sku}}
-                  <div>SKU{{ sku }}</div>
+                  <div>{{ sku }}</div>
                 {{/if}}
                 <div>{{ variant_title }}</div>
                 {{#if multiple_quantities}}
@@ -81,6 +86,12 @@
         "type": "richtext",
         "label": "Empty Text",
         "default": "<p>Cart Empty</p>"
+      },
+      {
+        "id": "checkout_text",
+        "type": "richtext",
+        "label": "Checkout Text",
+        "default": "<p>Presale<br />Please allow 6-8 weeks for delivery</p>"
       }
     ]
   }

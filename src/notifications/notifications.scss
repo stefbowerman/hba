@@ -1,0 +1,167 @@
+/* Style sheet for transaction notifications */
+
+@font-face {
+  font-family: 'HBA Mono';
+  src: url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff?v=1594683590') format("woff"),
+       url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff2?v=1594683590') format("woff2");
+  font-weight:400;
+  font-style:normal
+}
+
+@font-face {
+  font-family: 'HBA Mono';
+  src: url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff?v=1594683590') format("woff"),
+       url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff2?v=1594683590') format("woff2");
+  font-weight:700;
+  font-style:normal;
+}
+
+body, .body {
+  background-color: #000;
+  color: #FFF;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.body,
+.order-number__cell,
+.order-list__price-cell,
+.order-list__product-description-cell,
+.order-list__item-title,
+.order-list__item-price,
+.order-list__item-variant,
+.order-list__item-quantity,
+.order-list__item-sku,
+.order-list__item-refunded,
+.subtotal-line__title span,
+.subtotal-line__value,
+.subtotal-line__value strong,
+.content__cell strong,
+.order-number__text,
+.customer-info__item-content span,
+.customer-info__item-content strong,
+.disclaimer__subtext,
+.return-label__instruction-step,
+.container p,
+.button__cell {
+  font-size: 13px;
+  line-height: 1.23;
+  font-weight: 400;
+  color: #FFF;
+  font-family: 'HBA Mono', Monaco, Courier, monospace;
+}
+
+h1, h2, h3, h4, h5, h6,
+.order-list__item-title {
+  font-family: Helvetica, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.2;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #FFF;
+}
+
+h1, h2, h3, h4 {
+  font-size: 12px;
+}
+
+h5 {
+  font-size: 11px;
+}
+
+h6 {
+  font-size: 10px;
+}
+
+.content__cell p {
+  font-size: 12px;
+}
+
+.content__cell,
+.section__cell {
+  padding: 15px 0;
+}
+
+.button__cell {
+  text-align: left;
+}
+
+.button__text {
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 0;
+}
+
+.button__text:hover {
+  background-color: #FFF !important;
+  color: #000 !important;
+}
+
+.order-list__product-image {
+  border-radius: 0;
+  border: none;
+  margin-right: 18px;
+  width: 180px;
+  height: auto;
+}
+
+@media (min-width: 600px)  {
+  .order-list__product-image {
+    width: 230px !important;
+  }
+}
+
+.order-list__product-description-cell {
+  vertical-align: top;
+}
+
+.order-list__item-price {
+  margin-left: 0;
+}
+
+.subtotal-line__title {
+  text-transform: uppercase;
+
+  small {
+    font-size: 11px;
+  }
+}
+
+.subtotal-line .subtotal-line__title,
+.subtotal-line .subtotal-line__value {
+  padding: 2px 0 !important;
+}
+
+.order-list__item,
+.row.subtotal-lines,
+.row.section,
+.row.footer {
+  border-top: none !important;
+  border-top-width: 0 !important;
+}
+
+.row.container {
+  margin-top: 60px;
+}
+
+.customer-info__item {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.disclaimer__subtext {
+  &, a {
+    font-size: 12px;
+  }
+  
+  a {
+    color: #FFF;
+    border-bottom: 1px solid #FFF;
+  }
+}
+
+.footer .disclaimer__subtext {
+  &, a {
+    font-size: 11px;
+  }
+}

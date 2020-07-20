@@ -34,7 +34,7 @@ export default class ProductPane {
             pd.onReveal();
 
             this.activeProductDetail = pd;
-          })
+          });
         }, this.activeProductDetail ? 180 : 0);
       }
     });

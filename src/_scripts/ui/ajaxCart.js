@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import Handlebars from 'handlebars';
+import Typed from 'typed.js';
 import { whichTransitionEnd } from '../core/utils';
 import CartAPI from '../core/cartAPI';
 
@@ -42,13 +43,15 @@ export default class AJAXCart {
 
     this.events = {
       CLICK: `click${this.namespace}`,
-      CHANGE: `change${this.namespace}`,
+      UPDATE: `update${this.namespace}`,
       RENDER: `render${this.namespace}`,
       DESTROY: `destroy${this.namespace}`,
       UPDATE_AND_OPEN: `updateAndOpen${this.namespace}`
     };
 
-    this.templateData = templateData;
+    this.typers = {
+      totalPrice: null
+    };    
 
     this.$el = $(selectors.container);
     this.$acBody = $(selectors.body, this.$el);
@@ -56,6 +59,7 @@ export default class AJAXCart {
     this.$bodyTemplate = $(selectors.bodyTemplate);
     this.$cartCount = $(selectors.cartCount);
 
+    this.templateData = templateData;
     this.stateIsOpen = null; // Store visibilty state of the cart so we dont' have to query DOM for a class name
     this.hasBeenRendered = false; // Keep track of whether or not the cart has rendered yet, don't open if it hasn't been
     this.transitionEndEvent = whichTransitionEnd();
@@ -148,17 +152,29 @@ export default class AJAXCart {
       this.$acBody.empty().append(this.bodyTemplate(templateData));
     }
     else if (slot === 'footer') {
-      this.$totalPrice.text(cart.total_price);
+      this.setTotalPrice(cart.total_price);
     }
     else {
       this.$acBody.empty().append(this.bodyTemplate(templateData));
-      this.$totalPrice.text(cart.total_price);
+      this.setTotalPrice(cart.total_price);
     }
 
     $window.trigger($.Event(this.events.RENDER, { cart }));
 
     return this;
   }
+
+  setTotalPrice(price) {
+    if (this.typers.totalPrice) {
+      this.typers.totalPrice.destroy();
+    }
+
+    this.typers.totalPrice = new Typed(this.$totalPrice.get(0), {
+      strings: [price],
+      typeSpeed: 35,
+      showCursor: false
+    });
+  }  
 
   /**
    * Update the cart count here

@@ -1,5 +1,6 @@
 // jQuery
 import $ from 'jquery';
+import { throttle } from 'throttle-debounce';
 import 'jquery-zoom';
 import 'jquery-unveil';
 
@@ -33,7 +34,9 @@ import AJAXCartSection from './sections/ajaxCart';
 Animations.initialize();
 Breakpoints.initialize();
 
-window.HBA = {};
+window.HBA = {
+  appController: null
+};
 
 ((Modernizr) => {
   const $body = $(document.body);
@@ -63,14 +66,18 @@ window.HBA = {};
     },
     onBeforeRouteStart: (deferred) => {
       console.log('onBeforeRouteStart');
-      // sections.header.menuOverlay.hide();
+      sections.ajaxCart.close();
       deferred.resolve();
     },
     onRouteStart: (url) => {
-      console.log('on route start');
+      sections.footer.newsletterForm && sections.footer.newsletterForm.hideFormContents();
     },
     onViewChangeStart: (url, newView) => {
       console.log('onViewChangeStart');
+    },
+    onViewTransitionOutDone: (url, deferred) => {
+      window.scrollTo && window.scrollTo(0, 0);
+      deferred.resolve();
     },
     onViewChangeComplete: (newView) => {
       console.log('onViewChangeComplete');
@@ -107,7 +114,21 @@ window.HBA = {};
     document.documentElement.className = document.documentElement.className.replace('supports-no-cookies', 'supports-cookies');
   }
 
-  $body.removeClass('is-loading');
+  const setViewportHeightProperty = () => {
+    // If mobile / tablet, set var to window height. This fixes the 100vh iOS bug/feature.
+    const v = window.innerWidth <= 1024 ? `${window.innerHeight}px` : '100vh';
+    document.documentElement.style.setProperty('--viewport-height', v);
+  };
+
+  window.addEventListener('resize', throttle(100, setViewportHeightProperty));
+  document.addEventListener('scroll', throttle(100, () => {
+    if (window.innerWidth > 1024) return;
+    setViewportHeightProperty();
+  }));
+
+  setViewportHeightProperty();   
+
+  $body.addClass('is-loaded');
 
   // Stop here...no AJAX navigation inside the theme editor
   // eslint-disable-next-line no-undef
@@ -130,7 +151,6 @@ window.HBA = {};
 
       return true;
     });
-
 
     // Prevents browser from restoring scroll position when hitting the back button
     if ('scrollRestoration' in window.history) {

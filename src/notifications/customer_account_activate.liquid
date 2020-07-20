@@ -1,0 +1,114 @@
+{% capture email_title %}Account Invite{% endcapture %}
+{% capture email_body %}Click the link below to activate your account.{% endcapture %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>{{ email_title }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+  <style>
+@font-face{font-family:HBA Mono;src:url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff?v=1594683590) format("woff"),url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-regular.woff2?v=1594683590) format("woff2");font-weight:400;font-style:normal}@font-face{font-family:HBA Mono;src:url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff?v=1594683590) format("woff"),url(//cdn.shopify.com/s/files/1/0276/2168/7409/files/hbamono-bold.woff2?v=1594683590) format("woff2");font-weight:700;font-style:normal}.body,body{background-color:#000;color:#fff;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}.body,.button__cell,.container p,.content__cell strong,.customer-info__item-content span,.customer-info__item-content strong,.disclaimer__subtext,.order-list__item-price,.order-list__item-quantity,.order-list__item-refunded,.order-list__item-sku,.order-list__item-title,.order-list__item-variant,.order-list__price-cell,.order-list__product-description-cell,.order-number__cell,.order-number__text,.return-label__instruction-step,.subtotal-line__title span,.subtotal-line__value,.subtotal-line__value strong{font-size:13px;line-height:1.23;font-weight:400;color:#fff;font-family:HBA Mono,Monaco,Courier,monospace}.order-list__item-title,h1,h2,h3,h4,h5,h6{font-family:Helvetica,-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.2;font-weight:700;text-transform:uppercase;color:#fff}h1,h2,h3,h4{font-size:12px}h5{font-size:11px}h6{font-size:10px}.content__cell p{font-size:12px}.content__cell,.section__cell{padding:15px 0}.button__cell{text-align:left}.button__text{display:inline-block;font-size:12px;text-transform:uppercase;padding:0}.button__text:hover{background-color:#fff!important;color:#000!important}.order-list__product-image{border-radius:0;border:none;margin-right:18px;width:180px;height:auto}@media (min-width:600px){.order-list__product-image{width:230px!important}}.order-list__product-description-cell{vertical-align:top}.order-list__item-price{margin-left:0}.subtotal-line__title{text-transform:uppercase}.subtotal-line__title small{font-size:11px}.subtotal-line .subtotal-line__title,.subtotal-line .subtotal-line__value{padding:2px 0!important}.order-list__item,.row.footer,.row.section,.row.subtotal-lines{border-top:0!important}.row.container{margin-top:60px}.customer-info__item{padding-left:0!important;margin-left:0!important}.disclaimer__subtext,.disclaimer__subtext a{font-size:12px}.disclaimer__subtext a{color:#fff;border-bottom:1px solid #fff}.footer .disclaimer__subtext,.footer .disclaimer__subtext a{font-size:11px}
+  </style>
+</head>
+
+  <body>
+    <table class="body">
+      <tr>
+        <td>
+          <table class="header row">
+  <tr>
+    <td class="header__cell">
+      <center>
+
+        <table class="container">
+          <tr>
+            <td>
+
+              <table class="row">
+                <tr>
+                  <td class="shop-name__cell">
+                    {%- if shop.email_logo_url %}
+                      <img src="{{shop.email_logo_url}}" alt="{{ shop.name }}" width="{{ shop.email_logo_width }}">
+                    {%- else %}
+                      <h1 class="shop-name__text">
+                        <a href="{{shop.url}}">{{ shop.name }}</a>
+                      </h1>
+                    {%- endif %}
+                  </td>
+
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+      </center>
+    </td>
+  </tr>
+</table>
+
+          <table class="row content">
+  <tr>
+    <td class="content__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              
+            <h2>{{ email_title }}</h2>
+            {% if custom_message != blank %}
+              <p>{{ custom_message }}</p>
+            {% else %}
+              <p>{{ email_body }}</p>
+            {% endif %}
+            <table class="row actions">
+  <tr>
+    <td class="empty-line"> </td>
+  </tr>
+  <tr>
+    <td class="actions__cell">
+      <table class="button main-action-cell">
+        <tr>
+          <td class="button__cell"><a href="{{ customer.account_activation_url }}" class="button__text">[Activate your account]</a></td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>
+
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+          <table class="row footer">
+  <tr>
+    <td class="footer__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              
+              <p class="disclaimer__subtext">If you have any questions, reply to this email or contact us at <a href="mailto:{{ shop.email }}">{{ shop.email }}</a></p>
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+
+<img src="{{ 'notifications/spacer.png' | shopify_asset_url }}" class="spacer" height="1" />
+
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

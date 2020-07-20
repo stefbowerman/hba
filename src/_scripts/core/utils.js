@@ -423,3 +423,21 @@ export function credits() {
 export function isTouch() {
   return ((Modernizr && Modernizr.touchevents) || 'ontouchstart' in window);
 }
+
+export function random(min = 0, max = 1) {
+  return Math.floor(Math.random() * (max - min + 1) + min);     
+}
+
+/**
+ * Pads a number with leading character (z) up to the specified width
+ *
+ * @param {Number} n
+ * @param {Number} width
+ * @param {Number} z - pad value
+ * @return {Number}
+ */
+export function pad(n, width, z) {
+  z = z || '0';
+  n += '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
