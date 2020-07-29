@@ -10,13 +10,11 @@ export default class ProgramSection extends BaseSection {
   constructor(container) {
     super(container, 'program');
 
-    this.file1 = 'SHITSHOW.exe';
-    this.file2 = 'CASHAPP.exe';
-    this.file3 = 'STATEMENT.exe';
+    this.file1 = 'H13A.exe';
     this.timeouts = [];
     this.booted = false;
     this.isDesktop = window.innerWidth > getBreakpointMinWidth('md');
-    this.animationMultiplier = this.isDesktop ? 0.15 : 0.85; // Makes durations *shorter* on desktop
+    this.animationMultiplier = this.isDesktop ? 0.5 : 1; // Makes durations *shorter* on desktop
 
     this.$backgroundAudioToggleOn = $('[data-toggle-background-audio="true"]', this.$container);
     this.$backgroundAudioToggleOff = $('[data-toggle-background-audio="false"]', this.$container);
@@ -37,29 +35,6 @@ export default class ProgramSection extends BaseSection {
       },
       search: {
         $el: $('[data-step="search-1"]', this.$container),
-        typed: null
-      },
-      run: {
-        $el: $('[data-step="run-1"]', this.$container),
-        typed: null
-      }
-    };
-
-    this.desktopSteps = {
-      search2: {
-        $el: $('[data-step="search-2"]', this.$container),
-        typed: null
-      },
-      run2: {
-        $el: $('[data-step="run-2"]', this.$container),
-        typed: null
-      },
-      search3: {
-        $el: $('[data-step="search-3"]', this.$container),
-        typed: null
-      },
-      run3: {
-        $el: $('[data-step="run-3"]', this.$container),
         typed: null
       }
     };
@@ -89,15 +64,7 @@ export default class ProgramSection extends BaseSection {
 
     // If desktop, durationMultiplier = 0.75 - run everything faster
 
-    this.defaultBootSequence()
-      .then(() => {
-        if (this.isDesktop) {
-          this.desktopBootSequence().then(() => d.resolve());
-        }
-        else {
-          d.resolve();
-        }
-      });
+    this.defaultBootSequence().then(() => d.resolve());
 
     return d;
   }
@@ -138,16 +105,7 @@ export default class ProgramSection extends BaseSection {
                       typeSpeed: 10,
                       showCursor: false,
                       onComplete: () => {
-                        // Run File
-
-                        this.steps.run.typed = new Typed(this.steps.run.$el.get(0), {
-                          strings: [`File Located<br /> Running [${this.file1}]`],
-                          typeSpeed: 10,
-                          showCursor: false,
-                          onComplete: () => {
-                            d.resolve();
-                          }
-                        });
+                        d.resolve();
                       }
                     });
                   }
@@ -160,47 +118,6 @@ export default class ProgramSection extends BaseSection {
         }, (500 * this.animationMultiplier));
 
         this.timeouts.push(t0);
-      }
-    });    
-
-    return d;
-  }
-
-  desktopBootSequence() {
-    const d = $.Deferred();
-
-    this.desktopSteps.search2.typed = new Typed(this.desktopSteps.search2.$el.get(0), {
-      strings: [`Searching for file<br /> [${this.file2}].... ^${500 * this.animationMultiplier}`],
-      typeSpeed: 10,
-      showCursor: false,
-      onComplete: () => {
-        // Run File
-
-        this.desktopSteps.run2.typed = new Typed(this.desktopSteps.run2.$el.get(0), {
-          strings: [`File Located<br /> Running [${this.file2}]`],
-          typeSpeed: 10,
-          showCursor: false,
-          onComplete: () => {
-            // 
-            this.desktopSteps.search3.typed = new Typed(this.desktopSteps.search3.$el.get(0), {
-              strings: [`Searching for file<br /> [${this.file3}].... ^${500 * this.animationMultiplier}`],
-              typeSpeed: 10,
-              showCursor: false,
-              onComplete: () => {
-                // Run File
-
-                this.desktopSteps.run3.typed = new Typed(this.desktopSteps.run3.$el.get(0), {
-                  strings: [`File Located<br /> Running [${this.file3}]`],
-                  typeSpeed: 10,
-                  showCursor: false,
-                  onComplete: () => {
-                    d.resolve();
-                  }
-                });
-              }
-            });  
-          }
-        });
       }
     });    
 

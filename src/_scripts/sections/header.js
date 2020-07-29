@@ -1,8 +1,8 @@
 import $ from 'jquery';
-import { pad } from '../core/utils';
 import BaseSection from './base';
 import AJAXKlaviyoForm from '../lib/ajaxKlaviyoForm';
 import NewsletterForm from '../ui/newsletterForm';
+import CountdownTimer from '../ui/countdownTimer';
 
 const selectors = {
   logo: '[data-logo]',
@@ -31,53 +31,13 @@ export default class HeaderSection extends BaseSection {
       onSubmitFail: errors => this.newsletterForm.onSubmitFail(errors),
       onSubscribeSuccess: response => this.newsletterForm.onSubscribeSuccess(response),
       onSubscribeFail: response => this.newsletterForm.onSubscribeFail(response)
-    });    
+    });
 
-    this.countdownInterval = null;
-    this.endTime = this.$countdown.data('countdown');
+    this.countdownTimer = new CountdownTimer(this.$countdown);   
 
     this.strobeLogo();
-
-    if (this.$countdown.length && this.getRemainingTime(this.endTime).total > 0) {
-      this.startClock();
-    }
   }
 
-  tick() {
-    const t = this.getRemainingTime(this.endTime);
-    const time = [t.days, t.hours, t.minutes, t.seconds].map(n => pad(n, 2, 0)).join(':');
-    
-    this.$countdown.text(time);
-
-    if (t.total <= 0) {
-      this.stopClock();
-    }
-  } 
-
-  startClock() {
-    this.tick();
-    this.countDownInterval = setInterval(this.tick.bind(this), 1000);
-  }
-
-  stopClock() {
-    clearInterval(this.countDownInterval);
-  }
-
-  getRemainingTime(endTime) {
-    const t = Date.parse(endTime) - Date.parse(new Date());
-    const seconds = Math.floor((t/1000) % 60);
-    const minutes = Math.floor((t/1000/60) % 60);
-    const hours = Math.floor((t/(1000*60*60)) % 24);
-    const days = Math.floor(t/(1000*60*60*24));
-
-    return {
-      total: t,
-      days: days,
-      hours: hours,
-      minutes: minutes,
-      seconds: seconds
-    };
-  }  
 
   strobeLogo() {
     this.$logo.toggleClass(classes.logoStrobe);

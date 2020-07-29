@@ -1,13 +1,11 @@
 import $ from 'jquery';
 import BaseSection from '../sections/base';
 import StatementSection from '../sections/statement';
-import Phase3Section from '../sections/phase3';
 
 const $document = $(document);
 
 const SectionConstructorDictionary = {
-  'statement': StatementSection,
-  'phase-3': Phase3Section
+  statement: StatementSection
 };
 
 export default class BaseView {

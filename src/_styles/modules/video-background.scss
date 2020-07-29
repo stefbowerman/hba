@@ -4,17 +4,45 @@
 
 .video-background {
   position: fixed;
+  z-index: $zindex-video-background;
   top: 0;
   left: 0;
   height: 100%;
-  width: 100%;  
-  z-index: $zindex-video-background;
-  background-color: $body-bg;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 150ms ease-out 100ms;
 
-  video {
+  &.is-loaded.is-active {
+    opacity: 1;
+  } 
+
+  video,
+  img {
     height: 100%;
     width: 100%;
     object-fit: cover;
     object-position: center;
+    object-position: 50% 60%;
   }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  &.show-poster img {
+    opacity: 1;
+  }
+}
+
+.background-countdown {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  letter-spacing: 0.7rem;
 }
