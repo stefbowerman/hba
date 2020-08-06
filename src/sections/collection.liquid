@@ -32,7 +32,7 @@
 
 {% endpaginate %}
 
-<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection">
+<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="collection" data-base-url="{{ collection.url }}">
   {% render 'page-title' with collection.title %}
   
   <div class="container">

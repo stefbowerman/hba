@@ -16,9 +16,18 @@
   {% assign current_variant = product.selected_or_first_available_variant %}
 {% endif %}
 
+{% assign product_has_sku = false %}
+{% for v in product.variants %}
+  {% if v.sku != blank %}
+    {% assign product_has_sku = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
 <div data-product-detail-form>
   <h1 data-title>
     {{ product.title }}
+
     {% for option in product.options_with_values %}
       {% assign option_name_upcase = option.name | upcase | strip %}
       {% if option_name_upcase == "COLOR" and option.values.size == 1 %}
@@ -26,7 +35,13 @@
       {% endif %}
     {% endfor %}    
   </h1>
-  <p data-sku>{{ current_variant.sku }}</p>
+
+  {% if product_has_sku %}
+    <p class="product-sku-display">
+      &nbsp;
+      <span class="product-sku" data-sku>{{ current_variant.sku }}</span>
+    </p>
+  {% endif %}
 
   <div class="product-description rte">
     {{ product.description }}

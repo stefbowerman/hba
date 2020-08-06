@@ -5,6 +5,7 @@ export default class Filter {
     this.$el    = $(el);
     this.type   = this.$el.data('type');
     this.value  = this.$el.data('value');
+    this.url    = this.$el.attr('href');
     this.active = false;
   }
 

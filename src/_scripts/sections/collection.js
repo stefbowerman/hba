@@ -7,4 +7,8 @@ export default class CollectionSection extends BaseSection {
 
     this.collection = new Collection(this.$container);
   }
+
+  onUnload() {
+    this.collection.destroy();
+  }
 }

@@ -1,5 +1,8 @@
 import $ from 'jquery';
-import { isTouch } from '../core/utils';
+import {
+  isTouch,
+  isThemeEditor
+} from '../core/utils';
 import BaseSection from './base';
 import Overlay from '../ui/overlay';
 
@@ -67,7 +70,7 @@ export default class HeaderSection extends BaseSection {
     const $clicked = $(e.currentTarget);
     const href = $clicked.attr('href');
 
-    if ($clicked.is(selectors.subnavToggle) || href === '#') return;
+    if ($clicked.is(selectors.subnavToggle) || href === '#' || isThemeEditor()) return;
 
     e.preventDefault();
 
@@ -75,7 +78,7 @@ export default class HeaderSection extends BaseSection {
 
     setTimeout(() => {
       window.HBA.appController.navigate(href);
-    }, 700);
+    }, 600);
   }
 
   onNavLinkMouseenter(e) {

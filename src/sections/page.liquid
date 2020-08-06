@@ -24,12 +24,12 @@
               {% for link in linklists[sidebar_linklist].links %}
                 <li>
                   <a href="{{ link.url }}" {% if link.url == page.url %}class="is-active"{% endif %}>
-                    {{ link.url | replace: 'pages/', '' }}
+                    {{ link.url | replace: 'pages/', '' | append: '/' }}
                   </a>
                 </li>
               {% endfor %}
             {% else %}
-             <li><a href="{{ page.url }}">{{ page.url | replace: 'pages/', '' }}</a></li>
+             <li><a href="{{ page.url }}">{{ page.url | replace: 'pages/', '' | append: '/' }}</a></li>
             {% endif %}
           </ul>
         </div>

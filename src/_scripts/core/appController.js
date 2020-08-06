@@ -25,6 +25,7 @@ export default class AppController {
     };
 
     this.router = new Navigo(window.location.origin, false, '#!');
+    this.routerIsPaused = false;
     this.isTransitioning = false;
     this.currentView = null;
     this.firstRoute = true;
@@ -250,11 +251,16 @@ export default class AppController {
   }
 
   navigate(url) {
-    if (url === this.router.lastRouteResolved().url) {
+    // If the router is paused, do the navigation no matter what
+    // When the router is paused and unpaused, this.router.lastRouteResolved() can get stale
+    if (this.routerIsPaused) {
+      this.router.navigate(url);
+    }
+    else if (url === this.router.lastRouteResolved().url) {
       this.settings.onSameRoute(url, this.currentView);
     }
     else {
-      this.router.navigate(url);      
+      this.router.navigate(url);
     }
 
     return this;
@@ -262,11 +268,13 @@ export default class AppController {
 
   pauseRouter() {
     this.router.pause();
+    this.routerIsPaused = true;
     return this;
   }
 
   resumeRouter() {
     this.router.resume();
+    this.routerIsPaused = false;
     return this;
   }
 }

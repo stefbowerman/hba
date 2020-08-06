@@ -88,7 +88,8 @@ export default class ProductDetailForm {
       title: null,
       sku: null,
       statusSuccess: null,
-      statusError: null
+      statusError: null,
+      btn: null
     };
 
     this.productSingleObject = JSON.parse($(selectors.productJson, this.$container).html());
@@ -125,24 +126,27 @@ export default class ProductDetailForm {
    * @param {Object} variant - Shopify variant object
    */
   updateAddToCartState(variant) {
+    let btnText = '';
+    let btnDisabled = false;
+
     if (variant) {
-      this.$priceWrapper.removeClass(classes.hide);
+      if (variant.available) {
+        btnDisabled = false;
+        btnText = theme.strings.addToCart;
+      }
+      else {
+        btnDisabled = true;
+        btnText = theme.strings.soldOut;
+      }      
     }
     else {
-      this.$addToCartBtn.prop('disabled', true);
-      this.$addToCartBtnText.html(theme.strings.unavailable);
-      this.$priceWrapper.addClass(classes.hide);
-      return;
+      btnDisabled = true;
+      btnText = theme.strings.unavailable;
     }
 
-    if (variant.available) {
-      this.$addToCartBtn.prop('disabled', false);
-      this.$addToCartBtnText.html(theme.strings.addToCart);
-    }
-    else {
-      this.$addToCartBtn.prop('disabled', true);
-      this.$addToCartBtnText.html(theme.strings.soldOut);
-    }
+    this.$priceWrapper.toggleClass(classes.hide, !!variant);
+    this.$addToCartBtn.prop('disabled', btnDisabled);
+    this.$addToCartBtnText.text(btnText);
   }
 
   /**
@@ -171,7 +175,12 @@ export default class ProductDetailForm {
    * @param {String} sku
    */
   updateSku(sku) {
-    if (sku) {
+    const d = $.Deferred();
+
+    if (!sku || this.$sku.length === 0) {
+      d.resolve();
+    }
+    else {
       this.$sku.text('');
 
       if (this.typers.sku) {
@@ -181,13 +190,18 @@ export default class ProductDetailForm {
       this.typers.sku = new Typed(this.$sku.get(0), {
         strings: [sku],
         contentType: null,
-        typeSpeed: 20,
-        showCursor: false
-      });      
+        typeSpeed: 30,
+        showCursor: false,
+        onComplete: () => d.resolve()
+      }); 
     }
+
+    return d;    
   }
 
   updateTitle(title) {
+    const d = $.Deferred();
+
     if (title) {
       this.$title.text('');
 
@@ -199,9 +213,15 @@ export default class ProductDetailForm {
         strings: [title],
         contentType: null,
         typeSpeed: 20,
-        showCursor: false
+        showCursor: false,
+        onComplete: () => d.resolve()
       });      
     }
+    else {
+      d.resolve();
+    }
+
+    return d;
   }
 
   /**
@@ -253,10 +273,21 @@ export default class ProductDetailForm {
     $option.siblings().removeClass(classes.variantOptionValueActive);
   }
 
+  // Need to come up with a better system for this
   onReveal() {
+    const t = this.$title.text();
+    const sku = this.$sku.text();
+
+    this.$title.text('');
+    this.$sku.text('');
+
     // Do the animation to type everything out
-    this.updateSku(this.$sku.text());
-    this.updateTitle(this.$title.text());
+    this.updateTitle(t)
+      .then(() => this.updateSku(sku));
+  }
+
+  onHidden() {
+    
   }
 
   onAJAXFormAddStart(e) {

@@ -39,7 +39,7 @@ class AJAXFormManager {
 
       // Update the submit button text and disable the button so the user knows the form is being submitted
       $submitButton.prop('disabled', true);
-      $submitButtonText.html(getPropByString(window, 'theme.strings.adding') || 'Adding');
+      $submitButtonText.html(getPropByString(window, 'theme.strings.adding') || 'Adding...');
 
       requestInProgress = true;
 

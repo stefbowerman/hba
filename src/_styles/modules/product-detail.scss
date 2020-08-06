@@ -38,7 +38,6 @@
     &.is-zoomed {
       cursor: zoom-out;
       cursor: -webkit-zoom-out;
-      border: 1px solid #ccc;
     }    
 
     &:focus { outline: 0; }
@@ -87,6 +86,16 @@
 
 // Form
 // --------------------------------------------------------
+
+.product-sku-display {
+  position: relative;
+
+  .product-sku {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
 
 .product-description {
   margin-bottom: 18px;

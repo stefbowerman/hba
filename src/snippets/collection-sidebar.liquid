@@ -17,6 +17,11 @@
   
   {% assign c = collections[collection_handle] %}
 
+  {% assign is_lookbook = false %}
+  {% if current_tags contains 'lookbook' %}
+    {% assign is_lookbook = true %}
+  {% endif %}
+
   {% if c %}
     {% capture crumb_home %}
       <span class="crumb">
@@ -26,7 +31,7 @@
 
     {%- capture crumb_collections -%}
       <span class="crumb" data-crumb="collections">
-        <a href="/collections">collections</a>
+        collections
       </span>
     {%- endcapture -%}
 
@@ -34,7 +39,15 @@
       <span class="crumb" data-crumb="collection">
         <a href="/collections/{{ c.handle }}">{{ c.handle }}</a>
       </span>
-    {%- endcapture -%}      
+    {%- endcapture -%}
+
+    {%- capture crumb_collection_tag -%}
+      {% if current_tags %}
+        <span class="crumb" data-crumb="collection-tag">
+          <a href="/collections/{{ c.handle }}/{{ current_tags }}">{{ current_tags }}</a>
+        </span>
+      {% endif %}
+    {%- endcapture -%}
 
     {%- capture crumb_collection_product -%}
       <span class="crumb {% unless product %}is-hidden{% endunless %}" data-crumb="collection-product">
@@ -90,13 +103,13 @@
     {%- endcapture -%}
   
     <div class="sidebar">
-      <p class="breadcrumbs" data-breadcrumbs>
-        {{ crumb_home | strip }}{{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_product | strip }}
-      </p>
+      <div class="breadcrumbs" data-breadcrumbs>
+        {{ crumb_home | strip }}{{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_tag | strip }}{{ crumb_collection_product | strip }}
+      </div>
       
       <div class="sidebar-row">
         <ul class="sidebar-menu">
-          <li><a href="{{ c.url }}/lookbook">/Lookbook</a></li>
+          <li><a href="{{ c.url }}/lookbook" {% if is_lookbook %}class="is-active"{% endif %}>/Lookbook</a></li>
         </ul>
         {% if filters != blank %}
           <a href="#" class="sidebar-filters-toggle" data-filters-toggle>Filter</a>        

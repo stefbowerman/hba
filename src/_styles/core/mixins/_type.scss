@@ -77,6 +77,12 @@
   }
 
   a {
+    border-bottom: 1px solid;
+    
     @include highlight-link;
+
+    &:hover {
+      border-bottom-color: transparent;
+    }
   }
 }

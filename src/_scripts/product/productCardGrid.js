@@ -1,5 +1,8 @@
 import $ from 'jquery';
-import { camelize } from '../core/utils';
+import {
+  camelize,
+  random
+} from '../core/utils';
 import ProductCard from './productCard';
 
 const selectors = {
@@ -25,6 +28,7 @@ export default class ProductCardGrid {
 
     this.settings = $.extend({}, defaults, options);
     this.revealed = false;
+    this.timeouts = [];
 
     this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el, {
       onClick: this.settings.onProductCardClick,
@@ -33,10 +37,19 @@ export default class ProductCardGrid {
     }));
   }
 
+  destroy() {
+    $.each(this.productCards, (k, card) =>  card.destroy());
+    $.each(this.timeouts, (i, timeout) => clearTimeout(timeout));
+  }
+
   reveal() {
     if (this.revealed) return;
 
-    this.productCards.forEach((card, i) => setTimeout(() => card.show(), (150 * i)));
+    this.productCards.forEach((card, i) => {
+      const min = (i+1) * 120;
+      const max = (i+1) * 200;
+      this.timeouts.push(setTimeout(() => card.show(), random(min, max)));
+    });
 
     this.revealed = true;
   }

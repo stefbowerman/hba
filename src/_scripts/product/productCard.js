@@ -1,9 +1,11 @@
 import $ from 'jquery';
+import Typed from 'typed.js';
 
 const selectors = {
   el: '[data-product-card]',
   gallery: '[data-product-card-gallery]',
   mainLazyImg: '[data-product-card-main-lazy]',
+  sku: '[data-sku]'
 };
 
 const classes = {
@@ -28,6 +30,7 @@ export default class ProductCard {
 
     this.$el = $(el);
     this.$mainLazyImg = $(selectors.mainLazyImg, this.$el);
+    this.$sku = $(selectors.sku, this.$el);
 
     if (this.$el === undefined || !this.$el.is(selectors.el)) {
       console.warn(`[${this.name}] - Element matching ${selectors.el} required to initialize.`);
@@ -35,6 +38,8 @@ export default class ProductCard {
     }
 
     this.settings = $.extend({}, defaults, options);
+    this.skuTyped = null;
+    this.skuTimeout = null;
 
     // @TODO - create these props from this.$el.get(0).dataSet?
     this.id          = this.$el.data('id');
@@ -59,11 +64,30 @@ export default class ProductCard {
     });
   }
 
+  destroy() {
+    this.skuTyped && this.skuTyped.destroy();
+    clearTimeout(this.skuTimeout);
+  }
+
   show() {
+    const sku = this.$sku.text();
+    this.$sku.text('');
+
     this.$el.addClass(classes.visible);
+
+    if (this.$sku.length) {
+      this.skuTimeout = setTimeout(() => {
+        this.skuTyped = new Typed(this.$sku.get(0), {
+          strings: [sku],
+          typeSpeed: 30,
+          showCursor: false
+        });
+      }, 300);
+    }    
   }
 
   hide() {
     this.$el.removeClass(classes.visible);
+    this.skuTyped && this.skuTyped.destroy();
   }
 }

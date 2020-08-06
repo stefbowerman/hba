@@ -70,7 +70,7 @@
       {% endif %}
 
       {% if show_sku and product.variants[0].sku != blank %}
-        <div class="product-card__sku">{{ product.variants[0].sku }}</div>
+        <div class="product-card__sku" data-sku>{{ product.variants[0].sku }}</div>
       {% endif %}
     </div>
   </div>

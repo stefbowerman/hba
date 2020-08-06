@@ -60,6 +60,16 @@ export function initialize() {
   // To add more see the full library - https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
   $.extend($.easing, {
     // t: current time, b: begInnIng value, c: change In value, d: duration
+    easeInCubic: function (x, t, b, c, d) {
+      return c*(t/=d)*t*t + b;
+    },
+    easeOutCubic: function (x, t, b, c, d) {
+      return c*((t=t/d-1)*t*t + 1) + b;
+    },
+    easeInOutCubic: function (x, t, b, c, d) {
+      if ((t/=d/2) < 1) return c/2*t*t*t + b;
+      return c/2*((t-=2)*t*t + 2) + b;
+    },     
     easeInQuint(x, t, b, c, d) {
       return c*(t/=d)*t*t*t*t + b;
     },

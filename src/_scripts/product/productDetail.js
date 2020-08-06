@@ -27,8 +27,6 @@ export default class ProductDetail {
       return;
     }
 
-    this.id = this.$el.data('id');
-
     this.$pg  = $(selectors.productGallery, this.$el);
     this.$pdf = $(selectors.productDetailForm, this.$el);
     
@@ -41,5 +39,11 @@ export default class ProductDetail {
 
   onReveal() {
     this.form.onReveal();
+    this.gallery.onReveal();
+  }
+
+  onHidden() {
+    this.form.onHidden();
+    this.gallery.onHidden();
   }
 }

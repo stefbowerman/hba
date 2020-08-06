@@ -6,6 +6,8 @@
 {% endcomment -%}
 {% paginate collection.products by 600 %}
 
+{% assign c = collections[collection.handle] %}
+
 <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="lookbook">
   {% assign page_title_text = collection.title | append: ' Lookbook' %}
 
@@ -17,8 +19,6 @@
         {% render 'collection-sidebar', collection_handle: collection.handle %}
       </div>
       <div class="col-md-7 col-lg-6">
-        {% assign c = collections[collection.handle] %}
-
         <div class="content-grid content-grid--lookbook" data-product-card-grid>
           {% for p in c.products %}
             <div class="content-grid__item">

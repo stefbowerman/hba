@@ -15,6 +15,8 @@ const selectors = {
   breadcrumbs: '[data-breadcrumbs]'
 };
 
+const $viewport = $('html, body');
+
 export default class Collection {
   /**
    * Collection constructor
@@ -26,7 +28,9 @@ export default class Collection {
   constructor(container) {
     this.$container = $(container);
 
-    this.mobileScreenWidthMax = getBreakpointMinWidth('xs') - 1;
+    this.baseUrl        = this.$container.data('base-url');
+    this.mobileWidthMax = getBreakpointMinWidth('xs') - 1;
+
     this.$filtersContainer = $(selectors.filterContainer, this.$container);
     this.$filtersToggle = $(selectors.filtersToggle, this.$container);
     
@@ -48,25 +52,28 @@ export default class Collection {
     this.productCardGrid.reveal();
   }
 
+  destroy() {
+    this.productCardGrid.destroy();
+  }  
+
   activateProduct(id, url, handle) {
-    if (!id) return;
+    if (!id || this.productPane.isActive(id)) return;
 
-    // @TODO - Add router navigate as a callback to this activate function?
-    // @TODO - Check if the card we clicked on is currently active, return if true
-    this.productPane.activate(id);
+    this.productPane.activate(id)
+      .then(() => {
+        if (window.HBA) {
+          window.HBA.appController
+            .pauseRouter()
+            .navigate(url)
+            .resumeRouter();
+        }
+      });
 
-    if (window.HBA) {
-      window.HBA.appController
-        .pauseRouter()
-        .navigate(url)
-        .resumeRouter();
-    }
-
-    const isMobile = window.innerWidth <= this.mobileScreenWidthMax;
+    const isMobile = window.innerWidth <= this.mobileWidthMax;
 
     // Below this screen size, the grid is at the bottom of the page
     if (isMobile) {
-      $('html, body').animate({ scrollTop: 0 }, {
+      $viewport.animate({ scrollTop: 0 }, {
         duration: 300,
         easing: 'easeOutQuint'
       });
@@ -83,6 +90,15 @@ export default class Collection {
     this.filterController.toggleFilter($(e.currentTarget));
     this.productCardGrid.filterBy(this.filterController.activeFilter);
     this.productPane.deactivate(); // @TODO - This is dumb, we need to only deactivate if the currently activeProduct Detail doesn't pass the filter
+
+    const url = this.filterController.activeFilter ? this.filterController.activeFilter.url : this.baseUrl;
+    
+    if (window.HBA) {
+      window.HBA.appController
+        .pauseRouter()
+        .navigate(url)
+        .resumeRouter();
+    }    
   }
 
   onFiltersToggleClick(e) {

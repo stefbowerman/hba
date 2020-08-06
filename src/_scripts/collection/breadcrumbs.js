@@ -12,25 +12,28 @@ const classes = {
 export default class Breadcrumbs {
   constructor(container) {
     this.$container = $(container);
-    this.$crumbs = $(selectors.crumb, this.$container);
-
-    this.typed = null;
 
     this.crumbMap = {
-      // collections: $crumb,
-      // collection-product: $crumb
+      // collections: {
+      //   $el: $crumb,
+      //   typer: null
+      // }
     };
 
-    this.$crumbs.each((i, el) => {
+    $(selectors.crumb, this.$container).each((i, el) => {
       const $el = $(el);
-      this.crumbMap[$el.data('crumb')] = $el;
+      this.crumbMap[$el.data('crumb')] = {
+        $el: $el,
+        typer: null
+      };
     });    
   }
 
   setCrumb(part, text, url) {
     if (!this.crumbMap.hasOwnProperty(part)) return;
 
-    const $crumb = this.crumbMap[part];
+    const $crumb = this.crumbMap[part].$el;
+    const typer  = this.crumbMap[part].typer;
     const $link = $crumb.find('a');
 
     if (text && url) {
@@ -42,14 +45,14 @@ export default class Breadcrumbs {
         .attr('href', url)
         .text('');
       
-      if (this.typed) {
-        this.typed.destroy();
+      if (typer) {
+        typer.destroy();
       }
 
       $crumb.removeClass(classes.crumbHidden);
 
       // Type out the text
-      this.typed = new Typed($link.get(0), {
+      this.crumbMap[part].typer = new Typed($link.get(0), {
         strings: [text],
         typeSpeed: 20,
         showCursor: false,
