@@ -1,5 +1,5 @@
 <div data-section-id="{{ section.id }}" data-section-type="video-background">
-  {% assign orientations = 'landscape portrait' | split: ' ' %}
+  {% assign orientations = 'landscape' | split: ' ' %}
 
   {% for orientation in orientations %}
     {% assign setting_handle = orientation | append: '_video_file_url' %}
@@ -23,7 +23,7 @@
         <!-- ALERT: Your video is invalid -->
       {% else %}
         <div class="video-background" data-video-{{ orientation }}>
-          <video autoplay muted loop playsinline>
+          <video autoplay muted playsinline>
             <source data-src="{{ src }}" type="video/{{ video_type }}" />
           </video>
           <img data-src="{{ section.settings[poster_setting_handle] | img_url: '1600x' }}" />
@@ -41,7 +41,12 @@
     {% endif %}
   </audio>
 
-  <span class="background-countdown" data-countdown="August 26 2020 08:00:00 GMT-0400">
+  <div class="video-background-content">
+    {% if section.settings.countdown_text != blank %}
+      <div class="video-background-text">{{ section.settings.countdown_text }}</div>
+    {% endif %}
+    <div class="video-background-countdown" data-countdown="{{ section.settings.countdown_end_time }}">
+  </div>
 </div>
 
 {% schema %}
@@ -64,20 +69,6 @@
       },
       {
         "type": "header",
-        "content": "Portrait Video"
-      },      
-      {
-        "type": "url",
-        "id": "portrait_video_file_url",
-        "label": "Video File URL"
-      },
-      {
-        "type": "image_picker",
-        "id": "portrait_poster_image",
-        "label": "Video Poster Image"
-      },
-      {
-        "type": "header",
         "content": "Audio"
       }, 
       {
@@ -89,6 +80,21 @@
         "type": "url",
         "id": "audio_file_url_ogg",
         "label": "Audio File URL (ogg)"
+      },
+      {
+        "type": "header",
+        "content": "Countdown"
+      },
+      {
+        "type": "text",
+        "id": "countdown_text",
+        "label": "Text"
+      },     
+      {
+        "type": "text",
+        "id": "countdown_end_time",
+        "label": "End Time",
+        "info": "JS format: i.e. 'November 10 2020 06:00:00 GMT-0800'"
       }
     ]
   }

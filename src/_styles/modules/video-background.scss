@@ -38,11 +38,30 @@
   }
 }
 
-.background-countdown {
+.video-background-content {
   position: fixed;
-  top: 50%;
+  top: 62%;
   left: 50%;
+  width: 100%;
   transform: translate(-50%, -50%);
+  text-align: center;
+
+  opacity: 0;
+  transition: opacity 150ms ease-out 100ms;
+
+  &.is-active {
+    opacity: 1;
+  }   
+}
+
+.video-background-text {
+  font-size: 11px;
+  letter-spacing: 0.2rem;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.video-background-countdown {
   font-size: 14px;
-  letter-spacing: 0.7rem;
+  letter-spacing: 0.5rem;
 }

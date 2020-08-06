@@ -2,12 +2,10 @@ import $ from 'jquery';
 import BaseSection from './base';
 import AJAXKlaviyoForm from '../lib/ajaxKlaviyoForm';
 import NewsletterForm from '../ui/newsletterForm';
-import CountdownTimer from '../ui/countdownTimer';
 
 const selectors = {
   logo: '[data-logo]',
-  newsletterForm: '[data-newsletter-form]',
-  countdown: '[data-countdown]'
+  newsletterForm: '[data-newsletter-form]'
 };
 
 const classes = {
@@ -20,7 +18,6 @@ export default class HeaderSection extends BaseSection {
 
     this.$logo = $(selectors.logo, this.$container);
     this.$form = $(selectors.newsletterForm, this.$container);
-    this.$countdown = $(selectors.countdown, this.$container);
 
     this.newsletterForm = new NewsletterForm(this.$form);
 
@@ -32,8 +29,6 @@ export default class HeaderSection extends BaseSection {
       onSubscribeSuccess: response => this.newsletterForm.onSubscribeSuccess(response),
       onSubscribeFail: response => this.newsletterForm.onSubscribeFail(response)
     });
-
-    this.countdownTimer = new CountdownTimer(this.$countdown);   
 
     this.strobeLogo();
   }

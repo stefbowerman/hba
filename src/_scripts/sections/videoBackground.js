@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { throttle } from 'throttle-debounce';
+// import { throttle } from 'throttle-debounce';
 import { isTouch } from '../core/utils';
 import BaseSection from './base';
 import CountdownTimer from '../ui/countdownTimer';
@@ -13,13 +13,16 @@ class VideoBackground {
     this.$video = $('video', this.$el);
     this.$source = $('source', this.$el);
     this.$poster = $('img', this.$el);
+    this.video = this.$video.get(0);
 
     this.isVisible = false;
 
     const dataSrc = this.$source.attr('data-src');
     if (!dataSrc) {
       this.$el.addClass('is-loaded');
-    } 
+    }
+
+    this.$video.on('timeupdate', this.onVideoTimeUpdate.bind(this));
   }
 
   show() {
@@ -36,7 +39,7 @@ class VideoBackground {
         this.play();
       });
 
-      this.$video.get(0).load();
+      this.video.load();
     }
     else {
       this.play();
@@ -49,7 +52,7 @@ class VideoBackground {
   hide() {
     if (!this.isVisible) return;
 
-    this.$video.get(0).pause();
+    this.video.pause();
     this.$el.removeClass('is-active');
     this.isVisible = false;
   }
@@ -68,7 +71,13 @@ class VideoBackground {
 
         this.$el.addClass('show-poster');
       });
-    }  
+    }
+  }
+
+  onVideoTimeUpdate() {
+    if (this.video.currentTime > this.video.duration - 1.5) {
+      this.video.pause(); // Pause ont the last frame
+    }
   }
 }
 
@@ -81,17 +90,17 @@ export default class VideoBackgroundSection extends BaseSection {
     super(container, 'video-background');
 
     this.landscapeBackground = new VideoBackground($('[data-video-landscape]', this.$container));
-    this.portraitBackground = new VideoBackground($('[data-video-portrait]', this.$container));    
+    // this.portraitBackground = new VideoBackground($('[data-video-portrait]', this.$container));    
 
     this.$audio = $('audio', this.$audio);
     this.audio  = this.$audio.get(0);
 
-    this.currentWindowOrientation = null; // we initialize this by calling onResize inside the constructor this.getWindowOrientation();
+    // this.currentWindowOrientation = null; // we initialize this by calling onResize inside the constructor this.getWindowOrientation();
     this.audioPlaying = false;
-    this.throttledResize = throttle(100, this.onResize.bind(this));
+    // this.throttledResize = throttle(100, this.onResize.bind(this));
 
     // Events
-    $window.on('resize', this.throttledResize);
+    // $window.on('resize', this.throttledResize);
     this.$audio.on('play', this.onAudioPlay.bind(this)); // Happens on page load when the audio starts playing for the first time
     this.$audio.on('pause stalled', this.onAudioPause.bind(this));
 
@@ -107,12 +116,16 @@ export default class VideoBackgroundSection extends BaseSection {
     this.countdownTimer = new CountdownTimer(this.$countdown);
 
     setTimeout(() => this.startMedia(), 1500);
-    this.onResize();
+    // this.onResize();
+
+    this.landscapeBackground.show();
+
+    $('.video-background-content').addClass('is-active');  
   }
 
-  getWindowOrientation() {
-    return window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
-  }  
+  // getWindowOrientation() {
+  //   return window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
+  // }  
 
   startMedia() {
     const p2 = this.audio.play();
@@ -144,24 +157,24 @@ export default class VideoBackgroundSection extends BaseSection {
     toggleOn ? this.audio.play() : this.audio.pause();
   }
 
-  onResize() {
-    const o = this.getWindowOrientation();
+  // onResize() {
+  //   const o = this.getWindowOrientation();
 
-    if (o !== this.currentWindowOrientation) {
-      if (o === 'landscape') {
-        this.landscapeBackground.show();
-        this.portraitBackground.hide();
-      }
-      else {
-        this.landscapeBackground.hide();
-        this.portraitBackground.show();
-      }
-    }
+  //   if (o !== this.currentWindowOrientation) {
+  //     if (o === 'landscape') {
+  //       this.landscapeBackground.show();
+  //       this.portraitBackground.hide();
+  //     }
+  //     else {
+  //       this.landscapeBackground.hide();
+  //       this.portraitBackground.show();
+  //     }
+  //   }
 
-    this.currentWindowOrientation = o;
-  }
+  //   this.currentWindowOrientation = o;
+  // }
 
-  onUnload() {
-    $window.off('resize', this.throttledResize); 
-  }  
+  // onUnload() {
+  //   $window.off('resize', this.throttledResize); 
+  // }  
 }
