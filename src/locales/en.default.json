@@ -294,7 +294,8 @@
       "from_text_html": "From {{ price }}",
       "quantity": "Quantity",
       "add_to_cart": "Add to Cart",
-      "adding": "Adding..."
+      "adding": "Adding...",
+      "select_options": "Select Options"
     }
   },
   "gift_cards": {

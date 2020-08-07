@@ -125,4 +125,13 @@
   &.is-active {
     background-color: transparent;
   }
+
+  &.is-disabled {
+    cursor: $cursor-disabled;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
 }

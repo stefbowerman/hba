@@ -144,7 +144,7 @@ export default class ProductDetailForm {
       btnText = theme.strings.unavailable;
     }
 
-    this.$priceWrapper.toggleClass(classes.hide, !!variant);
+    this.$priceWrapper.toggleClass(classes.hide, !variant);
     this.$addToCartBtn.prop('disabled', btnDisabled);
     this.$addToCartBtnText.text(btnText);
   }
@@ -258,7 +258,7 @@ export default class ProductDetailForm {
     e.preventDefault();
     const $option = $(e.currentTarget);
 
-    if ($option.hasClass(classes.variantOptionValueActive)) {
+    if ($option.hasClass(classes.variantOptionValueActive) || $option.hasClass('is-disabled')) {
       return;
     }
 
@@ -291,15 +291,17 @@ export default class ProductDetailForm {
   }
 
   onAJAXFormAddStart(e) {
+    if (!this.$addToCartForm.is(e.relatedTarget)) return;
+
     this.$addToCartBtn.addClass(classes.btnActive);
 
     // Kill the status text when we start a request
     this.$statusSuccess.removeClass(classes.statusVisible);
+    this.$statusError.removeClass(classes.statusVisible);
+
     if (this.typers.statusSuccess) {
       this.typers.statusSuccess.destroy();
     }
-
-    this.$statusError.removeClass(classes.statusVisible);
 
     if (this.typers.statusError) {
       this.typers.statusError.destroy();
@@ -347,7 +349,7 @@ export default class ProductDetailForm {
     }
 
     this.typers.statusError = new Typed(this.$statusError.get(0), {
-      strings: [`${e.message || 'something went wrong'} ^${STATUS_TIMEOUT_DURATION}`, ''],
+      strings: [`Item could not be added to cart. ^${STATUS_TIMEOUT_DURATION}`, ''],
       contentType: null,
       typeSpeed: 5,
       backSpeed: 5,

@@ -58,6 +58,9 @@
               </div>
             </form>          
         {% endif %}
+      {% elsif block.type == 'bg_audio_control' %}
+        <a href="#" class="btn is-active" data-toggle-background-audio="false">Off</a>
+        <a href="#" class="btn" data-toggle-background-audio="true">On</a>
       {% endif %}
     </div>
   {% endfor %}
@@ -118,6 +121,18 @@
             "id": "title",
             "label": "Title",
             "default": "Mailing List"
+          }
+        ]
+      },
+      {
+        "type": "bg_audio_control",
+        "name": "Background Audio Control",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Audio"
           }
         ]
       }

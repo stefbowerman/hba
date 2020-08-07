@@ -16,7 +16,12 @@
   {% assign current_variant = product.selected_or_first_available_variant %}
 {% endif %}
 
+{% comment %} Booleans we'll need for the template {% endcomment %}
 {% assign product_has_sku = false %}
+{% assign selection_required = false %}
+{% assign selectable_product_options_count = 0 %}
+
+{% comment %} Check for SKU {% endcomment %}
 {% for v in product.variants %}
   {% if v.sku != blank %}
     {% assign product_has_sku = true %}
@@ -24,16 +29,32 @@
   {% endif %}
 {% endfor %}
 
+{% comment %} Check size / color options {% endcomment %}
+{% for option in product.options_with_values %}  
+  {% if option.values.size > 1 %}
+    {% assign selection_required = true %}
+    {% assign selectable_product_options_count = selectable_product_options_count | plus: 1 %}
+    {% assign single_select_variant_option_name = option.name %}
+  {% endif %}
+{% endfor %}
+
+{% assign selection_required_text = 'products.product.select_options' | t %}
+{% if selectable_product_options_count == 1 %}
+  {% assign selection_required_text = 'Select ' | append: single_select_variant_option_name %}
+{% endif %}
+
 <div data-product-detail-form>
   <h1 data-title>
     {{ product.title }}
 
+    {% comment %}
     {% for option in product.options_with_values %}
       {% assign option_name_upcase = option.name | upcase | strip %}
       {% if option_name_upcase == "COLOR" and option.values.size == 1 %}
         <br />{{ option.values[0] }}
       {% endif %}
-    {% endfor %}    
+    {% endfor %}
+    {% endcomment %}    
   </h1>
 
   {% if product_has_sku %}
@@ -60,11 +81,6 @@
           {% unless product.has_only_default_variant %}
             {% for option in product.options_with_values %}
               {% assign option_name_downcase = option.name | downcase %}
-
-              {% assign is_size  = false %}
-              {% if option_name_upcase == "size" %}
-                {% assign is_size = true %}
-              {% endif %}
 
               {% comment %} Kind of dumb to create a var for this but it has a more semantic name {% endcomment %}
               {% assign option_has_single_value = false %}
@@ -116,13 +132,8 @@
                       {% endfor %}
                     {% endif %}
 
-                    {% assign is_selected = false %}
-                    {% if is_color and forloop.index0 == 0 %}
-                      {% assign is_selected = true %}
-                    {% endif %}
-
                     <a href="#"
-                       class="option-value btn {% if is_disabled %} is-disabled {% elsif is_selected %} is-selected{% endif %}"
+                       class="option-value btn{% if is_disabled %} is-disabled{% endif %}"
                        data-variant-option-value="{{ value }}"
                        {% if is_disabled %} disabled="disabled" aria-disabled="true"{% endif %}
                     >
@@ -153,9 +164,11 @@
               name="add"
               class="btn"
               data-add-to-cart
-              {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+              {% if selection_required or current_variant.available == false %}disabled="disabled"{% endif %}>
                 <span data-add-to-cart-text>
-                  {% if current_variant.available %}
+                  {% if selection_required %}
+                    {{ selection_required_text }}
+                  {% elsif current_variant.available %}
                     {{ 'products.product.add_to_cart' | t }}
                   {% else %}
                     {{ 'products.product.sold_out' | t }}
@@ -167,7 +180,7 @@
           </div>
         {% else %}
           <div class="pdf-submit-wrapper">
-            <button class="btn">{{ 'products.product.sold_out' | t }}</button>
+            <button class="btn" disabled="disabled">{{ 'products.product.sold_out' | t }}</button>
           </div>
         {% endif %}
       </form>

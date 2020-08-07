@@ -29,6 +29,7 @@ import PageView       from './views/page';
 import HeaderSection   from './sections/header';
 import FooterSection   from './sections/footer';
 import AJAXCartSection from './sections/ajaxCart';
+import BackgroundMedia from './sections/backgroundMedia';
 
 // Do this ASAP
 Animations.initialize();
@@ -45,7 +46,8 @@ window.HBA = {
   const sections = {
     header:   new HeaderSection($('[data-section-type="header"]')),
     footer:   new FooterSection($('[data-section-type="footer"]')),
-    ajaxCart: new AJAXCartSection($('[data-section-type="ajax-cart"]'))
+    ajaxCart: new AJAXCartSection($('[data-section-type="ajax-cart"]')),
+    backgroundMedia: new BackgroundMedia($('[data-section-type="background-media"]'))
   };
 
   // @TODO - Remove this at some point

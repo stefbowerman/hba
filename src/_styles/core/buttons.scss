@@ -41,7 +41,8 @@
   }
 
   // Disabled comes first so active can properly restyle
-  &:disabled {
+  &:disabled,
+  &.is-disabled {
     cursor: $cursor-disabled;
 
     &:hover {
