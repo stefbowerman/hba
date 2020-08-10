@@ -5,3 +5,14 @@
   padding-left: 0;
   list-style: none;
 }
+
+// Turns a UL into what looks like a normal text block with line breaks
+@mixin list-br {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin-bottom: 0;
+  }
+}

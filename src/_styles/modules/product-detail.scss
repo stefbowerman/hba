@@ -100,6 +100,11 @@
 .product-description {
   margin-bottom: 18px;
   max-width: 36em;
+
+  ul {
+    @include list-br;
+    margin-bottom: $paragraph-margin-bottom;
+  }
 }
 
 .pdf-add-to-cart-form {

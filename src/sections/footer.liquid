@@ -1,6 +1,11 @@
 {%- capture footer_blocks_html -%}
   {% for block in section.blocks %}
-    <div class="footer-block col-4 col-sm-3 col-md-2" {{ block.shopfy_attributes }}>
+    {%- capture column_classes -%}
+      {% if section.blocks.size == 5 and forloop.last %}col-12 col-sm-6{% else %}col-4 col-sm-3{% endif %}
+      col-md-2
+    {%- endcapture -%}
+
+    <div class="footer-block {{ column_classes | strip }}" {{ block.shopfy_attributes }}>
       <h6 class="footer-block__title">
         {{ block.settings.title }}
       </h6>
@@ -58,9 +63,15 @@
               </div>
             </form>          
         {% endif %}
-      {% elsif block.type == 'bg_audio_control' %}
-        <a href="#" class="btn is-active" data-toggle-background-audio="false">Off</a>
-        <a href="#" class="btn" data-toggle-background-audio="true">On</a>
+      {% elsif block.type == 'bg_media_control' %}
+        <ul class="footer-menu">
+          <li>
+            Audio: <a href="#" class="btn is-active" data-toggle-background-audio="false">Off</a> <a href="#" class="btn" data-toggle-background-audio="true">On</a>
+          </li>
+          <li>
+            Video: <a href="#" class="btn is-active" data-toggle-background-video="false">Off</a> <a href="#" class="btn" data-toggle-background-video="true">On</a>    
+          </li>
+        </ul>
       {% endif %}
     </div>
   {% endfor %}
@@ -125,14 +136,14 @@
         ]
       },
       {
-        "type": "bg_audio_control",
-        "name": "Background Audio Control",
+        "type": "bg_media_control",
+        "name": "Background Media Control",
         "settings": [
           {
             "type": "text",
             "id": "title",
             "label": "Title",
-            "default": "Audio"
+            "default": "Background"
           }
         ]
       }

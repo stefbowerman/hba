@@ -18,8 +18,11 @@
   {% assign c = collections[collection_handle] %}
 
   {% assign is_lookbook = false %}
+  {% assign show_filters = true %}
+
   {% if current_tags contains 'lookbook' %}
     {% assign is_lookbook = true %}
+    {% assign show_filters = false %}
   {% endif %}
 
   {% if c %}
@@ -28,12 +31,6 @@
         <a href="/">root</a>
       </span>
     {% endcapture %}
-
-    {%- capture crumb_collections -%}
-      <span class="crumb" data-crumb="collections">
-        collections
-      </span>
-    {%- endcapture -%}
 
     {%- capture crumb_collection -%}
       <span class="crumb" data-crumb="collection">
@@ -104,19 +101,19 @@
   
     <div class="sidebar">
       <div class="breadcrumbs" data-breadcrumbs>
-        {{ crumb_home | strip }}{{ crumb_collections | strip }}{{ crumb_collection | strip }}{{ crumb_collection_tag | strip }}{{ crumb_collection_product | strip }}
+        {{ crumb_home | strip }}{{ crumb_collection | strip }}{{ crumb_collection_tag | strip }}{{ crumb_collection_product | strip }}
       </div>
       
       <div class="sidebar-row">
         <ul class="sidebar-menu">
           <li><a href="{{ c.url }}/lookbook" {% if is_lookbook %}class="is-active"{% endif %}>/Lookbook</a></li>
         </ul>
-        {% if filters != blank %}
+        {% if filters != blank and show_filters %}
           <a href="#" class="sidebar-filters-toggle" data-filters-toggle>Filter</a>        
         {% endif %}
       </div>
 
-      {% if filters != blank %}
+      {% if filters != blank and show_filters %}
         <div class="sidebar-filters" data-filter-container>
           {{ filters }}
         </div>

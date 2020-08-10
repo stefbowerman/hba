@@ -61,6 +61,10 @@
 .lookbook-product-details__bottom {
   font-size: 10px;
 
+  ul {
+    @include list-br;
+  }
+
   .manufactured-in {
     margin-top: 15px;
   }

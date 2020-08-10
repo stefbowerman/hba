@@ -14,8 +14,10 @@ export default class BackgroundMediaSection extends BaseSection {
   constructor(container) {
     super(container, 'background-media');
 
-    this.audioPlaying = false;
-    this.videoBackgroundQueue = new VideoBackgroundQueue();
+    this.videoBackgroundQueue = new VideoBackgroundQueue({
+      onVideoPlay: this.onVideoPlay.bind(this),
+      onVideoPause: this.onVideoPause.bind(this)
+    });
 
     $(selectors.videoBackground, this.$container).each((i, el) => {
       this.videoBackgroundQueue.register(new VideoBackground(el));
@@ -31,10 +33,13 @@ export default class BackgroundMediaSection extends BaseSection {
 
       if (isTouch()) {
         $body.on('touchstart', '[data-toggle-background-audio]', this.onToggleBackgroundAudioClick.bind(this));
+        $body.on('touchstart', '[data-toggle-background-video]', this.onToggleBackgroundVideoClick.bind(this));
         $body.on('click', '[data-toggle-background-audio]', e => e.preventDefault());
+        $body.on('click', '[data-toggle-background-video]', e => e.preventDefault());        
       }
       else {
         $body.on('click', '[data-toggle-background-audio]', this.onToggleBackgroundAudioClick.bind(this));
+        $body.on('click', '[data-toggle-background-video]', this.onToggleBackgroundVideoClick.bind(this));
       }      
     } 
 
@@ -42,7 +47,6 @@ export default class BackgroundMediaSection extends BaseSection {
 
     setTimeout(() => this.startMedia(), 1500);
   }
-
 
   startMedia() {
     if (!this.audio) return;
@@ -55,17 +59,23 @@ export default class BackgroundMediaSection extends BaseSection {
   }
 
   onAudioPlay() {
-    this.audioPlaying = true;
-
     $('[data-toggle-background-audio="true"]').addClass('is-active');
     $('[data-toggle-background-audio="false"]').removeClass('is-active');    
   }
 
   onAudioPause() {
-    this.audioPlaying = false;
-
     $('[data-toggle-background-audio="true"]').removeClass('is-active');
     $('[data-toggle-background-audio="false"]').addClass('is-active');    
+  }
+
+  onVideoPlay() {
+    $('[data-toggle-background-video="true"]').addClass('is-active');
+    $('[data-toggle-background-video="false"]').removeClass('is-active');    
+  }
+
+  onVideoPause() {
+    $('[data-toggle-background-video="true"]').removeClass('is-active');
+    $('[data-toggle-background-video="false"]').addClass('is-active');   
   }
 
   onToggleBackgroundAudioClick(e) {
@@ -76,5 +86,13 @@ export default class BackgroundMediaSection extends BaseSection {
     const $toggle = $(e.currentTarget);
     const toggleOn = !!$toggle.data('toggle-background-audio'); // data attribute should be bool
     toggleOn ? this.audio.play() : this.audio.pause();
-  }  
+  }
+
+  onToggleBackgroundVideoClick(e) {
+    e.preventDefault();
+
+    const $toggle = $(e.currentTarget);
+    const toggleOn = !!$toggle.data('toggle-background-video'); // data attribute should be bool
+    toggleOn ? this.videoBackgroundQueue.play() : this.videoBackgroundQueue.pause();
+  }
 }
