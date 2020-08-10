@@ -16,4 +16,10 @@
     object-fit: cover;
     object-position: center;
   }
+
+  opacity: 0;
+
+  &.is-active {
+    opacity: 1;
+  }
 }

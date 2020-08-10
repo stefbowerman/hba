@@ -1,32 +1,34 @@
 <div data-section-id="{{ section.id }}" data-section-type="background-media">
-  {% assign src = section.settings.video_file_url %}
+  {% for block in section.blocks %}
+    {% assign src = block.settings.video_file_url %}
 
-  {% if src != blank %}
-    {% assign video_type = '' %}
+    {% if src != blank %}
+      {% assign video_type = '' %}
 
-    {% if src contains '.mp4' %}
-      {% assign video_type = 'mp4' %}
-    {% elsif src contains '.og' %}
-      {% assign video_type = 'ogg' %}
-    {% elsif src contains '.avi' %}
-      {% assign video_type = 'avi' %}
-    {% elsif src contains '.webm' %}
-      {% assign video_type = 'webm' %}
+      {% if src contains '.mp4' %}
+        {% assign video_type = 'mp4' %}
+      {% elsif src contains '.og' %}
+        {% assign video_type = 'ogg' %}
+      {% elsif src contains '.avi' %}
+        {% assign video_type = 'avi' %}
+      {% elsif src contains '.webm' %}
+        {% assign video_type = 'webm' %}
+      {% endif %}
+
+      {% if video_type == '' %}
+        <!-- ALERT: Your video is invalid -->
+      {% else %}
+        <div class="video-background" data-video-background>
+          <video muted>
+            <source src="{{ src }}" type="video/{{ video_type }}" />
+          </video>
+          {% if block.settings.video_poster_image != blank %}
+            <img data-src="{{ block.settings.video_poster_image | img_url: '1600x' }}" />
+          {% endif %}
+        </div>
+      {% endif %}
     {% endif %}
-
-    {% if video_type == '' %}
-      <!-- ALERT: Your video is invalid -->
-    {% else %}
-      <div class="video-background">
-        <video autoplay loop muted>
-          <source src="{{ src }}" type="video/{{ video_type }}" />
-        </video>
-        {% if section.settings.video_poster_image != blank %}
-          <img data-src="{{ section.settings.video_poster_image | img_url: '1600x' }}" />
-        {% endif %}
-      </div>
-    {% endif %}
-  {% endif %}
+  {% endfor %}
 
   {% if section.settings.audio_file_url_mp3 != blank or ection.settings.audio_file_url_ogg != blank  %}
     <audio loop>
@@ -46,20 +48,6 @@
     "settings": [
       {
         "type": "header",
-        "content": "Background Video"
-      },      
-      {
-        "type": "url",
-        "id": "video_file_url",
-        "label": "Video File URL"
-      },
-      {
-        "type": "image_picker",
-        "id": "video_poster_image",
-        "label": "Video Poster Image"
-      },
-      {
-        "type": "header",
         "content": "Audio"
       }, 
       {
@@ -71,6 +59,29 @@
         "type": "url",
         "id": "audio_file_url_ogg",
         "label": "Audio File URL (ogg)"
+      },
+      {
+        "type": "header",
+        "content": "Background Video Blocks",
+        "info": "Background video blocks will be played sequentially on a loop"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "background_video",
+        "name": "Background Video",
+        "settings": [
+          {
+            "type": "url",
+            "id": "video_file_url",
+            "label": "Video File URL"
+          },
+          {
+            "type": "image_picker",
+            "id": "video_poster_image",
+            "label": "Video Poster Image"
+          }
+        ]
       }
     ]
   }

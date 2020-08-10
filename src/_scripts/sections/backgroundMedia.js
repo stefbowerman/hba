@@ -1,87 +1,27 @@
 import $ from 'jquery';
 import { isTouch } from '../core/utils';
 import BaseSection from './base';
+import VideoBackground from '../ui/videoBackground';
+import VideoBackgroundQueue from '../ui/videoBackgroundQueue';
+
+const selectors = {
+  videoBackground: '[data-video-background]'
+};
 
 const $body = $(document.body);
-
-class VideoBackground {
-  constructor(el) {
-    this.$el = $(el);
-    this.$video = $('video', this.$el);
-    this.$source = $('source', this.$el);
-    this.$poster = $('img', this.$el);
-    this.video = this.$video.get(0);
-
-    this.isVisible = false;
-
-    const dataSrc = this.$source.attr('data-src');
-    if (!dataSrc) {
-      this.$el.addClass('is-loaded');
-    }
-  }
-
-  show() {
-    if (this.isVisible) return;
-
-    const dataSrc = this.$source.attr('data-src');
-
-    if (dataSrc) {
-      this.$source.get(0).src = dataSrc;
-      this.$source.attr('data-src', null).removeAttr('data-src');
-      
-      this.$video.one('loadeddata loadedmetadata play', () => {
-        this.$el.addClass('is-loaded');
-        this.play();
-      });
-
-      this.video.load();
-    }
-    else {
-      this.play();
-    }
-
-    this.$el.addClass('is-active');
-    this.isVisible = true;
-  }
-
-  hide() {
-    if (!this.isVisible) return;
-
-    this.video.pause();
-    this.$el.removeClass('is-active');
-    this.isVisible = false;
-  }
-
-  play() {
-    const playPromise = this.$video.get(0).play();
-    
-    if (playPromise !== undefined) {
-      playPromise.catch((e) => {
-        // Autoplay isn't supported
-        // Load the poster image and show that instead
-        if (this.$poster.attr('data-src')) {
-          this.$poster.attr('src', this.$poster.data('src'));
-          this.$poster.attr('data-src', '').removeAttr('data-src');
-        }
-
-        this.$el.addClass('show-poster');
-      });
-    }
-  }
-}
 
 export default class BackgroundMediaSection extends BaseSection {
   constructor(container) {
     super(container, 'background-media');
 
     this.audioPlaying = false;
+    this.videoBackgroundQueue = new VideoBackgroundQueue();
 
-    this.$videoBackgroundEl = $('.video-background', this.$container).first();
+    $(selectors.videoBackground, this.$container).each((i, el) => {
+      this.videoBackgroundQueue.register(new VideoBackground(el));
+    });
+
     this.$audio = $('audio', this.$audio).first();
-
-    if (this.$videoBackgroundEl.length) {
-      this.videoBackground = new VideoBackground(this.$videoBackgroundEl);
-    }
 
     if (this.$audio.length) {
       this.audio = this.$audio.get(0);
@@ -98,7 +38,8 @@ export default class BackgroundMediaSection extends BaseSection {
       }      
     } 
 
-    this.videoBackground && this.videoBackground.show();
+    this.videoBackgroundQueue.start();
+
     setTimeout(() => this.startMedia(), 1500);
   }
 
