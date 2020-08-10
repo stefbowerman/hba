@@ -1,8 +1,7 @@
 {%- capture footer_blocks_html -%}
   {% for block in section.blocks %}
     {%- capture column_classes -%}
-      {% if section.blocks.size == 5 and forloop.last %}col-12 col-sm-6{% else %}col-4 col-sm-3{% endif %}
-      col-md-2
+      {% if section.blocks.size == 5 and forloop.last %}col-12 col-sm-6{% else %}col-4 col-sm-3{% endif %} col-md-2
     {%- endcapture -%}
 
     <div class="footer-block {{ column_classes | strip }}" {{ block.shopfy_attributes }}>
