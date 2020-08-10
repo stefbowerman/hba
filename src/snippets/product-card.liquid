@@ -47,7 +47,7 @@
        data-handle="{{ product.handle }}"
        data-url="{{ product_url }}"
        data-product-type="{{ product.type | handle }}"
-       data-document-title="{% render 'document-title', product: product, collection: collection %}"
+       data-document-title="{% render 'document-title', p: product, c: collection %}"
        data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
     <div class="product-card__contents">
       {% if product.featured_image %}
