@@ -49,7 +49,6 @@ export default class ProductDetailForm {
     this.namespace = `.${this.name}`;
 
     this.events = {
-      RESIZE: `resize${this.namespace}`,
       CLICK: `click${this.namespace}`
     };
 

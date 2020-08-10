@@ -135,3 +135,87 @@
     }
   }
 }
+
+// -------------------------
+// Blowup
+// -------------------------
+
+// Kill the scroll on the body
+body.blowup-open {
+  overflow: hidden;
+}
+
+.blowup {
+  position: fixed;
+  z-index: $zindex-blowup;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  overflow: hidden;
+  background-color: $body-bg;
+  cursor: pointer;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.32, 0.15, 0.02, 1.01) 0.3s;
+
+  &.is-scrollable {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    .blowup__image {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    transition-timing-function: cubic-bezier(0.32, 0.15, 0.02, 1.01);
+    transition-duration: 0.3s;
+    transition-delay: 0s;
+  }
+}
+
+.blowup__helper {
+  position: fixed;
+  z-index: $zindex-blowup + 1;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 $grid-gutter-width $grid-gutter-width*2;  
+  opacity: 0;
+
+  .blowup.is-active & {
+    opacity: 1;
+  }
+}
+
+.blowup__scroll {
+  @include stretch-within;
+  opacity: 0;
+  transition: opacity 600ms ease-out;
+
+  .is-active & {
+    opacity: 1;
+  }
+}
+
+.blowup__image {
+  height: 2000px;
+  width: auto;
+  max-width: none;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.75, 0.32, 0.64, 0.87);
+
+  .image-visible & {
+    opacity: 1;
+  }
+
+  // In this case, clicking the image will close the zoom
+  .is-scrollable & {
+    cursor: zoom-out;
+    cursor: -webkit-zoom-out;
+  }
+}

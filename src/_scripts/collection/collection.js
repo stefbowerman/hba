@@ -29,7 +29,7 @@ export default class Collection {
     this.$container = $(container);
 
     this.baseUrl        = this.$container.data('base-url');
-    this.mobileWidthMax = getBreakpointMinWidth('xs') - 1;
+    this.mobileWidthMax = getBreakpointMinWidth('sm') - 1;
 
     this.$filtersContainer = $(selectors.filterContainer, this.$container);
     this.$filtersToggle = $(selectors.filtersToggle, this.$container);

@@ -25,7 +25,7 @@
     <div class="swiper-wrapper">
       {% for image in product.images %}
         <div class="swiper-slide" data-image="{{ image.id }}" {% if image.id == current_variant.featured_image.id %} data-initial-slide{% endif %}>
-          <a href="{{ image | img_url: photo_zoom_dimension }}">
+          <a href="{{ image | img_url: photo_zoom_dimension }}" data-gallery-image-link>
             <img src="{{ image | img_url: photo_main_dimension }}" alt="{{ image.alt | escape }}" class="img-fluid">
           </a>
         </div>
@@ -41,4 +41,13 @@
       {% endfor %}
     </div>
   {% endif %}
+
+  <div class="blowup" data-blowup>
+    <div class="blowup__scroll">
+      <img class="blowup__image" data-blowup-image alt="Product image zoom" />
+    </div>
+    <div class="blowup__helper" data-blowup-close>
+      <button class="btn is-active">Close Zoom</button>
+    </div>
+  </div>  
 </div>

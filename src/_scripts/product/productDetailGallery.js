@@ -1,5 +1,8 @@
 import $ from 'jquery';
 import Swiper from 'swiper';
+import { isTouch } from '../core/utils';
+import DesktopZoomController from './zoomController/desktop';
+import TouchZoomController from './zoomController/touch';
 
 const selectors = {
   productGallerySlideshow: '[data-product-gallery-slideshow]',
@@ -8,8 +11,6 @@ const selectors = {
 };
 
 const classes = {
-  zoomReady: 'is-zoomable',
-  zoomedIn: 'is-zoomed',
   thumbnailSlideActive: 'is-active'
 };
 
@@ -30,33 +31,12 @@ export default class ProductDetailGallery {
     this.initialSlide = $initialSlide.index() === -1 ? 0 : $initialSlide.index(); // If the initial slide doesn't exist, jQuery will return -1
     this.swiper = null;
 
+    this.desktopZoomController = new DesktopZoomController(this.$el);
+    this.touchZoomController   = new TouchZoomController(this.$el);
+
+    this[isTouch() ? 'touchZoomController' : 'desktopZoomController'].enable();
+
     this.$thumbnailSlides.on('click', this.onThumbnailSlideClick.bind(this));
-  }
-
-  initHoverZoom($zoomTarget) {
-    this.destroyHoverZoom($zoomTarget);
-
-    $zoomTarget.zoom({
-      url: $zoomTarget.find('a').attr('href'),
-      on: 'click',
-      touch: false,
-      escToClose: true,
-      magnify: 1.2,
-      duration: 300,
-      callback: () => {
-        $zoomTarget.addClass(classes.zoomReady);
-      },
-      onZoomIn: () => {
-        $zoomTarget.addClass(classes.zoomedIn);
-      },
-      onZoomOut: () => {
-        $zoomTarget.removeClass(classes.zoomedIn);
-      }
-    });
-  }
-
-  destroyHoverZoom($el) {
-    $el.trigger('zoom.destroy');
   }
 
   onReveal() {
@@ -80,13 +60,13 @@ export default class ProductDetailGallery {
 
   onSlideShowInit() {
     const sw = this.swiper;
-    this.initHoverZoom($(sw.slides[sw.activeIndex]));
+    this.desktopZoomController.initHoverZoom($(sw.slides[sw.activeIndex]));
   }
 
   onSlideChangeTransitionEnd() {
     const sw = this.swiper;
-    this.destroyHoverZoom($(sw.slides[sw.previousIndex]));
-    this.initHoverZoom($(sw.slides[sw.activeIndex]));
+    this.desktopZoomController.destroyHoverZoom($(sw.slides[sw.previousIndex]));
+    this.desktopZoomController.initHoverZoom($(sw.slides[sw.activeIndex]));
     this.$thumbnailSlides.removeClass(classes.thumbnailSlideActive);
     this.$thumbnailSlides.eq(sw.activeIndex - 1).addClass(classes.thumbnailSlideActive);
   }
