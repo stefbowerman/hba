@@ -19,7 +19,7 @@
         <!-- ALERT: Your video is invalid -->
       {% else %}
         <div class="video-background" data-video-background>
-          <video muted>
+          <video muted playsinline>
             <source src="{{ src }}" type="video/{{ video_type }}" />
           </video>
           {% if block.settings.video_poster_image != blank %}
