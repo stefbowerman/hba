@@ -61,6 +61,10 @@
 .lookbook-product-details__bottom {
   font-size: 10px;
 
+  p {
+    margin: 0;
+  }
+  
   ul {
     @include list-br;
   }

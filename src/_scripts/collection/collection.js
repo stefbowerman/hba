@@ -114,6 +114,9 @@ export default class Collection {
 
   onProductCardClick(e, card) {
     e.preventDefault();
+    
+    if (card.isPreview) return;
+
     this.activateProduct(card.id, card.url, card.handle, card.documentTitle);
   }
 }

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import VideoBackground from './videoBackground';
 
 export default class VideoBackgroundQueue {

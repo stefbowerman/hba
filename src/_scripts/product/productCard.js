@@ -48,6 +48,7 @@ export default class ProductCard {
     this.productType   = this.$el.data('product-type');
     this.sale          = this.$el.data('sale');
     this.documentTitle = this.$el.data('document-title');
+    this.isPreview     = !!this.$el.data('preview');
 
     // Events
     this.$el.on({

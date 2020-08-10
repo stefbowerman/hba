@@ -11,6 +11,7 @@
               show_sold_out: { boolean } - optional, defaults to false
               show_sku: { boolean } - optional, defaults to false
               linkable: { boolean } - optional, defaults to true
+              preview: { boolean } - optional, default to false
               collection: { collection } - optional
   %}
 
@@ -32,7 +33,16 @@
 {% if linkable == blank %}
   {% assign linkable = true %}
 {% endif %}
+
+{% if preview == blank %}
+  {% assign preview = false %}
+{% endif %}
 {% comment %} End Defaults {% endcomment %}
+
+{% comment %} Preview cards can't be linkable {% endcomment %}
+{% if preview and linkable %}
+  {% assign linkable = false %}
+{% endif %}
 
 {% if product %}
   {% assign product_image_dimension = '600x' %}
@@ -43,6 +53,7 @@
 
   <div class="product-card"
        data-product-card
+       {% if preview %}data-preview="true"{% endif %}
        data-id="{{ product.id }}"
        data-handle="{{ product.handle }}"
        data-url="{{ product_url }}"
@@ -51,8 +62,8 @@
        data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
     <div class="product-card__contents">
       {% if product.featured_image %}
-        <div class="product-card__gallery">
-          {% if linkable == true %}<a href="{{ product_url }}">{% endif %}
+        {% if linkable == true %}<a href="{{ product_url }}">{% endif %}
+          <div class="product-card__gallery">
             {% if lazy_load %}
               <div class="product-card__gallery-image" style="height: 0; padding-bottom: {{ product.featured_image.height | times: 100 | divided_by: product.featured_image.width | append: '%' }}" data-product-card-gallery>
                 <img data-src="{{ product.featured_image.src | img_url: product_image_dimension }}" alt="{{ product.featured_image.alt | escape }}" data-product-card-main-lazy>
@@ -62,8 +73,8 @@
                 <img src="{{ product.featured_image.src | img_url: product_image_dimension }}" alt="{{ product.featured_image.alt | escape }}">
               </div>
             {% endif %}
-          {% if linkable == true %}</a>{% endif %}
-        </div>
+          </div>
+        {% if linkable == true %}</a>{% endif %}
       {% endif %}
 
       {% if product.available == false and show_sold_out == true %}

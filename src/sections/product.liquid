@@ -12,9 +12,19 @@
 
 {% for p in collection.products %}
   {% assign selected = false %}
+  {% assign preview  = false %}
+
   {% if p.handle == product.handle %}
     {% assign selected = true %}
   {% endif %}
+
+  {% for tag in p.tags %}
+    {% assign tag_slug = tag | handle | replace: '-', '' %}
+
+    {% if tag_slug == 'preview' %}
+      {% assign preview = true %}
+    {% endif %}
+  {% endfor %}  
 
   {% capture grid_item_html %}
     <div class="content-grid__item">
@@ -22,7 +32,8 @@
                  product: p,
                  lazy_load: true,
                  show_sold_out: true,
-                 collection: collection
+                 collection: collection,
+                 preview: preview
       %}
     </div>
   {% endcapture %}

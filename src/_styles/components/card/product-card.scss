@@ -13,6 +13,11 @@
       transition: opacity 50ms ease-out;
     }    
   }
+
+  // @TODO - Remove
+  [data-preview] img {
+    filter: blur(3px);
+  }
 }
 
 .product-card__contents {
@@ -51,7 +56,7 @@
     width: 100%;
   }
 
-  .product-card:hover & {
+  .product-card a:hover & {
     filter: invert(1);
   }
 }

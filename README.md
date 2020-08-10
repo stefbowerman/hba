@@ -60,7 +60,7 @@ Use this area of the readme to document anything specific related to the theme's
 
 | Value | Effect |
 |---|---|
-| Tag Name | Description of tag and how it is used |
+| Preview | Product card will not be selectable in the collection grid view.  Product card will *not* be displayed on the lookbook. |
 
 ### CMS Pages
 
