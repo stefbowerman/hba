@@ -42,11 +42,12 @@ export default class ProductCard {
     this.skuTimeout = null;
 
     // @TODO - create these props from this.$el.get(0).dataSet?
-    this.id          = this.$el.data('id');
-    this.url         = this.$el.data('url');
-    this.handle      = this.$el.data('handle');
-    this.productType = this.$el.data('product-type');
-    this.sale        = this.$el.data('sale');
+    this.id            = this.$el.data('id');
+    this.url           = this.$el.data('url');
+    this.handle        = this.$el.data('handle');
+    this.productType   = this.$el.data('product-type');
+    this.sale          = this.$el.data('sale');
+    this.documentTitle = this.$el.data('document-title');
 
     // Events
     this.$el.on({

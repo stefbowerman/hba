@@ -28,8 +28,9 @@ export default class Collection {
   constructor(container) {
     this.$container = $(container);
 
-    this.baseUrl        = this.$container.data('base-url');
-    this.mobileWidthMax = getBreakpointMinWidth('sm') - 1;
+    this.baseUrl         = this.$container.data('base-url');
+    this.docTitle        = this.$container.data('doc-title');
+    this.mobileWidthMax  = getBreakpointMinWidth('sm') - 1;
 
     this.$filtersContainer = $(selectors.filterContainer, this.$container);
     this.$filtersToggle = $(selectors.filtersToggle, this.$container);
@@ -37,6 +38,7 @@ export default class Collection {
     this.breadcrumbs      = new Breadcrumbs($(selectors.breadcrumbs, this.$container));
     this.filterController = new FilterController();
     this.productPane      = new ProductPane($(selectors.productPane, this.$container));
+
     this.productCardGrid  = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
       onProductCardClick: this.onProductCardClick.bind(this)
     });
@@ -56,7 +58,7 @@ export default class Collection {
     this.productCardGrid.destroy();
   }  
 
-  activateProduct(id, url, handle) {
+  activateProduct(id, url, handle, documentTitle) {
     if (!id || this.productPane.isActive(id)) return;
 
     this.productPane.activate(id)
@@ -65,6 +67,7 @@ export default class Collection {
           window.HBA.appController
             .pauseRouter()
             .navigate(url)
+            .setDocumentTitle(documentTitle)
             .resumeRouter();
         }
       });
@@ -74,8 +77,8 @@ export default class Collection {
     // Below this screen size, the grid is at the bottom of the page
     if (isMobile) {
       $viewport.animate({ scrollTop: 0 }, {
-        duration: 300,
-        easing: 'easeOutQuint'
+        duration: 350,
+        easing: 'easeOutQuart'
       });
     }
 
@@ -87,6 +90,8 @@ export default class Collection {
   onFilterClick(e) {
     e.preventDefault();
 
+    // @TODO - Check if there's an active filter, if not then we don't need to hide the product detail that was active during filtering
+
     this.filterController.toggleFilter($(e.currentTarget));
     this.productCardGrid.filterBy(this.filterController.activeFilter);
     this.productPane.deactivate(); // @TODO - This is dumb, we need to only deactivate if the currently activeProduct Detail doesn't pass the filter
@@ -97,6 +102,7 @@ export default class Collection {
       window.HBA.appController
         .pauseRouter()
         .navigate(url)
+        .setDocumentTitle(this.docTitle)
         .resumeRouter();
     }    
   }
@@ -108,6 +114,6 @@ export default class Collection {
 
   onProductCardClick(e, card) {
     e.preventDefault();
-    this.activateProduct(card.id, card.url, card.handle);
+    this.activateProduct(card.id, card.url, card.handle, card.documentTitle);
   }
 }

@@ -5,7 +5,7 @@
 
   Usage:
 
-  {% include 'product-card',
+  {% render 'product-card',
               product: { product } - required
               lazy_load: { boolean } - optional, defaults to false
               show_sold_out: { boolean } - optional, defaults to false
@@ -47,6 +47,7 @@
        data-handle="{{ product.handle }}"
        data-url="{{ product_url }}"
        data-product-type="{{ product.type | handle }}"
+       data-document-title="{% render 'document-title', product: product, collection: collection %}"
        data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
     <div class="product-card__contents">
       {% if product.featured_image %}

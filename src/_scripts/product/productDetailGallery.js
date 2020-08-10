@@ -36,7 +36,7 @@ export default class ProductDetailGallery {
 
     this[isTouch() ? 'touchZoomController' : 'desktopZoomController'].enable();
 
-    this.$thumbnailSlides.on('click', this.onThumbnailSlideClick.bind(this));
+    this.$thumbnailSlides.on(`${isTouch() ? 'touchstart' : 'click'}`, this.onThumbnailSlideClick.bind(this));
   }
 
   onReveal() {

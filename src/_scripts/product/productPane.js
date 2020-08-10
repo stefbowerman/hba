@@ -36,8 +36,9 @@ export default class ProductPane {
       return d.resolve();
     }
 
+    // @TODO - Extract this
     if (this.activeProductDetail) {
-      this.activeProductDetail.$el.fadeOut(180, () => {
+      this.activeProductDetail.$el.fadeOut(120, () => {
         this.activeProductDetail.$el.removeClass(classes.productDetailActive);
         this.activeProductDetail.onHidden();
       });
@@ -47,14 +48,14 @@ export default class ProductPane {
       // Needs to be a hide / show method on the product detail so it can do some clean up
       if (cardId === pd.id) {
         setTimeout(() => {
-          pd.$el.fadeIn(180, () => {
+          pd.$el.fadeIn(120, () => {
             pd.$el.addClass(classes.productDetailActive);
             pd.onReveal();
 
             this.activeProductDetail = pd;
             d.resolve();
           });
-        }, this.activeProductDetail ? 180 : 0);
+        }, this.activeProductDetail ? 120 : 0);
       }
     });
 
@@ -62,6 +63,12 @@ export default class ProductPane {
   }
 
   deactivate() {
-    this.activeProductDetail && this.activeProductDetail.$el.removeClass(classes.productDetailActive);
+    if (this.activeProductDetail) {
+      this.activeProductDetail.$el.fadeOut(120, () => {
+        this.activeProductDetail.$el.removeClass(classes.productDetailActive);
+        this.activeProductDetail.onHidden();
+        this.activeProductDetail = null;
+      });
+    }
   }
 }

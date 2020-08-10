@@ -193,7 +193,7 @@ export default class AppController {
     const $responseBody = $responseHtml.find('body');
 
     // Do DOM updates
-    document.title = $responseHead.find('title').text();
+    this.setDocumentTitle($responseHead.find('title').text());
 
     const $oldViewContent = this.$viewContainer.find(this.settings.viewContentSelector);
     const $newViewContent = $responseBody.find(this.settings.viewContentSelector);
@@ -263,6 +263,11 @@ export default class AppController {
       this.router.navigate(url);
     }
 
+    return this;
+  }
+
+  setDocumentTitle(title) {
+    document.title = title;
     return this;
   }
 

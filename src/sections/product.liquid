@@ -40,12 +40,21 @@
 
 {% endpaginate %}
 
-<div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product">
+<div class="layout-content-wrapper"
+     data-section-id="{{ section.id }}"
+     data-section-type="product"
+     data-base-url="{{ collection.url }}"
+     data-doc-title="{% render 'document-title', c: collection %}"
+     itemscope
+     itemtype="http://schema.org/Product"
+>
   <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
   <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
   <meta itemprop="brand" content="{{ product.vendor }}">
   <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
   <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+  {% render 'page-title' with product.title %}
 
   <div class="container">
     <div class="row">

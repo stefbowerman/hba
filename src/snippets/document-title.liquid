@@ -1,0 +1,57 @@
+{%- comment %}
+
+  SEO Title
+  ------------------------------------------------------------------------------
+
+  Usage:
+
+  {% include 'seo-title',
+              p: { product } - optional
+              c: { collection } - optional 
+  %}
+
+{% endcomment -%}
+
+{%- capture seo_title -%}
+
+  {% comment %} You can pass a product + collection to get the SEO title for those without relying on the current page context {% endcomment %}
+  {% if p != blank %}
+    {{ p.title }}
+    {% if c %}
+      &ndash; {{ c.title }}
+    {% endif %}
+  {% elsif c != blank %}
+    {{ c.title }}
+  {% else %}
+    {% if template.name == "search" %}
+      Search
+      {% if search.performed %}
+        - "{{ search.terms | escape }}"
+      {% endif %}
+    {% elsif template.name == "cart" %}
+      Cart
+    {% elsif template.name == "product" %}
+      {{ product.title }}
+      {% if collection %}
+        &ndash; {{ collection.title }}
+      {% endif %}
+    {% elsif template.name == "collection" %}
+      {% if current_tags contains 'lookbook' %}
+        Lookbook &ndash; 
+      {% endif %}
+      {{ collection.title }}
+    {% else %}
+      {{ page_title }}
+    {% endif %}
+  {% endif %}
+  {% if current_page != 1 %}
+    &ndash; {{ 'general.meta.page' | t: page: current_page }}
+  {% endif %}
+  {% unless template.name == "index" %}
+    {% unless page_title contains shop.name %}
+      &ndash; {{ shop.name }}
+    {% endunless %}
+  {% endunless %}
+{%- endcapture -%}
+  
+{{ seo_title | strip | strip_newlines }}

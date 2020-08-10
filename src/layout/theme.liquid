@@ -9,7 +9,7 @@
 
   {% include 'favicon' %}
 
-  <title>{% include 'seo-title' %}</title>
+  <title>{% render 'document-title' %}</title>
 
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
