@@ -39,6 +39,10 @@ export default class ProductDetailGallery {
     this.$thumbnailSlides.on(`${isTouch() ? 'touchstart' : 'click'}`, this.onThumbnailSlideClick.bind(this));
   }
 
+  destroy() {
+    this.swiper && this.swiper.destroy();
+  }
+
   onReveal() {
     this.swiper = new Swiper(this.$slideshow.get(0), {
       init: false,

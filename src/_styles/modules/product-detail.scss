@@ -105,6 +105,20 @@
     @include list-br;
     margin-bottom: $paragraph-margin-bottom;
   }
+
+  table {
+    margin-bottom: $paragraph-margin-bottom;
+
+    // First child contains longer text
+    th:first-child,
+    td:first-child {
+      width: 28%;
+    }
+  }
+}
+
+.product-size-guide {
+  margin: $spacer 0 $spacer*2;
 }
 
 .pdf-add-to-cart-form {
