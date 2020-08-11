@@ -1,7 +1,13 @@
+import $ from 'jquery';
 import Filter from './filter';
 
 export default class FilterController {
-  constructor() {
+  constructor(options) {
+    const defaults = {
+      onChange: () => {}
+    };
+
+    this.settings = $.extend({}, defaults, options);
     this.filters = [];
     this.activeFilter = null;
   }
@@ -19,18 +25,34 @@ export default class FilterController {
   // When a filter is clicked, this function is called
   // We need to toggle the state of the filter
   // we also need to make sure that there is only one active filter at a time
-  toggleFilter($el) {
-    const f = this.filters.find(filter => filter.$el.is($el));
+  toggleFilterByEl($el) {
+    this.toggle(this.filters.find(filter => filter.$el.is($el)));
+  }
 
-    if (!f) return;
+  toggle(filter) {
+    if (!filter) return;
 
-    if (f.active) {
-      f.deactivate();
+    if (filter.active) {
+      filter.deactivate();
       this.activeFilter = null;
     }
     else {
       this.activeFilter && this.activeFilter.deactivate();
-      this.activeFilter = f.activate();
+      this.activeFilter = filter.activate();
     }
+
+    this.settings.onChange();
+  }
+
+  /*
+   * @param {string} param - of the format 'type:value'
+   */
+  getFilterForParam(param) {
+    const s = param.split(':');
+    if (s.length !== 2) {
+      return null;
+    }
+
+    return this.filters.find(filter => filter.type === s[0] && filter.value === s[1]);
   }
 }

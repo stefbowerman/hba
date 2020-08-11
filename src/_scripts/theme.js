@@ -103,6 +103,8 @@ window.HBA = {
   // Expose the controller for the rest of the app
   window.HBA.appController = appController;
 
+  appController.start(); // Very important to start it *after* attatching it to window.HBA since some JS depends on it
+
   $('.in-page-link').on('click', evt => pageLinkFocus($(evt.currentTarget.hash)));
 
   // Common a11y fixes

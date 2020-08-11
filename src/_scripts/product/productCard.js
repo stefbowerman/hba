@@ -10,7 +10,8 @@ const selectors = {
 
 const classes = {
   mainLoaded: 'is-loaded',
-  visible: 'is-visible'
+  visible: 'is-visible',
+  filteredOut: 'filter-out'
 };
 
 export default class ProductCard {
@@ -69,6 +70,18 @@ export default class ProductCard {
   destroy() {
     this.skuTyped && this.skuTyped.destroy();
     clearTimeout(this.skuTimeout);
+  }
+
+  filterIn() {
+    this.$el.removeClass(classes.filteredOut);
+  }
+
+  filterOut() {
+    this.$el.addClass(classes.filteredOut);
+  }
+
+  clearFilter() {
+    this.$el.removeClass(classes.filteredOut);
   }
 
   show() {

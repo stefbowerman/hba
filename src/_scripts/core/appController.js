@@ -105,7 +105,9 @@ export default class AppController {
       // console.log(params);
       this.router.navigate('/'); // Just go back home
     });
+  }
 
+  start() {
     this.router.resolve();
   }
 

@@ -47,7 +47,7 @@ export default class ProductCardGrid {
 
     this.productCards.forEach((card, i) => {
       const min = (i+1) * 120;
-      const max = (i+1) * 200;
+      const max = (i+1) * 170;
       this.timeouts.push(setTimeout(() => card.show(), random(min, max)));
     });
 
@@ -58,19 +58,12 @@ export default class ProductCardGrid {
   filterBy(filter = null) {
     if (filter) {
       const filterType = camelize(filter.type);
-
       this.productCards.forEach((card) => {
-        // Product card has properties 'productType', 'sale'..
-        if (card[filterType] === filter.value) {
-          card.show();
-        }
-        else {
-          card.hide();
-        }
+        card[filterType] === filter.value ? card.filterIn() : card.filterOut();
       });
     }
     else {
-      this.productCards.forEach(card => card.show());
+      this.productCards.forEach(card => card.clearFilter());
     }
   }
 }

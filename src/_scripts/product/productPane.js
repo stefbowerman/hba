@@ -64,11 +64,14 @@ export default class ProductPane {
 
   deactivate() {
     if (this.activeProductDetail) {
-      this.activeProductDetail.$el.fadeOut(120, () => {
-        this.activeProductDetail.$el.removeClass(classes.productDetailActive);
-        this.activeProductDetail.onHidden();
-        this.activeProductDetail = null;
+      const pd = this.activeProductDetail; // Need to store this as a var since we nullify this.activeProductDetail immediately
+
+      pd.$el.fadeOut(120, () => {
+        pd.$el.removeClass(classes.productDetailActive);
+        pd.onHidden();
       });
+
+      this.activeProductDetail = null;
     }
   }
 }

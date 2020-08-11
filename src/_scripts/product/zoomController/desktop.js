@@ -29,7 +29,7 @@ export default class DesktopZoomController extends BaseZoomController {
       touch: false,
       escToClose: true,
       magnify: 1.2,
-      duration: 300,
+      duration: 0,
       callback: () => {
         $el.addClass(classes.zoomReady);
       },

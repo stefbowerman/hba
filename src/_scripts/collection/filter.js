@@ -23,5 +23,9 @@ export default class Filter {
 
   toggle() {
     return this.active ? this.deactivate() : this.activate();
-  } 
+  }
+
+  get queryParam() {
+    return [this.type, this.value].join(':');
+  }
 }

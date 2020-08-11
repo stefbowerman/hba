@@ -14,8 +14,15 @@
 
 {% assign current_variant = product.selected_or_first_available_variant %}
 
-<div class="product-detail{% if selected %} is-active{% endif %}"
+{% assign product_url = product.url %}
+{% if collection %}
+  {% assign product_url = product.url | within: collection %}
+{% endif %}
+
+<div class="product-detail"
+     {% if selected %}data-selected="true"{% endif %}
      data-product-detail
+     data-url="{{ product_url }}"
      data-id="{{ product.id }}"
 >
   {% render 'product-detail-gallery',
