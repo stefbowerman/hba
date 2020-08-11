@@ -20,6 +20,8 @@
 {% assign product_has_sku = false %}
 {% assign selection_required = false %}
 {% assign selectable_product_options_count = 0 %}
+{% assign back_in_stock_enabled_for_product = false %}
+{% assign tagged_with_back_in_stock = false %} 
 
 {% comment %} Check for SKU {% endcomment %}
 {% for v in product.variants %}
@@ -41,6 +43,22 @@
 {% assign selection_required_text = 'products.product.select_options' | t %}
 {% if selectable_product_options_count == 1 %}
   {% assign selection_required_text = 'Select ' | append: single_select_variant_option_name %}
+{% endif %}
+
+{% for tag in product.tags %}
+  {% assign tag_slug = tag | handle | replace: '-', '' %}
+
+  {% if tag_slug == 'backinstock' %}
+    {% assign tagged_with_back_in_stock = true %}
+  {% endif %}
+{% endfor %}
+
+{% comment %}
+  BACK IN STOCK check
+{% endcomment %}
+
+{% if settings.klaviyo_public_api_key != blank and settings.show_back_in_stock_button and tagged_with_back_in_stock %}
+  {% assign back_in_stock_enabled_for_product = true %}
 {% endif %}
 
 <div data-product-detail-form>
@@ -180,7 +198,13 @@
           </div>
         {% else %}
           <div class="pdf-submit-wrapper">
-            <button class="btn" disabled="disabled">{{ 'products.product.sold_out' | t }}</button>
+            {% if back_in_stock_enabled_for_product %}
+              <a href="#" class="btn klaviyo-bis-trigger" data-back-in-stock>
+                {{ settings.back_in_stock_button_text | default: 'Notify me' }}
+              </a>
+            {% else %}
+              <button class="btn" disabled="disabled">{{ 'products.product.sold_out' | t }}</button>
+            {% endif %}
           </div>
         {% endif %}
       </form>

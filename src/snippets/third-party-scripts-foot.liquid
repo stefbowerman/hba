@@ -1,0 +1,29 @@
+{% if settings.klaviyo_public_api_key != blank and settings.show_back_in_stock_button %}
+  <script src='https://a.klaviyo.com/media/js/onsite/onsite.js'></script>
+  <script>
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+      account: '{{ settings.klaviyo_public_api_key }}',
+      platform: 'shopify'
+    });
+    klaviyo.enable('backinstock', { 
+      modal: {
+        headline: '{product_name}',
+        body_content: 'Register to receive a notification when this item comes back in stock.',
+        button_label: 'Notify me when available',
+        footer_content: '',
+        drop_background_color: '#888',
+        background_color: '#fff',
+        text_color: '#555',
+        button_text_color: '#fff',
+        button_background_color: '#000',
+        close_button_color: '#000',
+        error_background_color: '#FFF',
+        error_text_color: '#F00',
+        success_background_color: '#FFF',
+        success_text_color: '#000'
+      }
+    });
+  </script>
+  {% comment %} END Klaviyo {% endcomment %}
+{% endif %}
