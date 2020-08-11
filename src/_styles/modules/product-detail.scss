@@ -7,10 +7,6 @@
 
 .product-gallery {
   margin-bottom: 53px;
-
-  @include media-breakpoint-up(lg) {
-    padding-right: 115px;
-  }
 }
 
 .product-gallery__slideshow {
@@ -23,7 +19,7 @@
 
     &.swiper-container-initialized {
       opacity: 1;
-      transition: opacity 300ms ease-out;
+      // transition: opacity 300ms ease-out;
     }
   }
 
@@ -49,7 +45,6 @@
       @include media-breakpoint-up('md') {
         width: 100%;
         height: 100%;
-        max-height: 60vh;
         object-fit: contain;
         object-position: left;
       }
@@ -58,13 +53,14 @@
 }
 
 .product-gallery__thumbnails {
-  margin-top: 19px;
+  margin: 19px -7px 0;
+  display: flex;
 }
 
 .product-gallery__thumbnails-slide {
   display: inline-block;
-  width: 72px;
-  margin-right: 7px; // @TODO ? or is it flex and we fit a certain number per row?
+  width: percentage(1/5);
+  padding: 0 7px;
 
   &:hover {
     filter: invert(1);
@@ -77,9 +73,22 @@
   &.is-active {
     filter: grayscale(1);
   }
+}
+
+.product-gallery__thumbnails-slide-image {
+  position: relative;
+  height: 0;
 
   img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
     width: 100%;
+
+    &[data-src] {
+      opacity: 0;
+    }
   }
 }
 
