@@ -20,7 +20,9 @@ const selectors = {
   title: '[data-title]',
   sku: '[data-sku]',
   statusSuccess: '[data-status-success]',
-  statusError: '[data-status-error]'
+  statusError: '[data-status-error]',
+  sizeGuide: '[data-size-guide]',
+  sizeGuideShow: '[data-size-guide-show]'
 };
 
 const classes = {
@@ -81,6 +83,8 @@ export default class ProductDetailForm {
     this.$sku = $(selectors.sku, this.$container);
     this.$statusSuccess = $(selectors.statusSuccess, this.$container);
     this.$statusError = $(selectors.statusError, this.$container);
+    this.$sizeGuide = $(selectors.sizeGuide, this.$container);
+    this.$sizeGuideShow = $(selectors.sizeGuideShow, this.$container);
     /* eslint-enable */
 
     this.typers = {
@@ -101,11 +105,26 @@ export default class ProductDetailForm {
       product: this.productSingleObject
     });
 
+    this.$sizeGuide.find('table').addClass('table');
+
+    this.callbacks = {
+      onAJAXFormAddStart: this.onAJAXFormAddStart.bind(this),
+      onAJAXFormAddSuccess: this.onAJAXFormAddSuccess.bind(this),
+      onAJAXFormAddFail: this.onAJAXFormAddFail.bind(this)
+    };
+
+    this.$sizeGuideShow.on('click', this.onSizeGuideShowClick.bind(this));
     this.$container.on('variantChange', this.onVariantChange.bind(this));
     this.$container.on(this.events.CLICK, selectors.variantOptionValue, this.onVariantOptionValueClick.bind(this));
-    $window.on(AJAXFormManager.events.ADD_START, this.onAJAXFormAddStart.bind(this));
-    $window.on(AJAXFormManager.events.ADD_SUCCESS, this.onAJAXFormAddSuccess.bind(this));
-    $window.on(AJAXFormManager.events.ADD_FAIL, this.onAJAXFormAddFail.bind(this));
+    $window.on(AJAXFormManager.events.ADD_START, this.callbacks.onAJAXFormAddStart);
+    $window.on(AJAXFormManager.events.ADD_SUCCESS, this.callbacks.onAJAXFormAddSuccess);
+    $window.on(AJAXFormManager.events.ADD_FAIL, this.callbacks.onAJAXFormAddFail);
+  }
+
+  destroy() {
+    $window.off(AJAXFormManager.events.ADD_START, this.callbacks.onAJAXFormAddStart);
+    $window.off(AJAXFormManager.events.ADD_SUCCESS, this.callbacks.onAJAXFormAddSuccess);
+    $window.off(AJAXFormManager.events.ADD_FAIL, this.callbacks.onAJAXFormAddFail);    
   }
 
   onVariantChange(evt) {
@@ -286,7 +305,14 @@ export default class ProductDetailForm {
   }
 
   onHidden() {
-    
+    this.$sizeGuideShow.removeClass('hide');
+    this.$sizeGuide.addClass('hide');    
+  }
+
+  onSizeGuideShowClick(e) {
+    e.preventDefault();
+    this.$sizeGuideShow.addClass('hide');
+    this.$sizeGuide.removeClass('hide');
   }
 
   onAJAXFormAddStart(e) {

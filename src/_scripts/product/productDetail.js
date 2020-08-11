@@ -47,4 +47,9 @@ export default class ProductDetail {
     this.form.onHidden();
     this.gallery.onHidden();
   }
+
+  destroy() {
+    this.form.destroy();
+    this.gallery.destroy();
+  }
 }

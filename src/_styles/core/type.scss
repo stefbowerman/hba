@@ -73,7 +73,7 @@ hr {
 
 small,
 .small {
-  @include font-size($small-font-size);
+  font-size: $font-size-sm;
   font-weight: $font-weight-normal;
 }
 

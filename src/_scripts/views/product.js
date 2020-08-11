@@ -1,12 +1,12 @@
 import BaseView from './base';
-import ProductSection from '../sections/product';
+import CollectionSection from '../sections/collection';
 
 export default class ProductView extends BaseView {
   constructor($el, type) {
     super($el, type);
 
-    this.productSection = new ProductSection($el.find('[data-section-type="product"]'));
+    this.collectionSection = new CollectionSection($el.find('[data-section-type="collection"]'));
 
-    this.sections.push(this.productSection);
+    this.sections.push(this.collectionSection);
   }
 }

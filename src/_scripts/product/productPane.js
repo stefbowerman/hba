@@ -24,6 +24,10 @@ export default class ProductPane {
     });
   }
 
+  destroy() {
+    $.each(this.productDetails, (i, pd) => pd.destroy());
+  }
+
   isActive(cardId) {
     return this.activeProductDetail && this.activeProductDetail.id === cardId;
   }
