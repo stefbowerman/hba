@@ -8,6 +8,7 @@
   {% include 'product-detail-gallery',
               product: { product } - required
               current_variant: { current_variant }
+              selected: { boolean }
   %}  
 
 {% endcomment -%}
@@ -15,6 +16,7 @@
 {% assign photo_thumb_dimension = '200x200' %}
 {% assign photo_main_dimension  = '900x900' %}
 {% assign photo_zoom_dimension  = '1400x1400' %}
+{% assign MAX_PHOTOS = 5 %}
 
 {% comment %} Defaults {% endcomment %}
 {% assign current_variant = current_variant | default: product.selected_or_first_available_variant %}
@@ -23,10 +25,18 @@
 <div class="product-gallery" data-product-gallery>
   <div id="slideshow-{{ product.id }}" class="product-gallery__slideshow swiper-container" data-product-gallery-slideshow>
     <div class="swiper-wrapper">
-      {% for image in product.images %}
+      {% for image in product.images limit: MAX_PHOTOS %}
+        {% assign src_attr = 'data-src' %}
+        {% if selected and forloop.first %}
+          {% assign src_attr = 'data-src' %}
+        {% endif %}
+
         <div class="swiper-slide" data-image="{{ image.id }}" {% if image.id == current_variant.featured_image.id %} data-initial-slide{% endif %}>
           <a href="{{ image | img_url: photo_zoom_dimension }}" data-gallery-image-link>
-            <img src="{{ image | img_url: photo_main_dimension }}" alt="{{ image.alt | escape }}" class="img-fluid">
+            <img {{ src_attr }}="{{ image | img_url: photo_main_dimension }}"
+                 alt="{{ image.alt | escape }}"
+                 class="img-fluid"
+            >
           </a>
         </div>
       {% endfor %}
@@ -34,9 +44,15 @@
   </div>
   {% if product.images.size > 1 %}
     <div id="slideshow-thumbs-{{ product.id }}" class="product-gallery__thumbnails">
-      {% for image in product.images %}
-        <div class="product-gallery__thumbnails-slide" data-product-gallery-thumbnails-slide>
-          <img src="{{ image.src | img_url: photo_thumb_dimension }}" alt="{{ image.alt | escape }}" class="img-fluid">
+      {% for image in product.images limit: MAX_PHOTOS %}
+        {% assign padding_bottom = image.height | times: 100 | divided_by: image.width | append: '%' %}
+
+        <div class="product-gallery__thumbnails-slide"
+             data-product-gallery-thumbnails-slide
+        >
+          <div class="product-gallery__thumbnails-slide-image" style="padding-bottom: {{ padding_bottom }}">
+            <img data-src="{{ image.src | img_url: photo_thumb_dimension }}" alt="{{ image.alt | escape }}">
+          </div>
         </div>
       {% endfor %}
     </div>

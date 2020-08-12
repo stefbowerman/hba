@@ -34,7 +34,10 @@
   {% endcapture %}
 
   {% capture pane_html %}
-    {% include 'product-detail', product: product %}
+    {% unless preview == true %}
+      {% include 'product-detail', product: product %}
+    {% endunless %}
+  }
   {% endcapture %}
 
   {% assign content_grid_html = content_grid_html | append: grid_item_html %}
@@ -57,7 +60,7 @@
       <div class="col-md-2">
         {% render 'collection-sidebar', collection_handle: collection.handle %}
       </div>
-      <div class="col-sm-5 col-md-4 order-sm-2">
+      <div class="col-sm-5 col-md-4 col-xl-3 order-sm-2">
         <div class="product-pane" data-product-pane>
           {{ product_pane_html }}
         </div>

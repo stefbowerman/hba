@@ -84,7 +84,15 @@
 
   <div class="product-description rte">
     {{ product.description }}
-  </div>  
+
+    {% if product.metafields.size_guide.html != blank %}
+      <p><a href="#" data-size-guide-show>Sizing Information</a></p>
+      <div class="product-size-guide hide" data-size-guide>
+        {{ product.metafields.size_guide.html }}
+        <small>Measurements listed are in centimeters</small>
+      </div>
+    {% endif %}
+  </div>
 
   {% render 'product-detail-price', product: product, current_variant: current_variant %}
 

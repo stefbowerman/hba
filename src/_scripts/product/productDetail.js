@@ -21,7 +21,7 @@ export default class ProductDetail {
 
     this.$el = $(el);
     this.url = this.$el.data('url');
-    this.id = this.$el.data('id');
+    this.id  = this.$el.data('id');
 
     if (!this.$el || this.$el === undefined) {
       console.warn(`[${this.name}] - $el required to initialize`);
@@ -38,13 +38,24 @@ export default class ProductDetail {
     });
   }
 
+  // Called when the fade in animation *starts*
   onReveal() {
-    this.form.onReveal();
     this.gallery.onReveal();
+    this.form.onReveal();
+  }
+
+  // Called when the fade in animation *completes*
+  onRevealed() {
+    this.form.onRevealed();
   }
 
   onHidden() {
     this.form.onHidden();
     this.gallery.onHidden();
+  }
+
+  destroy() {
+    this.form.destroy();
+    this.gallery.destroy();
   }
 }

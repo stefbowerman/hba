@@ -54,7 +54,7 @@ Use this area of the readme to document anything specific related to the theme's
 ##### Metafields
 | Namespace | Key | Description |
 |---|---|---|
-| `namespace_here` | `key_here` | Description of what should go in this metafield and how it is used. |
+| `size_guide` | `html` | HTML containing the size description for the product  |
 
 ##### Tags
 
