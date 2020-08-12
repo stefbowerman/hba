@@ -39,9 +39,15 @@
 {% endif %}
 {% comment %} End Defaults {% endcomment %}
 
-{% comment %} Preview cards can't be linkable {% endcomment %}
-{% if preview and linkable %}
-  {% assign linkable = false %}
+{% comment %} Preview cards can't be linkable or show sold out state {% endcomment %}
+{% if preview %}
+  {% if linkable %}
+    {% assign linkable = false %}
+  {% endif %}
+
+  {% if show_sold_out %}
+    {% assign show_sold_out = false %}
+  {% endif %}
 {% endif %}
 
 {% if product %}

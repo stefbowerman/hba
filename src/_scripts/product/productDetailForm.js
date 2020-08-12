@@ -291,10 +291,16 @@ export default class ProductDetailForm {
     $option.siblings().removeClass(classes.variantOptionValueActive);
   }
 
-  // Need to come up with a better system for this
   onReveal() {
+    // const $desc = $('.product-description', this.$container);
+    // $desc.addClass('hide');
+  }
+
+  // Need to come up with a better system for this
+  onRevealed() {
     const t = this.$title.text();
     const sku = this.$sku.text();
+    const $desc = $('.product-description', this.$container);
 
     this.$title.text('');
     this.$sku.text('');
@@ -302,6 +308,12 @@ export default class ProductDetailForm {
     // Do the animation to type everything out
     this.updateTitle(t)
       .then(() => this.updateSku(sku));
+
+    // @TODO - Finish this, do it better
+    // Output product children separately??
+    // setTimeout(() => {
+    //   $desc.removeClass('hide');
+    // }, 1200);
   }
 
   onHidden() {

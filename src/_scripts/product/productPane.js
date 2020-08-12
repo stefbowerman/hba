@@ -9,6 +9,8 @@ const classes = {
   productDetailActive: 'is-active'
 };
 
+const FADE_TIME = 120;
+
 export default class ProductPane {
   constructor(container) {
     this.$container = $(container);
@@ -42,7 +44,7 @@ export default class ProductPane {
 
     // @TODO - Extract this
     if (this.activeProductDetail) {
-      this.activeProductDetail.$el.fadeOut(120, () => {
+      this.activeProductDetail.$el.fadeOut(FADE_TIME, () => {
         this.activeProductDetail.$el.removeClass(classes.productDetailActive);
         this.activeProductDetail.onHidden();
       });
@@ -54,12 +56,14 @@ export default class ProductPane {
         setTimeout(() => {
           pd.$el.fadeIn(120, () => {
             pd.$el.addClass(classes.productDetailActive);
-            pd.onReveal();
+            pd.onRevealed();
 
             this.activeProductDetail = pd;
             d.resolve();
           });
-        }, this.activeProductDetail ? 120 : 0);
+
+          pd.onReveal();
+        }, this.activeProductDetail ? FADE_TIME : 0);
       }
     });
 
@@ -70,7 +74,7 @@ export default class ProductPane {
     if (this.activeProductDetail) {
       const pd = this.activeProductDetail; // Need to store this as a var since we nullify this.activeProductDetail immediately
 
-      pd.$el.fadeOut(120, () => {
+      pd.$el.fadeOut(FADE_TIME, () => {
         pd.$el.removeClass(classes.productDetailActive);
         pd.onHidden();
       });

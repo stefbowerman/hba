@@ -75,17 +75,6 @@ export default class CollectionSection extends BaseSection {
   activateProductCard(card) {
     if (!card || this.productPane.isActive(card.id)) return;
 
-    this.productPane.activate(card.id)
-      .then(() => {
-        if (window.HBA) {
-          window.HBA.appController
-            .pauseRouter()
-            .navigate(this.urlForState)
-            .setDocumentTitle(card.documentTitle)
-            .resumeRouter();
-        }
-      });
-
     const isMobile = window.innerWidth <= this.mobileWidthMax;
 
     // Below this screen size, the grid is at the bottom of the page
@@ -98,7 +87,17 @@ export default class CollectionSection extends BaseSection {
 
     setTimeout(() => {
       this.breadcrumbs.setCrumb('collection-product', card.handle, card.url);
-    }, (isMobile ? 300 : 0));
+      this.productPane.activate(card.id)
+        .then(() => {
+          if (window.HBA) {
+            window.HBA.appController
+              .pauseRouter()
+              .navigate(this.urlForState)
+              .setDocumentTitle(card.documentTitle)
+              .resumeRouter();
+          }
+        });      
+    }, (isMobile ? 350 : 0));
   }
 
   onFilterClick(e) {

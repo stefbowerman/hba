@@ -58,7 +58,9 @@
       {% assign product_types = '' %}
 
       {% for p in c.products %}
-        {% assign product_types = product_types | append: p.type | append: '$$' %}
+        {% if p.type != blank %}
+          {% assign product_types = product_types | append: p.type | append: '$$' %}
+        {% endif %}
 
         {% if p.price_min < p.compare_at_price_min %}
           {% assign sale_items = true %}

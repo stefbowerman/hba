@@ -34,7 +34,10 @@
   {% endcapture %}
 
   {% capture pane_html %}
-    {% include 'product-detail', product: product %}
+    {% unless preview == true %
+      {% include 'product-detail', product: product %}
+    {% endunless %}
+  }
   {% endcapture %}
 
   {% assign content_grid_html = content_grid_html | append: grid_item_html %}
