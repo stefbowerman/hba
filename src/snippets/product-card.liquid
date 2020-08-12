@@ -57,7 +57,7 @@
     {% assign product_url = product.url | within: collection %}
   {% endif %}
 
-  <div class="product-card"
+  <div class="product-card{% if preview %} product-card--preview{% endif %}"
        data-product-card
        {% if preview %}data-preview="true"{% endif %}
        data-id="{{ product.id }}"
