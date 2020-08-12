@@ -208,9 +208,13 @@
           <div class="pdf-submit-wrapper">
             {% if back_in_stock_enabled_for_product %}
               <span class="d-inline-block text-uppercase" style="padding-right: 8px">{{ 'products.product.sold_out' | t }}</span>
-              <a href="#" class="btn klaviyo-bis-trigger" data-back-in-stock>
-                {{ settings.back_in_stock_button_text | default: 'Notify me' }}
-              </a>
+              <span class="klaviyo-product-container" id="klaviyo-data-handle-{{ product.handle }}" data-klaviyo-handle="{{ product.handle }}">
+                <span class="klaviyo-button-container">
+                  <a href="#" class="btn klaviyo-bis-trigger" data-back-in-stock>
+                    {{ settings.back_in_stock_button_text | default: 'Notify me' }}
+                  </a>                  
+                </span>
+              </span>
             {% else %}
               <button class="btn" disabled="disabled">{{ 'products.product.sold_out' | t }}</button>
             {% endif %}
