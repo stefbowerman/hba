@@ -28,7 +28,7 @@
       {% assign padding_bottom = image.height | times: 100 | divided_by: image.width | append: '%' %}
       {% assign src_attr = 'data-src' %}
 
-      {% if selected and forloop.first %}
+      {% if forloop.first %}
         {% assign src_attr = 'src' %}
       {% endif %}
 
