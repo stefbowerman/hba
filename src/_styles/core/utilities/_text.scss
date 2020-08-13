@@ -46,13 +46,13 @@
 .text-white { color: $white !important; }
 .text-black { color: $black !important; }
 
-@each $color, $value in $colors {
-  @include text-emphasis-variant(".text-#{$color}", $value);
-}
+// @each $color, $value in $colors {
+//   @include text-emphasis-variant(".text-#{$color}", $value);
+// }
 
-@each $color, $value in $theme-colors {
-  @include text-emphasis-variant(".text-#{$color}", $value);
-}
+// @each $color, $value in $theme-colors {
+//   @include text-emphasis-variant(".text-#{$color}", $value);
+// }
 
 .text-body { color: $body-color !important; }
 .text-muted { color: $text-muted !important; }
