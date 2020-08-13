@@ -20,6 +20,8 @@
 {% assign product_has_sku = false %}
 {% assign selection_required = false %}
 {% assign selectable_product_options_count = 0 %}
+{% assign back_in_stock_enabled_for_product = false %}
+{% assign tagged_with_back_in_stock = false %} 
 
 {% comment %} Check for SKU {% endcomment %}
 {% for v in product.variants %}
@@ -41,6 +43,22 @@
 {% assign selection_required_text = 'products.product.select_options' | t %}
 {% if selectable_product_options_count == 1 %}
   {% assign selection_required_text = 'Select ' | append: single_select_variant_option_name %}
+{% endif %}
+
+{% for tag in product.tags %}
+  {% assign tag_slug = tag | handle | replace: '-', '' %}
+
+  {% if tag_slug == 'backinstock' %}
+    {% assign tagged_with_back_in_stock = true %}
+  {% endif %}
+{% endfor %}
+
+{% comment %}
+  BACK IN STOCK check
+{% endcomment %}
+
+{% if settings.back_in_stock_klaviyo_list_id != blank and settings.show_back_in_stock_button and tagged_with_back_in_stock %}
+  {% assign back_in_stock_enabled_for_product = true %}
 {% endif %}
 
 <div data-product-detail-form>
@@ -188,10 +206,50 @@
           </div>
         {% else %}
           <div class="pdf-submit-wrapper">
-            <button class="btn" disabled="disabled">{{ 'products.product.sold_out' | t }}</button>
+            {% if back_in_stock_enabled_for_product %}
+              {% comment %} Can't put a form inside another form so put it down below {% endcomment %}
+            {% else %}
+              <button class="btn" disabled="disabled">{{ 'products.product.sold_out' | t }}</button>
+            {% endif %}
           </div>
         {% endif %}
       </form>
+
+      {% comment %} Can't put a form inside another form {% endcomment %}
+      {% if product.available == false and back_in_stock_enabled_for_product %}
+        <div class="pdf-back-in-stock" data-back-in-stock>
+          <span class="text-uppercase" style="padding-right: 12px; flex-shrink: 0;">{{ 'products.product.sold_out' | t }}</span>
+          <form method="post"
+                class="newsletter-form"
+                data-newsletter-form
+                data-klaviyo-list-id="{{ settings.back_in_stock_klaviyo_list_id }}"
+                data-klaviyo-source="{{ product.handle }}"
+            >
+            <a href="#" class="newsletter-form-contents-trigger btn" data-form-contents-trigger>
+              {{ settings.back_in_stock_button_text | default: 'Notify me' }}
+            </a>
+            <div class="newsletter-form-contents" data-form-contents>
+              <div class="newsletter-form-inputs">
+                <div class="minimal-input-box">
+                  <label for="newsletter-{{ product.id }}" class="sr-only"></label>
+                  <div class="form-control-container">
+                    <input type="email" id="newsletter-{{ product.id }}" class="form-control" />
+                  </div>
+                  <button type="submit" class="btn">
+                    Submit
+                  </button>
+                </div>
+              </div>
+              <div class="newsletter-form-message"
+                  data-form-message
+                  data-success="We'll notify you when this product becomes available"
+                  data-already-subscribed="{% render 'newsletter-form-message', type: 'already-subscribed' %}"
+                  data-fail="{% render 'newsletter-form-message', type: 'fail' %}">
+              </div>  
+            </div>
+          </form>
+        </div>   
+      {% endif %}      
     </div>
   </div>
 

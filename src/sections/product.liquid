@@ -40,7 +40,7 @@
 
   {% capture pane_html %}
     {% unless preview == true %}
-      {% include 'product-detail', product: p, selected: selected %}
+      {% render 'product-detail', product: p, selected: selected %}
     {% endunless %}
   {% endcapture %}
 

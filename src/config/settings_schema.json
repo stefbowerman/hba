@@ -109,5 +109,27 @@
         "info": "e.g. GTM-XXXXXXX"
       }
     ]
+  },
+  {
+    "name": "Klaviyo - Back n Stock",
+    "settings": [
+      {
+        "type": "text",
+        "id": "back_in_stock_klaviyo_list_id",
+        "label": "Back In Stock Klaviyo List ID"
+      },      
+      {
+        "type": "checkbox",
+        "id": "show_back_in_stock_button",
+        "label": "Show Button",
+        "default": true 
+      },
+      {
+        "type": "text",
+        "id": "back_in_stock_button_text",
+        "label": "Button Text",
+        "info": "Leave blank for generic text"
+      }
+    ]
   }
 ]
