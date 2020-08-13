@@ -19,9 +19,14 @@ export default class NewsletterForm {
    *
    * @param {HTMLElement} el - Element used for scoping any element selection.  Can either be a containing element or the form element itself
    */  
-  constructor(el) {
+  constructor(el, options = {}) {
     this.name = 'newsletterForm';
 
+    const defaults = {
+      forceSuccess: false // force the success message no matter what
+    };
+
+    this.settings = $.extend({}, defaults, options);
     this.typed    = null;
 
     this.$el = $(el);
@@ -61,11 +66,12 @@ export default class NewsletterForm {
     this.typed = new Typed(this.$formMessage.get(0), {
       strings: [`${message} ^2000`, ''],
       typeSpeed: 10,
-      backSpeed: 20,
+      backSpeed: 10,
       showCursor: false,
       onComplete: () => {
         this.$formContents.removeClass(classes.showMessage);
         this.$formMessage.removeClass('error');
+        this.hideFormContents();
 
         if (reset) {
           this.reset();
@@ -93,11 +99,21 @@ export default class NewsletterForm {
 
   onSubscribeSuccess(response) {
     const isSubscribed = response && response.data && response.data.is_subscribed;
-    const successMsg = this.$formMessage.data(isSubscribed ? 'already-subscribed' : 'success');
+    let msgKey = 'success';
+
+    if (isSubscribed) {
+      msgKey = 'already-subscribed';
+    }
+    if (this.settings.forceSuccess) {
+      msgKey = 'success';
+    }
 
     // Don't reset the form if they're already subscribed, they might want to just enter a different email
     // Show the state as an error if they're subscribed
-    this.showMessageWithAnimation(successMsg, !isSubscribed, isSubscribed);
+    const reset = this.settings.forceSuccess ? true : !isSubscribed;
+    const error = this.settings.forceSuccess ? false : isSubscribed;
+    
+    this.showMessageWithAnimation(this.$formMessage.data(msgKey), reset, error);
   }
 
   onSubmitStart() {

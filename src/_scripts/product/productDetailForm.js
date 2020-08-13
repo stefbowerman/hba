@@ -2,6 +2,8 @@ import $ from 'jquery';
 import Typed from 'typed.js';
 import { formatMoney } from '../core/currency';
 import AJAXFormManager from '../managers/ajaxForm';
+import AJAXKlaviyoForm from '../lib/ajaxKlaviyoForm';
+import NewsletterForm from '../ui/newsletterForm';
 import Variants from './variants';
 
 const selectors = {
@@ -14,6 +16,7 @@ const selectors = {
   priceWrapper: '[data-price-wrapper]',
   productJson: '[data-product-json]',
   productPrice: '[data-product-price]',
+  productDescription: '.product-description',
   singleOptionSelector: '[data-single-option-selector]',
   variantOptionValueList: '[data-variant-option-value-list][data-option-position]',
   variantOptionValue: '[data-variant-option-value]',
@@ -22,11 +25,14 @@ const selectors = {
   statusSuccess: '[data-status-success]',
   statusError: '[data-status-error]',
   sizeGuide: '[data-size-guide]',
-  sizeGuideShow: '[data-size-guide-show]'
+  sizeGuideShow: '[data-size-guide-show]',
+  backInStock: '[data-back-in-stock]',
+  newsletterForm: '[data-newsletter-form]' // for back in stock
 };
 
 const classes = {
   hide: 'hide',
+  displayNone: 'd-none',
   variantOptionValueActive: 'is-active',
   btnActive: 'is-active',
   statusVisible: 'is-visible'
@@ -75,6 +81,7 @@ export default class ProductDetailForm {
     this.$addToCartBtnText = $(selectors.addToCartText, this.$container); // Text inside the add to cart button
     this.$priceWrapper = $(selectors.priceWrapper, this.$container); // Contains all price elements
     this.$productPrice = $(selectors.productPrice, this.$container);
+    this.$productDescription = $(selectors.productDescription, this.$container);
     this.$comparePrice = $(selectors.comparePrice, this.$container);
     this.$compareEls = this.$comparePrice.add($(selectors.comparePriceText, this.$container));
     this.$singleOptionSelectors = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
@@ -85,6 +92,8 @@ export default class ProductDetailForm {
     this.$statusError = $(selectors.statusError, this.$container);
     this.$sizeGuide = $(selectors.sizeGuide, this.$container);
     this.$sizeGuideShow = $(selectors.sizeGuideShow, this.$container);
+    this.$backInStock = $(selectors.backInStock, this.$container);
+    this.$newsletterForm = $(selectors.newsletterForm, this.$container);
     /* eslint-enable */
 
     this.typers = {
@@ -104,6 +113,19 @@ export default class ProductDetailForm {
       originalSelectorId: selectors.originalSelectorId,
       product: this.productSingleObject
     });
+
+    if (this.$newsletterForm.length) {
+      this.newsletterForm = new NewsletterForm(this.$newsletterForm, { forceSuccess: true });
+
+      this.ajaxForm = new AJAXKlaviyoForm(this.$newsletterForm, {
+        listId: this.$newsletterForm.data('klaviyo-list-id'),
+        source: this.$newsletterForm.data('klaviyo-source'),
+        onSubmitStart: () => this.newsletterForm.onSubmitStart(),
+        onSubmitFail: errors => this.newsletterForm.onSubmitFail(errors),
+        onSubscribeSuccess: response => this.newsletterForm.onSubscribeSuccess(response),
+        onSubscribeFail: response => this.newsletterForm.onSubscribeFail(response)
+      });
+    }    
 
     this.$sizeGuide.find('table').addClass('table');
 
@@ -294,15 +316,15 @@ export default class ProductDetailForm {
   }
 
   onReveal() {
-    this.$title.addClass('hide');
-    this.$sku.addClass('hide');
-    $('.product-description', this.$container).addClass('hide');
-    this.$priceWrapper.addClass('hide');
-    this.$addToCartForm.addClass('hide');
+    this.$title.addClass('d-none');
+    this.$sku.addClass('d-none');
+    this.$backInStock.addClass('d-none');
+    this.$productDescription.addClass('d-none');
+    this.$priceWrapper.addClass('d-none');
+    this.$addToCartForm.addClass('d-none');
 
     const t = this.$title.text();
     const sku = this.$sku.text();
-    const $desc = $('.product-description', this.$container);
 
     this.$title.text('');
     this.$sku.text('');
@@ -310,21 +332,22 @@ export default class ProductDetailForm {
     this.timeouts.push(
       setTimeout(() => {
         // Do the animation to type everything out
-        this.$title.removeClass('hide');
+        this.$title.removeClass('d-none');
         this.updateTitle(t)
           .then(() => {
-            this.$sku.removeClass('hide');
+            this.$sku.removeClass('d-none');
             this.updateSku(sku)
               .then(() => {
                 this.timeouts.push(
                   setTimeout(() => {
-                    $desc.removeClass('hide');  
+                    this.$productDescription.removeClass('d-none');  
                     this.timeouts.push(
                       setTimeout(() => {
-                        this.$priceWrapper.removeClass('hide');
+                        this.$priceWrapper.removeClass('d-none');
                         this.timeouts.push(
                           setTimeout(() => {
-                            this.$addToCartForm.removeClass('hide');
+                            this.$addToCartForm.removeClass('d-none');
+                            this.$backInStock.removeClass('d-none');
                           }, 300)
                         );
                       }, 300)

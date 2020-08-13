@@ -107,22 +107,17 @@
         "id": "gtm_container_id",
         "label": "GTM Container ID",
         "info": "e.g. GTM-XXXXXXX"
-      },
-      {
-        "type": "header",
-        "content": "Klaviyo"
-      },
-      {
-        "type": "text",
-        "id": "klaviyo_public_api_key",
-        "label": "Public API Key",
-        "info": "Required for Klaviyo 'Back in Stock' functionality"
       }
     ]
   },
   {
     "name": "Klaviyo - Back n Stock",
     "settings": [
+      {
+        "type": "text",
+        "id": "back_in_stock_klaviyo_list_id",
+        "label": "Back In Stock Klaviyo List ID"
+      },      
       {
         "type": "checkbox",
         "id": "show_back_in_stock_button",
