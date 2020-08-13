@@ -32,6 +32,13 @@
     min-height: 100vh;
     min-height: var(#{'--viewport-height'});
   }
+
+  // On the homepage, the overlay menu is the thing that fixes the height of the site
+  .template-index & {
+    &, .view-content {
+      min-height: 0;
+    }
+  }
 }
 
 // .layout-main-content {

@@ -49,6 +49,10 @@ class CartAPI {
         delete item.variant_options; // skip it and use the variant title instead
       }
 
+      if (item.variant_title === 'Default Title') {
+        item.variant_title = null;
+      }
+
       return item;
     });
 

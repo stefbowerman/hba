@@ -27,6 +27,12 @@ body.ajax-cart-open {
     pointer-events: auto;
     opacity: 1;
   }
+
+  .layout-content-wrapper {
+    @include media-breakpoint-down(sm) {
+      padding-bottom: 69px;
+    }
+  }
 }
 
 // Ensure that the cart takes up the entire screen at all times

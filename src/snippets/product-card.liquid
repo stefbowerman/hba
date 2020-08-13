@@ -50,8 +50,9 @@
   {% endif %}
 {% endif %}
 
+{% assign product_image_dimension = '300x' %}
+
 {% if product %}
-  {% assign product_image_dimension = '600x' %}
   {% assign product_url = product.url %}
   {% if collection %}
     {% assign product_url = product.url | within: collection %}
@@ -72,11 +73,11 @@
           <div class="product-card__gallery">
             {% if lazy_load %}
               <div class="product-card__gallery-image" style="height: 0; padding-bottom: {{ product.featured_image.height | times: 100 | divided_by: product.featured_image.width | append: '%' }}" data-product-card-gallery>
-                <img data-src="{{ product.featured_image.src | img_url: product_image_dimension }}" alt="{{ product.featured_image.alt | escape }}" data-product-card-main-lazy>
+                <img data-src="{{ product.featured_image.src | img_url: product_image_dimension, format: 'pjpg' }}" alt="{{ product.featured_image.alt | escape }}" data-product-card-main-lazy>
               </div>
             {% else %}
               <div class="product-card__gallery-image" data-product-card-gallery>
-                <img src="{{ product.featured_image.src | img_url: product_image_dimension }}" alt="{{ product.featured_image.alt | escape }}">
+                <img src="{{ product.featured_image.src | img_url: product_image_dimension, format: 'pjpg' }}" alt="{{ product.featured_image.alt | escape }}">
               </div>
             {% endif %}
           </div>

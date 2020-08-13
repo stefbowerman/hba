@@ -4,7 +4,6 @@
  * Import these up here to allow overrides down below
  *
  */
-@import 'vendor/swiper.scss';
 
 /**
  * CORE
@@ -50,7 +49,7 @@
 @import 'components/card';
 @import 'components/minimal-input';
 @import 'components/arrows';
-@import 'components/slideshow';
+// @import 'components/slideshow';
 // @import 'components/video-player';
 @import 'components/newsletter-form';
 @import 'components/overlay';

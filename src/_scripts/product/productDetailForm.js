@@ -107,6 +107,7 @@ export default class ProductDetailForm {
 
     this.$sizeGuide.find('table').addClass('table');
 
+    this.timeouts = [];
     this.callbacks = {
       onAJAXFormAddStart: this.onAJAXFormAddStart.bind(this),
       onAJAXFormAddSuccess: this.onAJAXFormAddSuccess.bind(this),
@@ -124,7 +125,8 @@ export default class ProductDetailForm {
   destroy() {
     $window.off(AJAXFormManager.events.ADD_START, this.callbacks.onAJAXFormAddStart);
     $window.off(AJAXFormManager.events.ADD_SUCCESS, this.callbacks.onAJAXFormAddSuccess);
-    $window.off(AJAXFormManager.events.ADD_FAIL, this.callbacks.onAJAXFormAddFail);    
+    $window.off(AJAXFormManager.events.ADD_FAIL, this.callbacks.onAJAXFormAddFail);
+    this.timeouts.forEach(tO => clearTimeout(tO));   
   }
 
   onVariantChange(evt) {
@@ -208,7 +210,7 @@ export default class ProductDetailForm {
       this.typers.sku = new Typed(this.$sku.get(0), {
         strings: [sku],
         contentType: null,
-        typeSpeed: 30,
+        typeSpeed: 10,
         showCursor: false,
         onComplete: () => d.resolve()
       }); 
@@ -230,7 +232,7 @@ export default class ProductDetailForm {
       this.typers.title = new Typed(this.$title.get(0), {
         strings: [title],
         contentType: null,
-        typeSpeed: 20,
+        typeSpeed: 10,
         showCursor: false,
         onComplete: () => d.resolve()
       });      
@@ -292,12 +294,12 @@ export default class ProductDetailForm {
   }
 
   onReveal() {
-    // const $desc = $('.product-description', this.$container);
-    // $desc.addClass('hide');
-  }
+    this.$title.addClass('hide');
+    this.$sku.addClass('hide');
+    $('.product-description', this.$container).addClass('hide');
+    this.$priceWrapper.addClass('hide');
+    this.$addToCartForm.addClass('hide');
 
-  // Need to come up with a better system for this
-  onRevealed() {
     const t = this.$title.text();
     const sku = this.$sku.text();
     const $desc = $('.product-description', this.$container);
@@ -305,15 +307,38 @@ export default class ProductDetailForm {
     this.$title.text('');
     this.$sku.text('');
 
-    // Do the animation to type everything out
-    this.updateTitle(t)
-      .then(() => this.updateSku(sku));
+    this.timeouts.push(
+      setTimeout(() => {
+        // Do the animation to type everything out
+        this.$title.removeClass('hide');
+        this.updateTitle(t)
+          .then(() => {
+            this.$sku.removeClass('hide');
+            this.updateSku(sku)
+              .then(() => {
+                this.timeouts.push(
+                  setTimeout(() => {
+                    $desc.removeClass('hide');  
+                    this.timeouts.push(
+                      setTimeout(() => {
+                        this.$priceWrapper.removeClass('hide');
+                        this.timeouts.push(
+                          setTimeout(() => {
+                            this.$addToCartForm.removeClass('hide');
+                          }, 300)
+                        );
+                      }, 300)
+                    );              
+                  }, 150)
+                );
+              });
+          });
+      }, 200)
+    );
+  }
 
-    // @TODO - Finish this, do it better
-    // Output product children separately??
-    // setTimeout(() => {
-    //   $desc.removeClass('hide');
-    // }, 1200);
+  onRevealed() {
+    // 
   }
 
   onHidden() {

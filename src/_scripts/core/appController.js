@@ -225,26 +225,26 @@ export default class AppController {
     // let now = Date.now();
 
     // $oldViewContent.one('transitionend', (e) => {
-      $newViewContent.addClass('transition-in-active');
+    $newViewContent.addClass('transition-in-active');
 
-      // I don't know what's going on
-      // $newViewContent.one('transitionend') was firing because of child product cards transitioning in?
-      setTimeout(() => {
-        // window.scrollTo && window.scrollTo(0, 0);
-        $newViewContent.removeClass('transition-in transition-in-active');
-        $oldViewContent.remove();
+    // I don't know what's going on
+    // $newViewContent.one('transitionend') was firing because of child product cards transitioning in?
+    setTimeout(() => {
+      // window.scrollTo && window.scrollTo(0, 0);
+      $newViewContent.removeClass('transition-in transition-in-active');
+      $oldViewContent.remove();
 
-        // this.settings.onViewChangeDOMUpdatesComplete($responseHead, $responseBody);
+      // this.settings.onViewChangeDOMUpdatesComplete($responseHead, $responseBody);
 
-        this.currentView = newView;
+      this.currentView = newView;
 
-        this.settings.onViewChangeComplete(this.currentView);
+      this.settings.onViewChangeComplete(this.currentView);
 
-        // Is there a callback for this?
-        this.settings.onViewReady(this.currentView);
+      // Is there a callback for this?
+      this.settings.onViewReady(this.currentView);
 
-        this.isTransitioning = false;
-      }, 800);      
+      this.isTransitioning = false;
+    }, 800);      
     // });
 
     // setTimeout(() => {
