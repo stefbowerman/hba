@@ -38,6 +38,10 @@ export default class ProductDetail {
     });
   }
 
+  onBeforeReveal() {
+    this.gallery.onBeforeReveal();
+  }
+
   // Called when the fade in animation *starts*
   onReveal() {
     this.gallery.onReveal();
@@ -51,7 +55,6 @@ export default class ProductDetail {
 
   onHidden() {
     this.form.onHidden();
-    this.gallery.onHidden();
   }
 
   destroy() {

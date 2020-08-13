@@ -73,30 +73,40 @@ export default class CollectionSection extends BaseSection {
   }
 
   activateProductCard(card) {
-    if (!card || this.productPane.isActive(card.id)) return;
+    if (!card || this.productPane.isTransitioning) return; // istransitioning is a simple stop gap against the page state getting out of sync
 
     const isMobile = window.innerWidth <= this.mobileWidthMax;
 
     // Below this screen size, the grid is at the bottom of the page
-    if (window.innerWidth <= this.mobileWidthMax) {
+    if (isMobile) {
       $viewport.animate({ scrollTop: 0 }, {
         duration: 350,
         easing: 'easeOutQuart'
       });
     }
 
+    if (this.productPane.isActive(card.id)) {
+      // If it's the currently selected product, just return *After* we scroll up in case we're on mobile
+      return;
+    }
+
+    // If we're on mobile, it takes 350 to scroll to the top, so fadeOUT before we hit the top and then take longer to fadeIN
+    // If we're not on mobile, pass null and use fade defaults
+    const outDuration = isMobile ? 50 : null;
+    const inDuration  = null; // isMobile ? (350+250) : null;
+    this.productPane.activate(card.id, outDuration, inDuration)
+      .then(() => {
+        if (window.HBA) {
+          window.HBA.appController
+            .pauseRouter()
+            .navigate(this.urlForState)
+            .setDocumentTitle(card.documentTitle)
+            .resumeRouter();
+        }
+      });    
+
     setTimeout(() => {
-      this.breadcrumbs.setCrumb('collection-product', card.handle, card.url);
-      this.productPane.activate(card.id)
-        .then(() => {
-          if (window.HBA) {
-            window.HBA.appController
-              .pauseRouter()
-              .navigate(this.urlForState)
-              .setDocumentTitle(card.documentTitle)
-              .resumeRouter();
-          }
-        });      
+      this.breadcrumbs.setCrumb('collection-product', card.handle, card.url);   
     }, (isMobile ? 350 : 0));
   }
 
@@ -149,6 +159,7 @@ export default class CollectionSection extends BaseSection {
   onFiltersToggleClick(e) {
     e.preventDefault();
     this.$filtersContainer.slideToggle(150);
+    this.$filtersToggle.toggleClass('is-active');
   }
 
   onProductCardClick(e, card) {

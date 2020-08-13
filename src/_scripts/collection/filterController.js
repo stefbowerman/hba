@@ -19,7 +19,7 @@ export default class FilterController {
   }
 
   getFilterByValue(value) {
-    this.filters.find(filter => filter.value === value); // @TODO replace with _.find ?
+    this.filters.find(filter => filter.value === value);
   }
 
   // When a filter is clicked, this function is called

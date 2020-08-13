@@ -64,12 +64,16 @@
         {% endif %}
       {% elsif block.type == 'bg_media_control' %}
         <ul class="footer-menu">
-          <li>
-            Audio: <a href="#" class="btn is-active" data-toggle-background-audio="false">Off</a> <a href="#" class="btn" data-toggle-background-audio="true">On</a>
-          </li>
-          <li>
-            Video: <a href="#" class="btn is-active" data-toggle-background-video="false">Off</a> <a href="#" class="btn" data-toggle-background-video="true">On</a>    
-          </li>
+          {% if block.settings.audio_controls %}
+            <li>
+              Audio: <a href="#" class="btn is-active" data-toggle-background-audio="false">Off</a> <a href="#" class="btn" data-toggle-background-audio="true">On</a>
+            </li>
+          {% endif %}
+          {% if block.settings.video_controls %}
+            <li>
+              Video: <a href="#" class="btn is-active" data-toggle-background-video="false">Off</a> <a href="#" class="btn" data-toggle-background-video="true">On</a>    
+            </li>
+          {% endif %}
         </ul>
       {% endif %}
     </div>
@@ -143,6 +147,18 @@
             "id": "title",
             "label": "Title",
             "default": "Background"
+          },
+          {
+            "type": "checkbox",
+            "id": "audio_controls",
+            "label": "Audio Controls",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "video_controls",
+            "label": "Video Controls",
+            "default": true
           }
         ]
       }

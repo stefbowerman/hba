@@ -5,8 +5,8 @@ import 'jquery-zoom';
 import 'jquery-unveil';
 
 // Bootstrap JS
-import 'bootstrap/js/dist/collapse';
-import 'bootstrap/js/dist/modal';
+// import 'bootstrap/js/dist/collapse';
+// import 'bootstrap/js/dist/modal';
 
 // Core
 import {
@@ -31,6 +31,13 @@ import FooterSection   from './sections/footer';
 import AJAXCartSection from './sections/ajaxCart';
 import BackgroundMedia from './sections/backgroundMedia';
 
+/* eslint-disable */
+
+// Array.find polyfill
+Array.prototype.find=Array.prototype.find||function(r){if(null===this)throw new TypeError("Array.prototype.find called on null or undefined");if("function"!=typeof r)throw new TypeError("callback must be a function");for(var n=Object(this),t=n.length>>>0,o=arguments[1],e=0;e<t;e++){var f=n[e];if(r.call(o,f,e,n))return f}};
+
+/* eslint-enable */
+
 // Do this ASAP
 Animations.initialize();
 Breakpoints.initialize();
@@ -50,9 +57,6 @@ window.HBA = {
     backgroundMedia: new BackgroundMedia($('[data-section-type="background-media"]'))
   };
 
-  // @TODO - Remove this at some point
-  window.HBA.sections = sections;
-
   // Create the app controller for routing
   const appController = new AppController({
     viewConstructors: {
@@ -64,10 +68,10 @@ window.HBA = {
       sections.header.menuOverlay.hide();
     },
     onInitialViewReady: (view) => {
-      console.log('onInitialViewReady');
+      // console.log('onInitialViewReady');
     },
     onBeforeRouteStart: (deferred) => {
-      console.log('onBeforeRouteStart');
+      // console.log('onBeforeRouteStart');
       sections.ajaxCart.close();
       deferred.resolve();
     },
@@ -75,19 +79,20 @@ window.HBA = {
       sections.footer.newsletterForm && sections.footer.newsletterForm.hideFormContents();
     },
     onViewChangeStart: (url, newView) => {
-      console.log('onViewChangeStart');
+      // console.log('onViewChangeStart');
+      sections.header.menuOverlay.hide();
     },
     onViewTransitionOutDone: (url, deferred) => {
       window.scrollTo && window.scrollTo(0, 0);
       deferred.resolve();
     },
     onViewChangeComplete: (newView) => {
-      console.log('onViewChangeComplete');
-      sections.header.menuOverlay.hide();      
+      // console.log('onViewChangeComplete');
+      // sections.header.menuOverlay.hide();      
     },
     onViewReady: (view) => {
-      console.log('onViewReady');
-      console.log(view);
+      // console.log('onViewReady');
+      // console.log(view);
 
       if (view.type === 'index') {
         setTimeout(() => {

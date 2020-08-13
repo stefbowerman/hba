@@ -19,9 +19,8 @@
     }    
   }
 
-  // @TODO - Remove
-  [data-preview] img {
-    filter: blur(3px);
+  &--preview {
+    cursor: $cursor-disabled;
   }
 }
 

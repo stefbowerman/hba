@@ -1,34 +1,89 @@
 <div data-section-id="{{ section.id }}" data-section-type="background-media">
-  {% for block in section.blocks %}
-    {% assign src = block.settings.video_file_url %}
+  {% if section.settings.bg_image != blank %}
+    <div class="image-background" data-image-background>
+      <picture>
+        <source
+          media="(min-width: 768px)"
+          data-srcset="
+            {{ section.settings.bg_image | img_url: '768x' }} 768w,
+            {{ section.settings.bg_image | img_url: '900x' }} 900w,
+            {{ section.settings.bg_image | img_url: '1000x' }} 1000w,
+            {{ section.settings.bg_image | img_url: '1200x' }} 1200w,
+            {{ section.settings.bg_image | img_url: '1400x' }} 1400w,
+            {{ section.settings.bg_image | img_url: '1600x' }} 1600w,
+            {{ section.settings.bg_image | img_url: '1800x' }} 1800w,
+            {{ section.settings.bg_image | img_url: '2000x' }} 2000w,
+            {{ section.settings.bg_image | img_url: '2200x' }} 2200w,
+          "
+          sizes="100vw"
+        >
+        {% if section.settings.bg_image_mobile %}
+          <source
+            media="(min-width: 400px)"
+            data-srcset="
+              {{ section.settings.bg_image_mobile | img_url: '400x' }},
+              {{ section.settings.bg_image_mobile | img_url: '600x' }} 1.5x,
+              {{ section.settings.bg_image_mobile | img_url: '800x' }} 2x
+            "
+            sizes="100vw"
+          >
+          <source
+            media="(min-width: 600px)"
+            data-srcset="
+              {{ section.settings.bg_image_mobile | img_url: '600x' }},
+              {{ section.settings.bg_image_mobile | img_url: '900x' }} 1.5x,
+              {{ section.settings.bg_image_mobile | img_url: '1200x' }} 2x
+            "
+            sizes="100vw"
+          >  
+        {% else %}
+          <source
+            media="(max-width: 767px)"
+            data-srcset="
+              {{ section.settings.bg_image | img_url: '400x' }},
+              {{ section.settings.bg_image | img_url: '600x' }} 600w,
+              {{ section.settings.bg_image | img_url: '800x' }} 800w,
+              {{ section.settings.bg_image | img_url: '1000x' }} 1000w,
+              {{ section.settings.bg_image | img_url: '1200x' }} 1200w
+            "
+            sizes="100vw"
+          >           
+        {% endif %}      
+        <img data-src="{{ section.settings.bg_image | img_url: '1600x' }}" alt="{{ section.settings.bg_image.alt | escape }}" />
+      </picture>
+    </div>
+  {% else %}
+    {% for block in section.blocks %}
+      {% assign src = block.settings.video_file_url %}
 
-    {% if src != blank %}
-      {% assign video_type = '' %}
+      {% if src != blank %}
+        {% assign video_type = '' %}
 
-      {% if src contains '.mp4' %}
-        {% assign video_type = 'mp4' %}
-      {% elsif src contains '.og' %}
-        {% assign video_type = 'ogg' %}
-      {% elsif src contains '.avi' %}
-        {% assign video_type = 'avi' %}
-      {% elsif src contains '.webm' %}
-        {% assign video_type = 'webm' %}
+        {% if src contains '.mp4' %}
+          {% assign video_type = 'mp4' %}
+        {% elsif src contains '.og' %}
+          {% assign video_type = 'ogg' %}
+        {% elsif src contains '.avi' %}
+          {% assign video_type = 'avi' %}
+        {% elsif src contains '.webm' %}
+          {% assign video_type = 'webm' %}
+        {% endif %}
+
+        {% if video_type == '' %}
+          <!-- ALERT: Your video is invalid -->
+        {% else %}
+          <div class="video-background" data-video-background>
+            <video muted playsinline>
+              <source src="{{ src }}" type="video/{{ video_type }}" />
+            </video>
+            {% if block.settings.video_poster_image != blank %}
+              <img data-src="{{ block.settings.video_poster_image | img_url: '1600x' }}" />
+            {% endif %}
+          </div>
+        {% endif %}
       {% endif %}
-
-      {% if video_type == '' %}
-        <!-- ALERT: Your video is invalid -->
-      {% else %}
-        <div class="video-background" data-video-background>
-          <video muted playsinline>
-            <source src="{{ src }}" type="video/{{ video_type }}" />
-          </video>
-          {% if block.settings.video_poster_image != blank %}
-            <img data-src="{{ block.settings.video_poster_image | img_url: '1600x' }}" />
-          {% endif %}
-        </div>
-      {% endif %}
-    {% endif %}
-  {% endfor %}
+    {% endfor %}
+  {% endif %}
 
   {% if section.settings.audio_file_url_mp3 != blank or ection.settings.audio_file_url_ogg != blank  %}
     <audio loop>
@@ -62,8 +117,22 @@
       },
       {
         "type": "header",
+        "content": "Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Desktop Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image_mobile",
+        "label": "Mobile Image"
+      },
+      {
+        "type": "header",
         "content": "Background Video Blocks",
-        "info": "Background video blocks will be played sequentially on a loop"
+        "info": "Background video blocks will be played sequentially on a loop.  These will only output if there is no background image specified above"
       }
     ],
     "blocks": [

@@ -5,7 +5,12 @@ import VideoBackground from '../ui/videoBackground';
 import VideoBackgroundQueue from '../ui/videoBackgroundQueue';
 
 const selectors = {
-  videoBackground: '[data-video-background]'
+  videoBackground: '[data-video-background]',
+  imageBackground: '[data-image-background]'
+};
+
+const classes = {
+  pictureLoaded: 'is-loaded'  
 };
 
 const $body = $(document.body);
@@ -41,9 +46,32 @@ export default class BackgroundMediaSection extends BaseSection {
         $body.on('click', '[data-toggle-background-audio]', this.onToggleBackgroundAudioClick.bind(this));
         $body.on('click', '[data-toggle-background-video]', this.onToggleBackgroundVideoClick.bind(this));
       }      
-    } 
+    }
 
-    this.videoBackgroundQueue.start();
+    this.$imageBackground = $(selectors.imageBackground, this.$container);
+
+    if (this.$imageBackground.length) {
+      const $picture = this.$imageBackground.find('picture');
+      const $lazySrcsets = $('[data-srcset]', this.$picture);
+      const $lazySrc     = $('[data-src]', this.$picture);
+
+      // Load these images
+      $lazySrcsets.add($lazySrc).each((i, el) => {
+        const $el = $(el);
+        $el.attr('srcset', $el.data('srcset'));
+        $el.attr('src', $el.data('src'));
+        $el.attr({
+          'data-srcset': null,
+          'data-src': null
+        });
+      });
+
+      $picture
+        .addClass(classes.pictureLoaded);
+    }
+    else {
+      this.videoBackgroundQueue.start();
+    }
 
     setTimeout(() => this.startMedia(), 1500);
   }

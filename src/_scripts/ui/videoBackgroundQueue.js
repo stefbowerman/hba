@@ -54,11 +54,15 @@ export default class VideoBackgroundQueue {
   }
 
   play() {
-    this.currentVideoBackground.video.play();
+    if (this.currentVideoBackground) {
+      this.currentVideoBackground.video.play();
+    }
   }
 
   pause() {
-    this.currentVideoBackground.video.pause();
+    if (this.currentVideoBackground) {
+      this.currentVideoBackground.video.pause();
+    }
   }
 
   get currentVideoBackground() {
