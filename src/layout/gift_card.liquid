@@ -25,6 +25,12 @@
   <!--[if lt IE 9]><script src="{{ 'vendor.js' | asset_url }}"></script><![endif]-->
 
   {{ content_for_header }}
+
+  <!-- REAMAZE INTEGRATION START - DO NOT REMOVE -->
+{% include 'reamaze-config' %}
+{% include 'reamaze-sso' %}
+<!-- REAMAZE INTEGRATION END - DO NOT REMOVE -->
+
 </head>
 
 <body class="template-giftcard">

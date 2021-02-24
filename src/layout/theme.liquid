@@ -41,6 +41,12 @@
   {{ content_for_header }}
 
   {% render 'third-party-scripts-head' %}
+
+  <!-- REAMAZE INTEGRATION START - DO NOT REMOVE -->
+{% include 'reamaze-config' %}
+{% include 'reamaze-sso' %}
+<!-- REAMAZE INTEGRATION END - DO NOT REMOVE -->
+
 </head>
 
 {% capture body_class %}

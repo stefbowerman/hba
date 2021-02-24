@@ -20,7 +20,13 @@
 
     <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'checkout.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
     <!--[if lt IE 9]><script src="{{ 'checkout.js' | asset_url }}"></script><![endif]-->    
-  </head>
+  
+  <!-- REAMAZE INTEGRATION START - DO NOT REMOVE -->
+{% include 'reamaze-config' %}
+{% include 'reamaze-sso' %}
+<!-- REAMAZE INTEGRATION END - DO NOT REMOVE -->
+
+</head>
   <body>
 
     {{ skip_to_content_link }}
