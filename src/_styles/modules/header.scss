@@ -2,57 +2,34 @@
 // Header
 // -------------------------
 
-@keyframes strobe {
-  50% { opacity: 0; }
-}
-
-@keyframes strobeline {
-  50% { opacity: 0.7; }
-}
-
 .header-logo {
   display: block;
   position: fixed;
   z-index: $zindex-header-logo;  
-  top: 20px;
-  left: $outer-gutter-mobile;  
-  max-width: 101px;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 75px;
 
   @include media-breakpoint-up(lg) {
-    top: 22px;
-    left: $outer-gutter;
-    max-width: 117px;
-  }
-
-  &.is-strobing {
-    animation-play-state: running;
-    animation: strobe 60ms steps(1, end) infinite;
-    animation-delay: 1s; 
+    top: 36px;
+    max-width: 123px;
   }
 
   svg {
     width: 100%;
     height: auto;
   }
-
-  .ajax-cart-open & {
-    color: $black;
-  }
-}
-
-.header-logo__image {
-  width: 100%;
-  transform: translateZ(0); // Prevent bluriness from scaling
 }
 
 .header-cart {
   position: fixed;
   z-index: $zindex-header-cart;
-  top: 24px;
+  top: 31px;
   right: $outer-gutter-mobile;
 
   @include media-breakpoint-up(lg) {
-    top: 34px;
+    top: 49px;
     right: $outer-gutter;
   }
 
@@ -65,78 +42,32 @@
 }
 
 .header-nav {
-  font-family: $font-family-sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 36px;
-  letter-spacing: -1px;
+  position: fixed;
+  z-index: $zindex-header-nav;
+  top: 31px;
+  left: $outer-gutter-mobile;
 
   @include media-breakpoint-up(lg) {
-    font-size: 60px;
-  }
-}
-
-.header-nav__link {
-  position: relative;
-  display: block;
-  text-shadow: 0 0 2px currentColor;
-  opacity: 1;
-
-  &.faded-out {
-    opacity: 0;
-    transition: opacity 0.7s linear;
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 3px;
-    background-color: transparent;
-    filter: blur(1px);
-  }
-
-  &.is-active:after {
-    background-color: $white;
-    animation-play-state: running;
-    animation: strobeline 60ms steps(1, end) infinite;
-  }
-
-  .header-nav__subnav &:after {
-    bottom: -2px;
-    height: 3px;
-  }
-
-  .ajax-cart-open &.is-active:after {
-    background-color: $black;
+    top: 49px;
+    left: $outer-gutter;
   }  
-}
 
-.header-nav__item {
-  margin-bottom: 20px;
-  padding-bottom: 5px;
-
-  &:last-child {
-    margin-bottom: 0;
+  ul {
+    @include list-unstyled;
+    margin: 0;
+    text-transform: uppercase;
   }
-}
 
-.header-nav__subnav {
-  margin-left: 34%;
-  padding-top: 21px;
-  padding-bottom: 6px;
-  font-size: 24px;
-  display: none; // jQuery will display it for us
-}
+  li {
+    display: inline-block;
+    margin: 0;  
 
-.header-nav__subnav-contents {
-  width: 0;
-  overflow: hidden;
-  transition: width 0.5s linear;
+    & + li {
+      margin-left: 10px;
+    }
+  }
 
-  .is-revealed & {
-    width: 100%;
+  a {
+    @include highlight-link;
   }
 }

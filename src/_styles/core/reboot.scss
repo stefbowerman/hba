@@ -191,8 +191,10 @@ a {
     fill: $link-color;
   }
 
-  @include hover {
-    text-decoration: $link-hover-decoration;
+  @include has-hover {
+    &:hover {
+      text-decoration: $link-hover-decoration;
+    }
   }
 }
 
@@ -490,11 +492,11 @@ template {
 }
 
 ::-moz-selection {
-  background-color: $green;
-  color: $black;
+  background-color: $body-color;
+  color: $body-bg;
 }
 
 ::selection {
-  background-color: $green;
-  color: $black;
+  background-color: $body-color;
+  color: $body-bg;
 }

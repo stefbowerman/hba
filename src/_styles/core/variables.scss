@@ -164,8 +164,8 @@ $sizes: map-merge(
 //
 // Settings for the `<body>` element.
 
-$body-bg:                   $black !default;
-$body-color:                $green !default;
+$body-bg:                   $white !default;
+$body-color:                $black !default;
 
 
 // Links
@@ -709,6 +709,7 @@ $zindex-dropdown:                   1000 !default;
 $zindex-sticky:                     1500 !default;
 $zindex-fixed:                      2000 !default;
 $zindex-ajax-cart:                  2006 !default;
+$zindex-header-nav:                 2020 !default;
 $zindex-header-cart:                2020 !default;
 $zindex-overlay:                    2050 !default;
 $zindex-header-logo:                2100 !default;

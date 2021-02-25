@@ -416,7 +416,7 @@ export function camelize(str) {
 export function credits() {
   if (window && window.location && window.location.hostname !== 'localhost') {
     // eslint-disable-next-line no-console, max-len
-    console.log('%c HOOD BY AIR: development → stefanbowerman.com', 'font-family: Helvetica; font-size: 11px; color: #39b772; background-color: #000');
+    console.log('%c HOOD BY AIR: development → stefanbowerman.com', 'font-family: Helvetica; font-size: 11px; color: #000; background-color: #FFF');
   }
 }
 

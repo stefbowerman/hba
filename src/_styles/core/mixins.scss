@@ -2,6 +2,12 @@
 //
 // Used in conjunction with global variables to enable certain theme features.
 
+@mixin has-hover {
+  @media (hover: hover) {
+    @content
+  }
+}
+
 // Vendor
 @import "vendor/rfs";
 

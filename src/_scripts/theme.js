@@ -65,7 +65,7 @@ window.HBA = {
       page: PageView
     },
     onSameRoute: (url, currentView) => {
-      sections.header.menuOverlay.hide();
+      
     },
     onInitialViewReady: (view) => {
       // console.log('onInitialViewReady');
@@ -80,7 +80,6 @@ window.HBA = {
     },
     onViewChangeStart: (url, newView) => {
       // console.log('onViewChangeStart');
-      sections.header.menuOverlay.hide();
     },
     onViewTransitionOutDone: (url, deferred) => {
       window.scrollTo && window.scrollTo(0, 0);
@@ -88,16 +87,13 @@ window.HBA = {
     },
     onViewChangeComplete: (newView) => {
       // console.log('onViewChangeComplete');
-      // sections.header.menuOverlay.hide();      
     },
     onViewReady: (view) => {
       // console.log('onViewReady');
       // console.log(view);
 
       if (view.type === 'index') {
-        setTimeout(() => {
-          sections.header.menuOverlay.show();
-        }, 1000);
+        //
       }
       else if (view.type === 'cart') {
         sections.ajaxCart.open();
