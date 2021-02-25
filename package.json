@@ -54,6 +54,7 @@
     "js-cookie": "^2.2.0",
     "navigo": "^7.1.2",
     "panzoom": "^9.2.5",
+    "swiper": "^6.4.15",
     "throttle-debounce": "^2.1.0",
     "typed.js": "^2.0.11"
   },

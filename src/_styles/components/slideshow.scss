@@ -5,6 +5,9 @@
 // Base styling for all swiper instances
 .swiper-container {
 
+  img {
+    user-select: none;
+  }
 }
 
 .swiper-arrow {

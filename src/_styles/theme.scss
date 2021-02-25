@@ -5,6 +5,9 @@
  *
  */
 
+@import 'vendor/swiper';
+// @import '../../node_modules/swiper/swiper-bundle.min.css';
+
 /**
  * CORE
  * ---------------------------------------
@@ -48,8 +51,8 @@
 @import 'components/content';
 @import 'components/card';
 @import 'components/minimal-input';
-// @import 'components/arrows';
-// @import 'components/slideshow';
+@import 'components/arrows';
+@import 'components/slideshow';
 // @import 'components/video-player';
 @import 'components/newsletter-form';
 @import 'components/overlay';
@@ -67,6 +70,7 @@
 @import 'modules/product-detail';
 @import 'modules/video-background';
 @import 'modules/sidebar';
+@import 'modules/image-campaign';
 
 /**
  * Templates
@@ -133,3 +137,11 @@ html.js {
     transition: opacity 0.6s cubic-bezier(0.3, 0.46, 0.17, 0.9);
   }
 }
+
+// Adjust reamaze position
+#reamaze-widget {
+  bottom: 19px !important;
+  right: 16px !important;
+  z-index: $zindex-reamaze !important;
+}
+

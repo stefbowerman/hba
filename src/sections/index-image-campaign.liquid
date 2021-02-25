@@ -1,0 +1,103 @@
+<div data-section-id="{{ section.id }}" data-section-type="image-campaign">
+  <div class="image-campaign" data-campaign>
+    <div class="container">
+      <div class="image-campaign__content">
+        <div class="content-grid content-grid--image-campaign" data-grid>
+          {% for block in section.blocks %}
+            <div class="content-grid__item">
+              <img
+                src="{{ block.settings.image | img_url: '400x' }}"
+                alt="{{ block.settings.image.alt | escape }}"
+                data-index="{{ forloop.index0 }}"
+              />
+            </div>
+          {% endfor %}
+        </div>
+        <div class="image-campaign__description">
+          {{ section.settings.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay overlay--slideshow" data-overlay> 
+    <div class="overlay__inner">  
+      <div class="overlay__content">  
+        
+        <div class="overlay__slideshow swiper-container" data-slideshow>
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              <div class="swiper-slide">
+                <img
+                  src="{{ block.settings.image | img_url: '400x' }}"
+                  srcset="
+                    {{ block.settings.image | img_url: '400x' }}  400w,
+                    {{ block.settings.image | img_url: '600x' }}  600w,
+                    {{ block.settings.image | img_url: '800x' }}  800w,
+                    {{ block.settings.image | img_url: '1200x' }} 1200w,
+                    {{ block.settings.image | img_url: '1600x' }} 1600w,
+                    {{ block.settings.image | img_url: '1800x' }} 1800w,
+                  "
+                  alt="{{ block.settings.image.alt | escape }}"
+                  data-index="{{ forloop.index0 }}"
+                />
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="swiper-arrow swiper-arrow--left">
+            <div class="arrow arrow--left" data-prev>
+              <div class="arrow__icon">
+                {% render 'icon-arrow-right' %}
+              </div>
+            </div>
+          </div>
+          <div class="swiper-arrow swiper-arrow--right">
+            <div class="arrow arrow--right" data-next>
+              <div class="arrow__icon">
+                {% render 'icon-arrow-right' %}
+              </div>
+            </div>
+          </div>          
+        </div>
+
+        <div class="overlay-close">
+          <a href="#" class="btn" data-overlay-close>Close</a>
+        </div>
+
+      </div>  
+    </div>  
+  </div>   
+</div>
+
+{% schema %}
+  {
+    "name": "Image Campaign",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "description",
+        "label": "Description"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Image Campaign",
+      "category": "Media",
+      "settings": {},
+      "blocks": []
+    }]
+  }
+{% endschema %}

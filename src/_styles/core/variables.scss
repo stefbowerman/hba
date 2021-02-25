@@ -230,6 +230,11 @@ $grid-gutter-width:           30px !default;
 $outer-gutter-mobile:         20px;
 $outer-gutter:                $grid-gutter-width;
 
+// Layout
+
+$layout-top-padding-mobile: 114px;
+$layout-top-padding: 140px;
+
 
 // Components
 //
@@ -711,6 +716,7 @@ $zindex-fixed:                      2000 !default;
 $zindex-ajax-cart:                  2006 !default;
 $zindex-header-nav:                 2020 !default;
 $zindex-header-cart:                2020 !default;
+$zindex-reamaze:                    2040  !default;
 $zindex-overlay:                    2050 !default;
 $zindex-header-logo:                2100 !default;
 $zindex-blowup:                     2450 !default;
@@ -899,20 +905,6 @@ $minimal-input-height-large:            60px;
 
 $ajax-cart-bg:                          $white;
 $ajax-cart-color:                       $black;
-
-
-// Arrows
-
-$arrow-dimension:                       50px;
-$arrow-padding:                         8px;
-$arrow-border-radius:                   50%;
-$arrow-bg:                              transparentize(#ddd, 0.5);
-$arrow-bg-hover:                        transparentize(#ddd, 0.3);
-$arrow-icon-length:                     ($arrow-dimension - $arrow-padding * 2)/2;
-$arrow-icon-width:                      2px;
-$arrow-icon-color:                      #f00;
-$arrow-icon-tip-length:                 12px;
-$arrow-icon-tip-skew:                   45deg;
 
 
 // Slideshow

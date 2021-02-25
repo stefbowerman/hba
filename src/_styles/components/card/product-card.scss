@@ -65,7 +65,9 @@
     width: 100%;
   }
 
-  .product-card a:hover & {
-    filter: invert(1);
+  @include has-hover {
+    .product-card a:hover & {
+      filter: invert(1);
+    }
   }
 }

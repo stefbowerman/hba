@@ -1,0 +1,87 @@
+// -------------------------
+// Overlay - Slideshow
+// -------------------------
+
+.overlay--slideshow {
+
+  .overlay__inner {
+    padding: 0;
+    opacity: 0;
+    transition: opacity .65s cubic-bezier(0.63, 0.23, 0.65, 0.87) ($transition-duration-slow*0.75);
+  }
+
+  &.is-visible {
+    // transition: opacity 0.25s ease-out;
+    transition: opacity $transition-duration-slow $transition-timing-function-overlay-opacity-in;
+
+    .overlay__inner {
+      opacity: 1;
+    }
+  }
+
+  .overlay__content {
+    height: 100vh;
+    height: var(#{'--viewport-height'});
+    padding-top: $layout-top-padding-mobile;
+    padding-bottom: $layout-top-padding-mobile * 0.75;
+
+    @include media-breakpoint-up(lg) {
+      padding-top: $layout-top-padding;
+      padding-bottom: $layout-top-padding * 0.75;
+    }    
+  }
+
+  .overlay-close {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.overlay__slideshow {
+  height: 100%;
+
+  .swiper-slide {
+    @extend .container;
+    display: flex;
+    align-items: center;
+    pointer-events: none; // Default 'fade' effect sets pointer-events to 'auto'
+
+    @include media-breakpoint-up(xl) {
+      padding-left: 10vw;
+      padding-right: 10vw;
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+      max-height: 800px;
+      object-fit: contain;
+    }
+  }
+
+  @include media-breakpoint-up(xl) {
+    .swiper-arrow--left {
+      left: 6vw;
+    }
+
+    .swiper-arrow--right {
+      right: 6vw;
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .touchevents .overlay__slideshow {
+    .swiper-arrow {
+      display: none;
+    }
+  }
+}
+
+.overlay.is-visible {
+  .overlay__slideshow .swiper-slide {
+    pointer-events: auto;
+  }
+}

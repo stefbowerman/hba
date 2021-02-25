@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { throttle } from 'throttle-debounce';
 import 'jquery-zoom';
 import 'jquery-unveil';
+import 'imagesloaded';
 
 // Bootstrap JS
 // import 'bootstrap/js/dist/collapse';
@@ -24,6 +25,7 @@ import AppController     from './core/appController';
 import ProductView    from './views/product';
 import CollectionView from './views/collection';
 import PageView       from './views/page';
+import IndexView      from './views/index';
 
 // Sections
 import HeaderSection   from './sections/header';
@@ -62,7 +64,8 @@ window.HBA = {
     viewConstructors: {
       product: ProductView,
       collection: CollectionView,
-      page: PageView
+      page: PageView,
+      index: IndexView
     },
     onSameRoute: (url, currentView) => {
       
