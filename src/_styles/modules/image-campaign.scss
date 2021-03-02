@@ -57,10 +57,9 @@
     align-items: center;
     padding: 0 $outer-gutter-mobile;
 
-    // Make room for the arrows
     @include media-breakpoint-up(md) {
-      padding-left: 12vw;
-      padding-right: 12vw
+      padding-left: 5vw;
+      padding-right: 5vw;
     }
 
     img {
@@ -75,40 +74,37 @@
     }
   }
 
-  .swiper-arrow {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 1s cubic-bezier(0.33, 0.01, 0.49, 1.02);
+  .panel-nav {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    width: 32%;
 
-    @include media-breakpoint-down(sm) {
-      display: none;
+    @include media-breakpoint-up(xl) {
+      width: 40%;
     }
+
+    &.panel-nav--prev {
+      cursor: w-resize;
+      left: 0;
+    }
+
+    &.panel-nav--next {
+      cursor: e-resize;
+      right: 0;
+    }    
   }
+}
 
-  .image-campaign.is-ready & .swiper-arrow {
-    opacity: 1;
-    pointer-events: auto;
-    transition-delay: 1s;
+@include media-breakpoint-down(md) {
+  .touchevents & .panel-nav {
+    display: none;
   }
-
-  @include media-breakpoint-up(md) {
-    .swiper-arrow--left {
-      left: 8vw
-    }
-    .swiper-arrow--right {
-      right: 8vw
-    }
-  }
-
-  @include media-breakpoint-down(md) {
-    .touchevents & .swiper-arrow {
-      display: none;
-    }
-  }  
 }
 
 .image-campaign__description {
-  margin: 35px auto 0;
+  margin: 70px auto 0;
   max-width: 500px;
   text-align: center;
   text-transform: uppercase;

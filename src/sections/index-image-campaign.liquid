@@ -22,20 +22,14 @@
           {% endfor %}
         </div>
 
-        <div class="swiper-arrow swiper-arrow--left">
-          <div class="arrow arrow--left" title="Previous" data-prev>
-            <div class="arrow__icon">
-              {% render 'icon-arrow-right' %}
-            </div>
+        {% if section.blocks.size > 1 %}
+          <div class="panel-nav panel-nav--prev" title="Previous" data-prev>
+            <span class="visually-hidden">Previous Image</span>
           </div>
-        </div>
-        <div class="swiper-arrow swiper-arrow--right">
-          <div class="arrow arrow--right" title="Next" data-next>
-            <div class="arrow__icon">
-              {% render 'icon-arrow-right' %}
-            </div>
+          <div class="panel-nav panel-nav--next" title="Next" data-next>
+            <span class="visually-hidden">Next Image</span>
           </div>
-        </div>          
+        {% endif %}          
       </div>
 
       <div class="image-campaign__description">

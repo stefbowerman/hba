@@ -30,10 +30,6 @@ export default class ImageCampaignSection extends BaseSection {
       effect: effect,
       simulateTouch: false,
       watchOverflow: true,
-      navigation: {
-        nextEl: this.$next.get(0),
-        prevEl: this.$prev.get(0),
-      },
       on: {
         slideChangeTransitionStart: this.clearInteractionTimeout.bind(this),
         touchStart: this.clearInteractionTimeout.bind(this),
@@ -42,6 +38,8 @@ export default class ImageCampaignSection extends BaseSection {
     });
 
     this.$slideshow.on('keydown', this.onKeydown.bind(this));
+    this.$prev.on('click', () => this.swiper.slidePrev());
+    this.$next.on('click', () => this.swiper.slideNext());
 
     const startTime = Date.now();
 
@@ -58,7 +56,7 @@ export default class ImageCampaignSection extends BaseSection {
   }
 
   setInteractionTimeout() {
-    this.initialInteractionTimeout = setTimeout(this.swiper.slideNext.bind(this.swiper), 7000);
+    this.initialInteractionTimeout = setTimeout(() => this.swiper.slideNext(), 7000);
   }
 
   clearInteractionTimeout() {
