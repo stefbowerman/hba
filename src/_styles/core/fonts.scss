@@ -10,4 +10,5 @@
 @include font-face('HBA Mono', hbamono-regular, $font-weight-normal);
 @include font-face('HBA Mono', hbamono-bold, $font-weight-bold);
 @include font-face('Helvetica Neue LT', HelveticaNeueLTStd-Roman, $font-weight-normal);
-@include font-face('Helvetica Neue LT', HelveticaNeueLTStd-Md, $font-weight-bold);
+@include font-face('Helvetica Neue LT', HelveticaNeueLTStd-Md, $font-weight-medium);
+@include font-face('Helvetica Neue LT', HelveticaNeueLTStd-Bd, $font-weight-bold);

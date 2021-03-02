@@ -445,3 +445,7 @@ export function pad(n, width, z) {
 export function clamp(num, a, b) {
   return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
 }
+
+export function getScrollY() {
+  return window.scrollY || window.pageYOffset;
+}

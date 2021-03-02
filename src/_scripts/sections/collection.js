@@ -4,7 +4,8 @@ import {
   getQueryString,
   getUrlWithUpdatedQueryStringParameter,
   getUrlWithRemovedQueryStringParameter,
-  getQueryParams
+  getQueryParams,
+  getScrollY
 } from '../core/utils';
 import BaseSection from './base';
 import Filter from '../collection/filter';
@@ -77,8 +78,8 @@ export default class CollectionSection extends BaseSection {
 
     const isMobile = window.innerWidth <= this.mobileWidthMax;
 
-    // Below this screen size, the grid is at the bottom of the page
-    if (isMobile) {
+    // On mobile, the grid is at the bottom of the page
+    if (isMobile || getScrollY() > 500) {
       $viewport.animate({ scrollTop: 0 }, {
         duration: 350,
         easing: 'easeOutQuart'

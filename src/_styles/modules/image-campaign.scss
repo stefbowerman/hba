@@ -6,12 +6,13 @@
   height: auto;
   min-height: 100vh;
   width: 100%;
-  padding: $layout-top-padding-mobile 0 25px;
+  padding: 90px 0 25px;
 
   @include media-breakpoint-up(lg) {
     height: 100vh;
     height: var(--viewport-height);
     min-height: 680px;
+    padding-top: $layout-top-padding;
   }
 
   @include media-breakpoint-up(xl) {
@@ -113,6 +114,10 @@
   text-transform: uppercase;
   font-family: $font-family-sans-serif;
   font-size: $font-size-sm;
+
+  strong {
+    font-weight: $font-weight-medium;
+  }
 
   p {
     margin-bottom: 0.8em;

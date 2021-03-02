@@ -6,19 +6,19 @@
   display: block;
   position: fixed;
   z-index: $zindex-header-logo;  
-  top: 26px;
+  top: 25px;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 75px;
+  max-width: 142px;
 
   @include media-breakpoint-up(lg) {
-    top: 40px;
-    max-width: 86px;    
+    top: 42px;
+    max-width: 152px;
   }
 
   @include media-breakpoint-up(xl) {
-    top: 36px;
-    max-width: 123px;
+    top: 40px;
+    max-width: 180px;
   }
 
   svg {
