@@ -3,57 +3,122 @@
 // -------------------------
 
 .image-campaign {
+  height: auto;
+  min-height: 100vh;
+  width: 100%;
+  padding: $layout-top-padding-mobile 0 25px;
+
+  @include media-breakpoint-up(lg) {
+    height: 100vh;
+    height: var(--viewport-height);
+    min-height: 680px;
+  }
+
+  @include media-breakpoint-up(xl) {
+    @media (min-height: 850px) {
+      padding-bottom: 4.5vh;
+    }
+  }
+
+  // Fade in
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.33, 0.01, 0.49, 1.02);
+  transition: opacity 1.2s cubic-bezier(0.33, 0.01, 0.49, 1.02);
 
-  &.grid-ready {
+  &.is-ready {
     pointer-events: auto;
     opacity: 1;
-  }
+  }  
 }
 
 .image-campaign__content {
   height: 100%;
-  min-height: 100vh;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: $layout-top-padding-mobile 0 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center;  
 
-  @include media-breakpoint-up(md) {
-    padding-bottom: $layout-top-padding-mobile * 0.5;
+  .swiper-container {
+    flex: 1;
+    height: 100%;
+    width: 100%;
+
+    &:focus {
+      outline: none !important;
+    }
+
+    .swiper-wrapper {
+      transition-timing-function: cubic-bezier(0.21, 0.06, 0, 1);
+    }
   }
 
-  @include media-breakpoint-up(lg) {
-    padding: $layout-top-padding 0 $layout-top-padding*0.5;
-    padding: 20vh 0 7vh;
-  }
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    padding: 0 $outer-gutter-mobile;
 
-  @include has-hover {
-    .content-grid__item img {
-      cursor: pointer;
+    // Make room for the arrows
+    @include media-breakpoint-up(md) {
+      padding-left: 12vw;
+      padding-right: 12vw
+    }
 
-      &:hover {
-        filter: invert(1);
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-height: 90vh;
+
+      @include media-breakpoint-up(md) {  
+        max-height: 760px;
       }
     }
   }
+
+  .swiper-arrow {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s cubic-bezier(0.33, 0.01, 0.49, 1.02);
+
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+
+  .image-campaign.is-ready & .swiper-arrow {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 1s;
+  }
+
+  @include media-breakpoint-up(md) {
+    .swiper-arrow--left {
+      left: 8vw
+    }
+    .swiper-arrow--right {
+      right: 8vw
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    .touchevents & .swiper-arrow {
+      display: none;
+    }
+  }  
 }
 
 .image-campaign__description {
-  margin: 20px auto 0;
+  margin: 35px auto 0;
   max-width: 500px;
   text-align: center;
   text-transform: uppercase;
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-sm;
 
-  @include media-breakpoint-down(sm) {
-    font-size: $font-size-sm;
-  }
+  p {
+    margin-bottom: 0.8em;
 
-  @include media-breakpoint-up(lg) {
-    margin-top: 50px;
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }

@@ -441,3 +441,7 @@ export function pad(n, width, z) {
   n += '';
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
+
+export function clamp(num, a, b) {
+  return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
+}
