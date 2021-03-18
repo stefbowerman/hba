@@ -9,7 +9,6 @@
               product: { product } - required
               lazy_load: { boolean } - optional, defaults to false
               show_sold_out: { boolean } - optional, defaults to false
-              show_sku: { boolean } - optional, defaults to false
               linkable: { boolean } - optional, defaults to true
               preview: { boolean } - optional, default to false
               collection: { collection } - optional
@@ -24,10 +23,6 @@
 
 {% if show_sold_out == blank %}
   {% assign show_sold_out = false %}
-{% endif %}
-
-{% if show_sku == blank %}
-  {% assign show_sku = false %}
 {% endif %}
 
 {% if linkable == blank %}
@@ -50,13 +45,33 @@
   {% endif %}
 {% endif %}
 
+{% comment %} Start template vars {% endcomment %}
 {% assign product_image_dimension = '600x' %}
+{% assign product_url = product.url %}
+{% assign is_new = false %}
+{% assign badge_text = '' %}
+{% comment %} End template vars {% endcomment %}
 
 {% if product %}
-  {% assign product_url = product.url %}
   {% if collection %}
     {% assign product_url = product.url | within: collection %}
   {% endif %}
+
+  {% for tag in product.tags %}
+    {% assign tag_handle = tag | handle %}
+    {% if tag_handle == 'new' %}
+      {% assign is_new = true %}
+    {% endif %}
+  {% endfor %}
+
+  {% capture badge_text %}
+    {% if product.available == false and show_sold_out == true %}
+      Sold Out
+    {% elsif is_new %}
+      New
+    {% endif %}
+  {% endcapture %}
+  {% assign badge_text = badge_text | strip | strip_newlines %}
 
   <div class="product-card{% if preview %} product-card--preview{% endif %}"
        data-product-card
@@ -68,8 +83,14 @@
        data-document-title="{% render 'document-title', p: product, c: collection %}"
        data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
     <div class="product-card__contents">
-      {% if product.featured_image %}
-        {% if linkable == true %}<a href="{{ product_url }}">{% endif %}
+      {% if linkable == true %}<a href="{{ product_url }}">{% endif %}
+        {% if badge_text != blank %}
+          <span class="product-card__badge">
+            {{ badge_text }}
+          </span>
+        {% endif %}        
+
+        {% if product.featured_image %}
           <div class="product-card__gallery">
             {% if lazy_load %}
               <div class="product-card__gallery-image" style="height: 0; padding-bottom: {{ product.featured_image.height | times: 100 | divided_by: product.featured_image.width | append: '%' }}" data-product-card-gallery>
@@ -81,18 +102,21 @@
               </div>
             {% endif %}
           </div>
-        {% if linkable == true %}</a>{% endif %}
-      {% endif %}
+        {% endif %}
 
-      {% if product.available == false and show_sold_out == true %}
-        <span class="product-card__badge">Sold Out</span>
-      {% endif %}
-
-      {% if show_sku and product.variants[0].sku != blank %}
-        <div class="product-card__sku-wrap">
-          <span class="product-card__sku" data-sku>{{ product.variants[0].sku }}</span>
+        <div class="product-card__info">
+          <div class="product-card__title">
+            {{ product.title }}
+          </div>
+          <div class="product-card__price">
+            {% if product.available %}
+              {{ product.price | money }}
+            {% else %}
+              Sold Out
+            {% endif %}
+          </div>
         </div>
-      {% endif %}
+      {% if linkable == true %}</a>{% endif %}
     </div>
   </div>
 {% endif %}

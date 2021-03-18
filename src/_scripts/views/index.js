@@ -1,12 +1,10 @@
-import $ from 'jquery';
 import BaseView from './base';
+import ImageCampaignSection from '../sections/imageCampaign';
 
 export default class IndexView extends BaseView {
-  constructor($el) {
-    super($el);
+  constructor($el, type) {
+    super($el, type);
 
-    $('[data-section-id]', this.$el).each((i, el) => {
-      this._createSectionInstance($(el));
-    });
+    this.sectionManager.register('image-campaign', ImageCampaignSection);
   }
 }

@@ -61,6 +61,7 @@ Use this area of the readme to document anything specific related to the theme's
 | Value | Effect |
 |---|---|
 | Preview | Product card will not be selectable in the collection grid view.  Product card will *not* be displayed on the lookbook. |
+| New | Product card will display 'NEW' in the upper left corner |
 
 ### CMS Pages
 

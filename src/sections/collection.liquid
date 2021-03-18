@@ -6,72 +6,52 @@
 {% endcomment -%}
 
 {% paginate collection.products by 600 %}
+  {% assign content_grid_html = '' %}
 
-{% assign content_grid_html = '' %}
-{% assign product_pane_html = '' %}
+  {% for product in collection.products %}
+    {% assign preview = false %}
 
-{% for product in collection.products %}
-  {% assign preview = false %}
+    {% for tag in product.tags %}
+      {% assign tag_slug = tag | handle | replace: '-', '' %}
 
-  {% for tag in product.tags %}
-    {% assign tag_slug = tag | handle | replace: '-', '' %}
+      {% if tag_slug == 'preview' %}
+        {% assign preview = true %}
+      {% endif %}
+    {% endfor %}
 
-    {% if tag_slug == 'preview' %}
-      {% assign preview = true %}
-    {% endif %}
+    {% capture grid_item_html %}
+      <div class="content-grid__item">
+        {% render 'product-card',
+                    product: product,
+                    lazy_load: true,
+                    show_sold_out: true,
+                    collection: collection,
+                    preview: preview
+        %}
+      </div>
+    {% endcapture %}
+
+    {% assign content_grid_html = content_grid_html | append: grid_item_html %}
   {% endfor %}
-
-  {% capture grid_item_html %}
-    <div class="content-grid__item">
-      {% render 'product-card',
-                  product: product,
-                  lazy_load: true,
-                  show_sold_out: true,
-                  collection: collection,
-                  preview: preview
-      %}
-    </div>
-  {% endcapture %}
-
-  {% capture pane_html %}
-    {% unless preview == true %}
-      {% include 'product-detail', product: product %}
-    {% endunless %}
-  {% endcapture %}
-
-  {% assign content_grid_html = content_grid_html | append: grid_item_html %}
-  {% assign product_pane_html = product_pane_html | append: pane_html %}
-{% endfor %}
-
 {% endpaginate %}
 
-<div class="layout-content-wrapper"
-     data-section-id="{{ section.id }}"
-     data-section-type="collection"
-     data-base-url="{{ collection.url }}"
-     data-doc-title="{% render 'document-title', c: collection %}"
+<div
+  class="layout-content-wrapper"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection"
 >
-  
   {% render 'page-title' with collection.title %}
   
   <div class="container">
-    <div class="row">
-      <div class="col-md-2">
-        {% render 'collection-sidebar', collection_handle: collection.handle %}
-      </div>
-      <div class="col-sm-5 col-md-4 col-xl-3 order-sm-2">
-        <div class="product-pane" data-product-pane>
-          {{ product_pane_html }}
-        </div>
-      </div>
-      <div class="col-sm-5 col-md-4 order-sm-1">
-        {% if content_grid_html != blank %}
-          <div class="content-grid" data-product-card-grid>
-            {{ content_grid_html }}
-          </div>
-        {% endif %}      
-      </div>      
-    </div>
+    {% render 'collection-sidebar',
+               collection_handle: collection.handle
+    %}
+    
+    {% if content_grid_html != blank %}
+      <div class="content-grid" data-product-card-grid>
+        {{ content_grid_html }}
+      </div>    
+    {% endif %}    
   </div>
 </div>
 

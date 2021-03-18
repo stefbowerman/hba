@@ -6,15 +6,7 @@ export default class CollectionView extends BaseView {
   constructor($el, type) {
     super($el, type);
 
-    // Could be one or the other?
-    const $collectionSection = $el.find('[data-section-type="collection"]');
-    const $lookbookSection   = $el.find('[data-section-type="lookbook"]');
-
-    if ($collectionSection.length) {
-      this.sections.push(new CollectionSection($collectionSection));
-    }
-    if ($lookbookSection.length) {
-      this.sections.push(new LookbookSection($lookbookSection));
-    }
+    this.sectionManager.register('collection', CollectionSection);
+    this.sectionManager.register('lookbook', LookbookSection);
   }
 }
