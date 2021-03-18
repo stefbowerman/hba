@@ -40,11 +40,16 @@
   bottom: 2px;
 }
 
-.product-card__sku {
+.product-card__sku-wrap {
   margin-top: 7px;
+}
 
-  .product-card:hover & {
-    color: $white;
+.product-card__sku {
+  @include has-hover {
+    .product-card:hover & {
+      color: $white;
+      background-color: $black;
+    }
   }
 }
 
@@ -60,7 +65,9 @@
     width: 100%;
   }
 
-  .product-card a:hover & {
-    filter: invert(1);
+  @include has-hover {
+    .product-card a:hover & {
+      filter: invert(1);
+    }
   }
 }

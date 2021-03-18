@@ -1,0 +1,125 @@
+// -------------------------
+// Image Campaign
+// -------------------------
+
+.image-campaign {
+  height: auto;
+  min-height: 100vh;
+  width: 100%;
+  padding: 90px 0 25px;
+
+  @include media-breakpoint-up(lg) {
+    height: 100vh;
+    height: var(--viewport-height);
+    min-height: 680px;
+    padding-top: $layout-top-padding;
+  }
+
+  @include media-breakpoint-up(xl) {
+    @media (min-height: 850px) {
+      padding-bottom: 4.5vh;
+    }
+  }
+
+  // Fade in
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s cubic-bezier(0.33, 0.01, 0.49, 1.02);
+
+  &.is-ready {
+    pointer-events: auto;
+    opacity: 1;
+  }  
+}
+
+.image-campaign__content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+
+  .swiper-container {
+    flex: 1;
+    height: 100%;
+    width: 100%;
+
+    &:focus {
+      outline: none !important;
+    }
+
+    .swiper-wrapper {
+      transition-timing-function: cubic-bezier(0.21, 0.06, 0, 1);
+    }
+  }
+
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    padding: 0 $outer-gutter-mobile;
+
+    @include media-breakpoint-up(md) {
+      padding-left: 5vw;
+      padding-right: 5vw;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-height: 90vh;
+
+      @include media-breakpoint-up(md) {  
+        max-height: 760px;
+      }
+    }
+  }
+
+  .panel-nav {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    width: 32%;
+
+    @include media-breakpoint-up(xl) {
+      width: 40%;
+    }
+
+    &.panel-nav--prev {
+      cursor: w-resize;
+      left: 0;
+    }
+
+    &.panel-nav--next {
+      cursor: e-resize;
+      right: 0;
+    }    
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .touchevents & .panel-nav {
+    display: none;
+  }
+}
+
+.image-campaign__description {
+  margin: 70px auto 0;
+  max-width: 500px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-sm;
+
+  strong {
+    font-weight: $font-weight-medium;
+  }
+
+  p {
+    margin-bottom: 0.8em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

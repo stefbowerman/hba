@@ -4,7 +4,6 @@
   position: relative;
   display: inline-block;
   text-transform: uppercase;
-  user-select: none;
   color: $body-color;
   vertical-align: middle;
   user-select: none;
@@ -17,7 +16,7 @@
   &:before,
   &:after {
     position: absolute;
-    top: 0;
+    top: -1px;
   }
 
   &:before {
@@ -30,9 +29,12 @@
     right: 0;
   }
 
-  &:hover {
-    background-color: $white;
-    color: $black;
+  @include has-hover {
+    &:hover,
+    &:focus {
+      background-color: $black;
+      color: $white;
+    }
   }
 
   &.is-active {
@@ -45,9 +47,12 @@
   &.is-disabled {
     cursor: $cursor-disabled;
 
-    &:hover {
-      color: $body-color;
-      background-color: transparent;
+    @include has-hover {
+      &:hover,
+      &:focus {
+        color: $body-color;
+        background-color: transparent;
+      }
     }
   }
 

@@ -11,10 +11,7 @@
 
     &.is-active {
       color: $white;
-
-      &:hover {
-        color: $black;
-      }
+      background-color: $black;
     }
   }
 

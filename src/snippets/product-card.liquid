@@ -50,7 +50,7 @@
   {% endif %}
 {% endif %}
 
-{% assign product_image_dimension = '300x' %}
+{% assign product_image_dimension = '600x' %}
 
 {% if product %}
   {% assign product_url = product.url %}
@@ -89,7 +89,9 @@
       {% endif %}
 
       {% if show_sku and product.variants[0].sku != blank %}
-        <div class="product-card__sku" data-sku>{{ product.variants[0].sku }}</div>
+        <div class="product-card__sku-wrap">
+          <span class="product-card__sku" data-sku>{{ product.variants[0].sku }}</span>
+        </div>
       {% endif %}
     </div>
   </div>

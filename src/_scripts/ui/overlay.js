@@ -104,6 +104,7 @@ export default class Overlay {
 
     $body.addClass(classes.bodyOverlayOpen);
     this.$el.addClass(classes.visible);
+    this.$el.scrollTop(0);
 
     if (this.supportsCssTransitions) {
       this.$el.one(this.transitionEndEvent, this.onShown.bind(this));
@@ -133,8 +134,12 @@ export default class Overlay {
     }
   }
 
+  isOpen() {
+    return this.stateIsOpen;
+  }
+
   toggle() {
-    return this.stateIsOpen ? this.hide() : this.show();
+    return this.isOpen() ? this.hide() : this.show();
   }
 
   onCloseClick(e) {

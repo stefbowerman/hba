@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { throttle } from 'throttle-debounce';
 import 'jquery-zoom';
 import 'jquery-unveil';
+import 'imagesloaded';
 
 // Bootstrap JS
 // import 'bootstrap/js/dist/collapse';
@@ -24,6 +25,7 @@ import AppController     from './core/appController';
 import ProductView    from './views/product';
 import CollectionView from './views/collection';
 import PageView       from './views/page';
+import IndexView      from './views/index';
 
 // Sections
 import HeaderSection   from './sections/header';
@@ -62,10 +64,11 @@ window.HBA = {
     viewConstructors: {
       product: ProductView,
       collection: CollectionView,
-      page: PageView
+      page: PageView,
+      index: IndexView
     },
     onSameRoute: (url, currentView) => {
-      sections.header.menuOverlay.hide();
+      
     },
     onInitialViewReady: (view) => {
       // console.log('onInitialViewReady');
@@ -80,7 +83,6 @@ window.HBA = {
     },
     onViewChangeStart: (url, newView) => {
       // console.log('onViewChangeStart');
-      sections.header.menuOverlay.hide();
     },
     onViewTransitionOutDone: (url, deferred) => {
       window.scrollTo && window.scrollTo(0, 0);
@@ -88,16 +90,13 @@ window.HBA = {
     },
     onViewChangeComplete: (newView) => {
       // console.log('onViewChangeComplete');
-      // sections.header.menuOverlay.hide();      
     },
     onViewReady: (view) => {
       // console.log('onViewReady');
       // console.log(view);
 
       if (view.type === 'index') {
-        setTimeout(() => {
-          sections.header.menuOverlay.show();
-        }, 1000);
+        //
       }
       else if (view.type === 'cart') {
         sections.ajaxCart.open();

@@ -416,7 +416,7 @@ export function camelize(str) {
 export function credits() {
   if (window && window.location && window.location.hostname !== 'localhost') {
     // eslint-disable-next-line no-console, max-len
-    console.log('%c HOOD BY AIR: development → stefanbowerman.com', 'font-family: Helvetica; font-size: 11px; color: #39b772; background-color: #000');
+    console.log('%c HOOD BY AIR: development → stefanbowerman.com', 'font-family: Helvetica; font-size: 11px; color: #000; background-color: #FFF');
   }
 }
 
@@ -440,4 +440,12 @@ export function pad(n, width, z) {
   z = z || '0';
   n += '';
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+export function clamp(num, a, b) {
+  return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
+}
+
+export function getScrollY() {
+  return window.scrollY || window.pageYOffset;
 }

@@ -1,0 +1,72 @@
+<div data-section-id="{{ section.id }}" data-section-type="image-campaign">
+  <div class="image-campaign" data-campaign>
+    <div class="image-campaign__content">
+
+      <div class="swiper-container" data-slideshow tabindex="0">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">
+              <img
+                src="{{ block.settings.image | img_url: '400x' }}"
+                srcset="
+                  {{ block.settings.image | img_url: '400x' }}  400w,
+                  {{ block.settings.image | img_url: '600x' }}  600w,
+                  {{ block.settings.image | img_url: '800x' }}  800w,
+                  {{ block.settings.image | img_url: '1200x' }} 1200w,
+                  {{ block.settings.image | img_url: '1600x' }} 1600w,
+                  {{ block.settings.image | img_url: '1800x' }} 1800w,
+                "
+                alt="{{ block.settings.image.alt | escape }}"
+              />
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if section.blocks.size > 1 %}
+          <div class="panel-nav panel-nav--prev" title="Previous" data-prev>
+            <span class="visually-hidden">Previous Image</span>
+          </div>
+          <div class="panel-nav panel-nav--next" title="Next" data-next>
+            <span class="visually-hidden">Next Image</span>
+          </div>
+        {% endif %}          
+      </div>
+
+      <div class="image-campaign__description">
+        {{ section.settings.description }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Image Campaign",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "description",
+        "label": "Description"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Image Campaign",
+      "category": "Media",
+      "settings": {},
+      "blocks": []
+    }]
+  }
+{% endschema %}

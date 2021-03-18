@@ -164,8 +164,8 @@ $sizes: map-merge(
 //
 // Settings for the `<body>` element.
 
-$body-bg:                   $black !default;
-$body-color:                $green !default;
+$body-bg:                   $white !default;
+$body-color:                $black !default;
 
 
 // Links
@@ -230,6 +230,11 @@ $grid-gutter-width:           30px !default;
 $outer-gutter-mobile:         20px;
 $outer-gutter:                $grid-gutter-width;
 
+// Layout
+
+$layout-top-padding-mobile: 114px;
+$layout-top-padding: 120px;
+
 
 // Components
 //
@@ -282,7 +287,7 @@ $embed-responsive-aspect-ratios: join(
 // $font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 // $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 
-$font-family-sans-serif:      Helvetica, -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
+$font-family-sans-serif:      'Helvetica Neue LT', 'Helvetica Neue', Helvetica, -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
 $font-family-monospace:       'HBA Mono', monospace;
 $font-family-base:            $font-family-monospace !default;
 // stylelint-enable value-keyword-case
@@ -296,6 +301,7 @@ $font-size-xs:                (10/16) * 1rem !default;
 $font-weight-lighter:         lighter !default;
 $font-weight-light:           300 !default;
 $font-weight-normal:          400 !default;
+$font-weight-medium:          500 !default;
 $font-weight-bold:            700 !default;
 $font-weight-bolder:          bolder !default;
 
@@ -709,7 +715,9 @@ $zindex-dropdown:                   1000 !default;
 $zindex-sticky:                     1500 !default;
 $zindex-fixed:                      2000 !default;
 $zindex-ajax-cart:                  2006 !default;
+$zindex-header-nav:                 2020 !default;
 $zindex-header-cart:                2020 !default;
+$zindex-reamaze:                    2040  !default;
 $zindex-overlay:                    2050 !default;
 $zindex-header-logo:                2100 !default;
 $zindex-blowup:                     2450 !default;
@@ -885,6 +893,7 @@ $print-body-min-width:              map-get($grid-breakpoints, "lg") !default;
 
 $footer-padding-top:                    79px;
 $footer-padding-bottom:                 22px;
+$footer-padding-bottom-desktop:         33px;
 $footer-font-size:                      $font-size-xs;
 
 
@@ -898,20 +907,6 @@ $minimal-input-height-large:            60px;
 
 $ajax-cart-bg:                          $white;
 $ajax-cart-color:                       $black;
-
-
-// Arrows
-
-$arrow-dimension:                       50px;
-$arrow-padding:                         8px;
-$arrow-border-radius:                   50%;
-$arrow-bg:                              transparentize(#ddd, 0.5);
-$arrow-bg-hover:                        transparentize(#ddd, 0.3);
-$arrow-icon-length:                     ($arrow-dimension - $arrow-padding * 2)/2;
-$arrow-icon-width:                      2px;
-$arrow-icon-color:                      #f00;
-$arrow-icon-tip-length:                 12px;
-$arrow-icon-tip-skew:                   45deg;
 
 
 // Slideshow

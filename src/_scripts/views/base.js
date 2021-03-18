@@ -1,9 +1,13 @@
 import $ from 'jquery';
 import BaseSection from '../sections/base';
 
+import ImageCampaignSection from '../sections/imageCampaign';
+
 const $document = $(document);
 
-const SectionConstructorDictionary = {};
+const SectionConstructorDictionary = {
+  'image-campaign': ImageCampaignSection
+};
 
 export default class BaseView {
   constructor($el, type) {

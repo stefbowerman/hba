@@ -152,9 +152,9 @@
 }
 
 .btn.option-value {
-  &.is-active {
-    background-color: transparent;
-  }
+  // &.is-active {
+  //   background-color: transparent;
+  // }
 
   &.is-disabled {
     cursor: $cursor-disabled;

@@ -32,13 +32,6 @@
     min-height: 100vh;
     min-height: var(#{'--viewport-height'});
   }
-
-  // On the homepage, the overlay menu is the thing that fixes the height of the site
-  .template-index & {
-    &, .view-content {
-      min-height: 0;
-    }
-  }
 }
 
 // .layout-main-content {
@@ -48,10 +41,10 @@
 // Use this as the only direct child of main#MainContent on pages where you don't want the content flush to the header and footer
 // Or use the modifier classes to get flush on top or bottom
 .layout-content-wrapper {
-  padding-top: 69px;
+  padding-top: $layout-top-padding-mobile;
   
   @include media-breakpoint-up(lg) {
-    padding-top: 106px;  
+    padding-top: $layout-top-padding;  
   }
 
   &.flush-top {
