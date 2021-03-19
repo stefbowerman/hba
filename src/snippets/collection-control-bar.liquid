@@ -17,41 +17,15 @@
   
   {% assign c = collections[collection_handle] %}
 
-  {% assign is_lookbook = false %}
+  {% assign is_lookbook  = false %}
   {% assign show_filters = true %}
 
   {% if current_tags contains 'lookbook' %}
-    {% assign is_lookbook = true %}
+    {% assign is_lookbook  = true %}
     {% assign show_filters = false %}
   {% endif %}
 
   {% if c %}
-    {% capture crumb_home %}
-      <span class="crumb">
-        <a href="/">root</a>
-      </span>
-    {% endcapture %}
-
-    {%- capture crumb_collection -%}
-      <span class="crumb" data-crumb="collection">
-        <a href="/collections/{{ c.handle }}">{{ c.handle }}</a>
-      </span>
-    {%- endcapture -%}
-
-    {%- capture crumb_collection_tag -%}
-      {% if current_tags %}
-        <span class="crumb" data-crumb="collection-tag">
-          <a href="/collections/{{ c.handle }}/{{ current_tags }}">{{ current_tags }}</a>
-        </span>
-      {% endif %}
-    {%- endcapture -%}
-
-    {%- capture crumb_collection_product -%}
-      <span class="crumb {% unless product %}is-hidden{% endunless %}" data-crumb="collection-product">
-        <a href="{% if product %}/collections/{{ c.handle }}/products/{{ product.handle }}{% endif %}">{% if product %}{{ product.handle }}{% endif %}</a>
-      </span>
-    {%- endcapture -%} 
-
     {%- capture filters -%}
       {%- comment -%} Collect product types + sale item check {%- endcomment -%}
       {% assign sale_items = false %}
@@ -67,9 +41,10 @@
         {% endif %}
       {% endfor %}
 
-      {% if product_types %}
-        {% assign product_types_array = product_types | split: '$$' | uniq %}
-        <ul class="sidebar-menu">
+      {% assign product_types_array = product_types | split: '$$' | uniq %}
+
+      {% if product_types_array.size > 0 %}
+        <ul class="filter-menu">
           {% for type in product_types_array %}
             <li>
               <a
@@ -86,7 +61,7 @@
       {% endif %}
 
       {% if sale_items %}
-        <ul class="sidebar-menu">
+        <ul class="filter-menu">
           <li>
             <a
               href="#"
@@ -101,22 +76,34 @@
       {% endif %}      
     {%- endcapture -%}
   
-    <div class="sidebar">
-      <div class="breadcrumbs" data-breadcrumbs>
-        {{ crumb_home | strip }}{{ crumb_collection | strip }}{{ crumb_collection_tag | strip }}{{ crumb_collection_product | strip }}
-      </div>
-      
-      <div class="sidebar-row">
+    <div class="control-bar">     
+      <div class="control-bar__row">
+        {% comment %}
         <ul class="sidebar-menu">
           <li><a href="{{ c.url }}/lookbook" {% if is_lookbook %}class="is-active"{% endif %}>/Lookbook</a></li>
         </ul>
+        {% endcomment %}
+
+        <div class="control-bar__row-item d-none d-md-block">
+          Grid:
+          <a href="#" data-grid-toggle="2">2</a>
+          <a href="#" data-grid-toggle="4">4</a>
+        </div>
+        
+        <!-- Do we actually want this?  The only useful sort is price -->
+        <div class="control-bar__row-item">
+          <a href="#" data-sort-toggle>Sort +</a>
+        </div>
+
         {% if filters != blank and show_filters %}
-          <a href="#" class="sidebar-filters-toggle btn" data-filters-toggle>Filter</a>        
+          <div class="control-bar__row-item">
+            <a href="#" data-filters-toggle>Filter</a>
+          </div>
         {% endif %}
       </div>
 
       {% if filters != blank and show_filters %}
-        <div class="sidebar-filters" data-filter-container>
+        <div class="control-bar__filters" data-filter-container>
           {{ filters }}
         </div>
       {% endif %}

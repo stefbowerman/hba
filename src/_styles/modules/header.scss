@@ -31,11 +31,11 @@
   position: fixed;
   z-index: $zindex-header-cart;
   top: 31px;
-  right: $outer-gutter-mobile;
+  right: $outer-gutter-mobile - 1px;
 
   @include media-breakpoint-up(lg) {
     top: 49px;
-    right: $outer-gutter;
+    right: $outer-gutter - 2px;
   }
 
   display: none;
@@ -50,11 +50,11 @@
   position: fixed;
   z-index: $zindex-header-nav;
   top: 31px;
-  left: $outer-gutter-mobile;
+  left: $outer-gutter-mobile - 1px;
 
   @include media-breakpoint-up(lg) {
     top: 49px;
-    left: $outer-gutter;
+    left: $outer-gutter - 2px;
   }  
 
   ul {

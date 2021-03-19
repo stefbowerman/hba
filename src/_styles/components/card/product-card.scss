@@ -2,6 +2,8 @@
 // Product Card
 // -------------------------
 
+$left-space: 9px;
+
 .product-card {
   height: 100%;
 
@@ -32,7 +34,7 @@
   position: absolute;
   z-index: 1;
   top: 25px;
-  left: 9px;
+  left: $left-space;
   text-transform: uppercase;
 }
 
@@ -51,9 +53,12 @@
 
 .product-card__info {
   margin: 20px 0;
+  padding-left: $left-space;
+  font-size: $font-size-sm;
 }
 
 .product-card__title {
   margin-bottom: 10px;
+  max-width: 25em;
   font-weight: $font-weight-bold;
 }

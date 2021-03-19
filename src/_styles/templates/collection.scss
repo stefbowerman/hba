@@ -2,10 +2,48 @@
 // Collection page
 // -------------------------
 
-.product-pane {
-  margin-bottom: 30px;
+.control-bar {
+  margin-bottom: $grid-gutter-width * 1.5;
+}
 
-  .product-detail {
-    display: none;
+.control-bar__row {
+  display: flex;
+  justify-content: space-between;
+
+  @include media-breakpoint-up(md) {
+    justify-content: flex-end;    
+  }
+}
+
+.control-bar__row-item {
+  text-transform: uppercase;
+
+  @include media-breakpoint-up(md) {
+    margin-left: 50px;
+    margin-left: 4.5vw;
+  }
+
+  a {
+    @include highlight-link;
+  }
+}
+
+.control-bar__filters {
+  display: none; // shown via js
+}
+
+.filter-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &:not(:last-child) {
+    margin-bottom: $spacer;
+  }
+
+  li {
+    &:not(:last-child) {
+      margin-bottom: 2px;
+    }
   }
 }

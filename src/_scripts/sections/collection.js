@@ -3,7 +3,6 @@ import { getQueryParams } from '../core/utils';
 import BaseSection from './base';
 import Filter from '../collection/filter';
 import FilterController from '../collection/filterController';
-import Breadcrumbs from '../collection/breadcrumbs';
 import ProductCardGrid from '../product/productCardGrid';
 
 const selectors = {
@@ -11,7 +10,7 @@ const selectors = {
   filter: '[data-filter]',
   filterContainer: '[data-filter-container]',
   filtersToggle: '[data-filters-toggle]',
-  breadcrumbs: '[data-breadcrumbs]'
+  gridToggle: '[data-grid-toggle]'
 };
 
 export default class CollectionSection extends BaseSection {
@@ -22,8 +21,8 @@ export default class CollectionSection extends BaseSection {
 
     this.$filtersContainer = $(selectors.filterContainer, this.$container);
     this.$filtersToggle    = $(selectors.filtersToggle, this.$container);
+    this.$gridToggle       = $(selectors.gridToggle, this.$container);
     
-    this.breadcrumbs      = new Breadcrumbs($(selectors.breadcrumbs, this.$container));
     this.filterController = new FilterController({
       onChange: this.onFilterControllerChange.bind(this)
     });
@@ -37,6 +36,7 @@ export default class CollectionSection extends BaseSection {
 
     this.$container.on('click', selectors.filter, this.onFilterClick.bind(this));
     this.$filtersToggle.on('click', this.onFiltersToggleClick.bind(this));
+    this.$gridToggle.on('click', this.onGridToggleClick.bind(this));
 
     // When we load the page, check for filter tag parameters in the URL
     const queryParams = getQueryParams();
@@ -69,6 +69,12 @@ export default class CollectionSection extends BaseSection {
     e.preventDefault();
     this.$filtersContainer.slideToggle(150);
     this.$filtersToggle.toggleClass('is-active');
+  }
+
+  onGridToggleClick(e) {
+    e.preventDefault();
+    // const $toggle = $(e.currentTarget);
+    // const columnCount = $toggle.data('grid-toggle');
   }
 
   onProductCardClick(e, card) {   

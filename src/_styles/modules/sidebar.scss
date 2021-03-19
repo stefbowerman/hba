@@ -3,6 +3,7 @@
 // -------------------------
 
 .sidebar {
+  margin-bottom: $grid-gutter-width/2;
   text-transform: uppercase;
   overflow-wrap: break-word;
   
@@ -17,24 +18,17 @@
 
   @include media-breakpoint-up(md) {
     position: sticky;
-    top: 69px
+    top: $layout-top-padding-mobile;
   }
-  @include media-breakpoint-up(xl) {
-    top: 107px;
+  @include media-breakpoint-up(lg) {
+    top: $layout-top-padding;
   }
-}
-
-.sidebar-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
 }
 
 .sidebar-menu {
   list-style: none;
   margin: 0;
   padding: 0;
-  margin-bottom: $spacer;
 
   &:not(:last-child) {
     margin-bottom: $spacer;
@@ -44,19 +38,5 @@
     &:not(:last-child) {
       margin-bottom: 2px;
     }
-  }
-}
-
-.sidebar-filters {
-  display: none;
-
-  @include media-breakpoint-up(md) {
-    display: block !important;
-  }
-}
-
-.sidebar-filters-toggle {
-  @include media-breakpoint-up(md) {
-    display: none;
   }
 }
