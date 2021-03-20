@@ -75,6 +75,8 @@
     {% endcomment %}    
   </h3>
 
+  {% render 'product-detail-price', product: product, current_variant: current_variant %}  
+
   {% if product_has_sku %}
     <p class="product-sku-display">
       &nbsp;
@@ -93,8 +95,6 @@
       </div>
     {% endif %}
   </div>
-
-  {% render 'product-detail-price', product: product, current_variant: current_variant %}
 
   <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
     <meta itemprop="priceCurrency" content="{{ shop.currency }}">

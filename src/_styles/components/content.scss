@@ -1,11 +1,8 @@
 // -----------------------------------------------------------------------------
-// Content Sections - Grid, Header, Footer
+// Content Sections - Grid
 // -----------------------------------------------------------------------------
 
-$content-grid-item-horizontal-spacing: 4px;
 
-$content-grid-item-vertical-spacing-mobile: 0 ; // 20px; @TODO - remove this var entirely?
-$content-grid-item-vertical-spacing: 0 ; // 31px; @TODO - remove this var entirely?
 
 // Core content grid - mostly for the collection product grid
 .content-grid {
@@ -13,17 +10,15 @@ $content-grid-item-vertical-spacing: 0 ; // 31px; @TODO - remove this var entire
   flex-wrap: wrap;
   justify-content: flex-start;
   flex-direction: row;
-  margin-left: -$content-grid-item-horizontal-spacing/2;
-  margin-right: -$content-grid-item-horizontal-spacing/2;
-  margin-bottom: -#{$content-grid-item-vertical-spacing}; // Cancel the bottom margin
+  margin-left: -$content-grid-spacing/2;
+  margin-right: -$content-grid-spacing/2;
 }
 
 .content-grid__item {
   flex: 1;
   flex-basis: percentage(1);
   max-width: percentage(1);
-  margin-bottom: $content-grid-item-vertical-spacing-mobile;
-  padding: 0 $content-grid-item-horizontal-spacing/2;
+  padding: 0 $content-grid-spacing/2;
 
   @include media-breakpoint-up(sm) {
     flex-basis: percentage(1/2);
@@ -38,7 +33,6 @@ $content-grid-item-vertical-spacing: 0 ; // 31px; @TODO - remove this var entire
   @include media-breakpoint-up(xl) {
     flex-basis: percentage(1/4);
     max-width: percentage(1/4);
-    margin-bottom: $content-grid-item-vertical-spacing;
   }
 }
 

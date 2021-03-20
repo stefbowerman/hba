@@ -1,21 +1,18 @@
 import $ from 'jquery';
 import Typed from 'typed.js';
-import { formatMoney } from '../core/currency';
 import AJAXFormManager from '../managers/ajaxForm';
 import AJAXKlaviyoForm from '../lib/ajaxKlaviyoForm';
 import NewsletterForm from '../ui/newsletterForm';
 import Variants from './variants';
+import ProductDetailPrice from './productDetailPrice';
 
 const selectors = {
   addToCart: '[data-add-to-cart]',
   addToCartForm: '[data-add-to-cart-form]',
   addToCartText: '[data-add-to-cart-text]',
-  comparePrice: '[data-compare-price]',
-  comparePriceText: '[data-compare-text]',
+  productDetailPrice: '[data-product-detail-price]',
   originalSelectorId: '[data-product-select]',
-  priceWrapper: '[data-price-wrapper]',
   productJson: '[data-product-json]',
-  productPrice: '[data-product-price]',
   productDescription: '.product-description',
   singleOptionSelector: '[data-single-option-selector]',
   variantOptionValueList: '[data-variant-option-value-list][data-option-position]',
@@ -79,11 +76,8 @@ export default class ProductDetailForm {
     this.$addToCartForm = $(selectors.addToCartForm, this.$container);
     this.$addToCartBtn = $(selectors.addToCart, this.$container);
     this.$addToCartBtnText = $(selectors.addToCartText, this.$container); // Text inside the add to cart button
-    this.$priceWrapper = $(selectors.priceWrapper, this.$container); // Contains all price elements
-    this.$productPrice = $(selectors.productPrice, this.$container);
+    this.$productDetailPrice = $(selectors.productDetailPrice, this.$el)
     this.$productDescription = $(selectors.productDescription, this.$container);
-    this.$comparePrice = $(selectors.comparePrice, this.$container);
-    this.$compareEls = this.$comparePrice.add($(selectors.comparePriceText, this.$container));
     this.$singleOptionSelectors = $(selectors.singleOptionSelector, this.$container); // Dropdowns for each variant option containing all values for that option
     this.$variantOptionValueList = $(selectors.variantOptionValueList, this.$container); // Alternate UI that takes the place of a single option selector (could be swatches, dots, buttons, whatever..)
     this.$title = $(selectors.title, this.$container);
@@ -113,6 +107,7 @@ export default class ProductDetailForm {
       originalSelectorId: selectors.originalSelectorId,
       product: this.productSingleObject
     });
+    this.price = new ProductDetailPrice(this.$productDetailPrice);
 
     if (this.$newsletterForm.length) {
       this.newsletterForm = new NewsletterForm(this.$newsletterForm, { forceSuccess: true });
@@ -154,7 +149,7 @@ export default class ProductDetailForm {
   onVariantChange(evt) {
     const variant = evt.variant;
 
-    this.updateProductPrices(variant);
+    this.price.update(variant);
     this.updateAddToCartState(variant);
     this.updateVariantOptionValues(variant);
     this.updateSku(variant.sku);
@@ -186,29 +181,8 @@ export default class ProductDetailForm {
       btnText = theme.strings.unavailable;
     }
 
-    this.$priceWrapper.toggleClass(classes.hide, !variant);
     this.$addToCartBtn.prop('disabled', btnDisabled);
     this.$addToCartBtnText.text(btnText);
-  }
-
-  /**
-   * Updates the DOM with specified prices
-   *
-   * @param {Object} variant - Shopify variant object
-   */
-  updateProductPrices(variant) {
-    if (variant) {
-      this.$productPrice.html(formatMoney(variant.price, window.theme.moneyFormat));
-
-      if (variant.compare_at_price > variant.price) {
-        this.$comparePrice.html(formatMoney(variant.compare_at_price, theme.moneyFormat));
-        this.$compareEls.removeClass(classes.hide);
-      }
-      else {
-        this.$comparePrice.html('');
-        this.$compareEls.addClass(classes.hide);
-      }
-    }
   }
 
   /**

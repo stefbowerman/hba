@@ -4,9 +4,14 @@
 
 $left-space: 9px;
 
-.product-card {
+.product-card,
+.product-card__link,
+.product-card__contents {
   height: 100%;
+}
 
+.product-card {
+ 
   .js & {
     opacity: 0.01;
 
@@ -28,6 +33,8 @@ $left-space: 9px;
 
 .product-card__contents {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card__badge {
@@ -52,13 +59,20 @@ $left-space: 9px;
 }
 
 .product-card__info {
-  margin: 20px 0;
-  padding-left: $left-space;
+  flex: 1; // Take up the remaining space - make sure all __info elements are the same height
+  padding: 20px 0 20px $left-space;
   font-size: $font-size-sm;
+
+  @include has-hover {
+    .product-card:hover & {
+      background-color: $red;
+      color: $white;
+    }
+  }
 }
 
 .product-card__title {
   margin-bottom: 10px;
-  max-width: 25em;
+  max-width: 90%;
   font-weight: $font-weight-bold;
 }

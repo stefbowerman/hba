@@ -46,7 +46,10 @@ export default class ProductDetailGallery {
 
     if (this.desktopZoomController.enabled) {
       this.desktopZoomController.initHoverZoom(this.getSlide(this.slideIndex));
-    }    
+    }
+
+    this.loadSlideshowImages();
+    this.loadThumbnails();
   }
 
   destroy() {
@@ -99,8 +102,8 @@ export default class ProductDetailGallery {
   }
 
   onBeforeReveal() {
-    this.loadSlideshowImages();
-    this.loadThumbnails();
+    // this.loadSlideshowImages();
+    // this.loadThumbnails();
   }
 
   onReveal() {

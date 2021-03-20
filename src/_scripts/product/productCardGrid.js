@@ -1,8 +1,5 @@
 import $ from 'jquery';
-import {
-  camelize,
-  random
-} from '../core/utils';
+import { camelize } from '../core/utils';
 import ProductCard from './productCard';
 
 const selectors = {
@@ -45,12 +42,7 @@ export default class ProductCardGrid {
   reveal() {
     if (this.revealed) return;
 
-    this.productCards.forEach((card, i) => {
-      const min = (i+1) * 120;
-      const max = (i+1) * 170;
-      this.timeouts.push(setTimeout(() => card.show(), random(min, max)));
-    });
-
+    this.productCards.forEach(card => card.show());
     this.revealed = true;
   }
 

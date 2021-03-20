@@ -82,8 +82,9 @@
        data-product-type="{{ product.type | handle }}"
        data-document-title="{% render 'document-title', p: product, c: collection %}"
        data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
-    <div class="product-card__contents">
-      {% if linkable == true %}<a href="{{ product_url }}">{% endif %}
+    {% if linkable == true %}<a href="{{ product_url }}" class="product-card__link">{% endif %}
+
+      <div class="product-card__contents">
         {% if badge_text != blank %}
           <span class="product-card__badge">
             {{ badge_text }}
@@ -116,7 +117,7 @@
             {% endif %}
           </div>
         </div>
-      {% if linkable == true %}</a>{% endif %}
-    </div>
+      </div>
+    {% if linkable == true %}</a>{% endif %}      
   </div>
 {% endif %}
