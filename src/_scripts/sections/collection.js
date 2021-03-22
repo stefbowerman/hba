@@ -13,15 +13,21 @@ const selectors = {
   gridToggle: '[data-grid-toggle]'
 };
 
+const classes = {
+  gridToggleActive: 'is-active',
+  filtersToggleActive: 'is-active'
+};
+
 export default class CollectionSection extends BaseSection {
   constructor(container) {
     super(container, 'collection');
 
     this.queryFilterKey  = 'filter';
+    this.filtersOpen     = false;
 
     this.$filtersContainer = $(selectors.filterContainer, this.$container);
     this.$filtersToggle    = $(selectors.filtersToggle, this.$container);
-    this.$gridToggle       = $(selectors.gridToggle, this.$container);
+    this.$gridToggles      = $(selectors.gridToggle, this.$container);
     
     this.filterController = new FilterController({
       onChange: this.onFilterControllerChange.bind(this)
@@ -36,7 +42,7 @@ export default class CollectionSection extends BaseSection {
 
     this.$container.on('click', selectors.filter, this.onFilterClick.bind(this));
     this.$filtersToggle.on('click', this.onFiltersToggleClick.bind(this));
-    this.$gridToggle.on('click', this.onGridToggleClick.bind(this));
+    this.$gridToggles.on('click', this.onGridToggleClick.bind(this));
 
     // When we load the page, check for filter tag parameters in the URL
     const queryParams = getQueryParams();
@@ -47,7 +53,16 @@ export default class CollectionSection extends BaseSection {
       if (f) {
         this.filterController.toggle(f);
       }
-    }    
+    }
+
+    // @TODO - Finish this... add to localstorage?
+    const savedColCount = parseInt(window.HBA.collectionColumnCount) || 4;
+
+    if (savedColCount > 0) {
+      this.$gridToggles.filter(`[data-column-count="${savedColCount}"]`).addClass(classes.gridToggleActive);
+      this.productCardGrid.setColumnCount(savedColCount);
+      window.HBA.collectionColumnCount = savedColCount;
+    }
 
     this.productCardGrid.reveal();
   }
@@ -62,19 +77,54 @@ export default class CollectionSection extends BaseSection {
   }
 
   onFilterControllerChange() {
-    this.productCardGrid.filterBy(this.filterController.activeFilter);   
+    this.productCardGrid.filterBy(this.filterController.activeFilter);
+
+    this.$filtersToggle.toggleClass(classes.filtersToggleActive, !!this.filterController.activeFilter);
   }
 
   onFiltersToggleClick(e) {
     e.preventDefault();
-    this.$filtersContainer.slideToggle(150);
-    this.$filtersToggle.toggleClass('is-active');
+
+    if (this.filtersOpen) {
+      this.$filtersContainer.slideUp(150);
+    }
+    else {
+      this.$filtersContainer.slideDown(150);
+    }
+
+    this.filtersOpen = !this.filtersOpen;
   }
 
   onGridToggleClick(e) {
     e.preventDefault();
-    // const $toggle = $(e.currentTarget);
-    // const columnCount = $toggle.data('grid-toggle');
+    const $toggle = $(e.currentTarget);
+    const columnCount = $toggle.data('column-count');
+
+    // @TODO - Just testing this
+    window.HBA.collectionColumnCount = columnCount;
+
+    // @TODO - Better set method so this can be called programatically
+    // if (this.columnCount == this.productCardGrid.columnCount ) return..
+
+    this.productCardGrid.$el.fadeOut({
+      duration: 200,
+      easing: 'easeInCubic',
+      start: () => {
+        this.$gridToggles.removeClass(classes.gridToggleActive);
+        $toggle.addClass(classes.gridToggleActive);
+      },
+      complete: () => { 
+        this.productCardGrid.setColumnCount(columnCount);
+        this.productCardGrid.$el.fadeIn({
+          duration: 350,
+          easing: 'easeOutCubic',
+          start: () => {
+            // @TODO - productcard grid needs to trigger unveil lookup everytime it fades in and out
+            $(window).trigger('lookup');
+          }
+        });
+      }
+    });
   }
 
   onProductCardClick(e, card) {   

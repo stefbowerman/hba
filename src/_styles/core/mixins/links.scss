@@ -5,4 +5,9 @@
       color: $white;
     }
   }
+
+  &.is-active {
+    background-color: $black;
+    color: $white;    
+  }  
 }

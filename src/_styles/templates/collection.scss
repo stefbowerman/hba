@@ -3,16 +3,22 @@
 // -------------------------
 
 .control-bar {
-  margin-bottom: $grid-gutter-width * 1.5;
+  margin-bottom: $grid-gutter-width * 0.5;
+  @include stick-to-top;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: $grid-gutter-width * 1.5;
+  }
 }
 
 .control-bar__row {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
+  justify-content: flex-end;
 
-  @include media-breakpoint-up(md) {
-    justify-content: flex-end;    
-  }
+  // @include media-breakpoint-up(md) {
+  //   justify-content: flex-end;    
+  // }
 }
 
 .control-bar__row-item {
@@ -41,9 +47,19 @@
     margin-bottom: $spacer;
   }
 
-  li {
-    &:not(:last-child) {
-      margin-bottom: 2px;
+  .control-bar__filters & {
+    padding-top: $spacer;
+    text-align: right;
+    max-width: 75%;
+    margin-left: auto;
+
+    @include media-breakpoint-up(md) {
+      max-width: 35rem;
     }
+  }
+
+  li {
+    display: inline-block;
+    margin-bottom: 4px;
   }
 }

@@ -7,7 +7,6 @@
 
   {% render 'product-card',
               product: { product } - required
-              lazy_load: { boolean } - optional, defaults to false
               show_sold_out: { boolean } - optional, defaults to false
               linkable: { boolean } - optional, defaults to true
               preview: { boolean } - optional, default to false
@@ -17,10 +16,6 @@
 {% endcomment -%}
 
 {% comment %} Defaults {% endcomment %}
-{% if lazy_load == blank %}
-  {% assign lazy_load = false %}
-{% endif %}
-
 {% if show_sold_out == blank %}
   {% assign show_sold_out = false %}
 {% endif %}
@@ -77,10 +72,7 @@
        data-product-card
        {% if preview %}data-preview="true"{% endif %}
        data-id="{{ product.id }}"
-       data-handle="{{ product.handle }}"
-       data-url="{{ product_url }}"
        data-product-type="{{ product.type | handle }}"
-       data-document-title="{% render 'document-title', p: product, c: collection %}"
        data-sale="{% if product.price_min < product.compare_at_price_min %}true{% else %}false{% endif %}">
     {% if linkable == true %}<a href="{{ product_url }}" class="product-card__link">{% endif %}
 
@@ -93,15 +85,20 @@
 
         {% if product.featured_image %}
           <div class="product-card__gallery">
-            {% if lazy_load %}
-              <div class="product-card__gallery-image" style="height: 0; padding-bottom: {{ product.featured_image.height | times: 100 | divided_by: product.featured_image.width | append: '%' }}" data-product-card-gallery>
-                <img data-src="{{ product.featured_image.src | img_url: product_image_dimension, format: 'pjpg' }}" alt="{{ product.featured_image.alt | escape }}" data-product-card-main-lazy>
-              </div>
-            {% else %}
-              <div class="product-card__gallery-image" data-product-card-gallery>
-                <img src="{{ product.featured_image.src | img_url: product_image_dimension, format: 'pjpg' }}" alt="{{ product.featured_image.alt | escape }}">
-              </div>
-            {% endif %}
+            <div class="product-card__gallery-image" style="padding-bottom: {{ product.featured_image.height | times: 100 | divided_by: product.featured_image.width | append: '%' }}" data-product-card-gallery>
+              <img
+                data-src="{{ product.featured_image | img_url: product_image_dimension, format: 'pjpg' }}"
+                data-srcset="{{ product.featured_image | img_url: '180x' }} 180w,
+                             {{ product.featured_image | img_url: '360x' }} 360w,
+                             {{ product.featured_image | img_url: '540x' }} 540w,
+                             {{ product.featured_image | img_url: '650x' }} 650w,
+                             {{ product.featured_image | img_url: '720x' }} 720w,
+                             {{ product.featured_image | img_url: '850x' }} 850w,
+                             {{ product.featured_image | img_url: '1000x' }} 1000w
+                            "
+                alt="{{ product.featured_image.alt | escape }}"
+                data-product-card-main-lazy>
+            </div>
           </div>
         {% endif %}
 

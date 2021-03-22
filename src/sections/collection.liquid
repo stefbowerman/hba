@@ -22,11 +22,10 @@
     {% capture grid_item_html %}
       <div class="content-grid__item">
         {% render 'product-card',
-                    product: product,
-                    lazy_load: true,
-                    show_sold_out: true,
-                    collection: collection,
-                    preview: preview
+                   product: product,
+                   show_sold_out: true,
+                   collection: collection,
+                   preview: preview
         %}
       </div>
     {% endcapture %}

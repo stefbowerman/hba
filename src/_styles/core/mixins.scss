@@ -58,3 +58,14 @@
 @import "mixins/stretch";
 @import "mixins/font-face";
 @import "mixins/links";
+
+@mixin stick-to-top {
+  @include media-breakpoint-up(md) {
+    position: sticky;
+    z-index: 1;
+    top: $layout-top-padding-mobile;
+  }
+  @include media-breakpoint-up(lg) {
+    top: $layout-top-padding;
+  }
+}

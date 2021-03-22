@@ -2,8 +2,8 @@
 import $ from 'jquery';
 import { throttle } from 'throttle-debounce';
 import 'jquery-zoom';
-import 'jquery-unveil';
 import 'imagesloaded';
+import './lib/jquery-unveil.custom';
 
 // Bootstrap JS
 // import 'bootstrap/js/dist/collapse';

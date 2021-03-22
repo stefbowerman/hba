@@ -49,11 +49,12 @@
             <li>
               <a
                 href="#"
+                class="btn"
                 data-filter
                 data-type="product-type"
                 data-value="{{ type | handle }}"
               >
-                /{{ type }}
+                {{ type }}
               </a>
             </li>
           {% endfor %}
@@ -84,16 +85,18 @@
         </ul>
         {% endcomment %}
 
-        <div class="control-bar__row-item d-none d-md-block">
+        <div class="control-bar__row-item d-none d-lg-block">
           Grid:
-          <a href="#" data-grid-toggle="2">2</a>
-          <a href="#" data-grid-toggle="4">4</a>
+          <a href="#" data-grid-toggle data-column-count="2">2</a>
+          <a href="#" data-grid-toggle data-column-count="4">4</a>
         </div>
         
+        {% comment %}
         <!-- Do we actually want this?  The only useful sort is price -->
         <div class="control-bar__row-item">
-          <a href="#" data-sort-toggle>Sort +</a>
+        <a href="#" data-sort-toggle>Sort +</a>
         </div>
+        {% endcomment %}
 
         {% if filters != blank and show_filters %}
           <div class="control-bar__row-item">

@@ -8,8 +8,7 @@ const selectors = {
 
 const classes = {
   mainLoaded: 'is-loaded',
-  visible: 'is-visible',
-  filteredOut: 'filter-out'
+  visible: 'is-visible'
 };
 
 export default class ProductCard {
@@ -39,11 +38,8 @@ export default class ProductCard {
 
     // @TODO - create these props from this.$el.get(0).dataSet?
     this.id            = this.$el.data('id');
-    this.url           = this.$el.data('url');
-    this.handle        = this.$el.data('handle');
     this.productType   = this.$el.data('product-type');
     this.sale          = this.$el.data('sale');
-    this.documentTitle = this.$el.data('document-title');
     this.isPreview     = !!this.$el.data('preview');
 
     // Events
@@ -66,16 +62,8 @@ export default class ProductCard {
     //
   }
 
-  filterIn() {
-    this.$el.removeClass(classes.filteredOut);
-  }
-
-  filterOut() {
-    this.$el.addClass(classes.filteredOut);
-  }
-
-  clearFilter() {
-    this.$el.removeClass(classes.filteredOut);
+  unveil() {
+    this.$mainLazyImg.trigger('unveil');
   }
 
   show() {

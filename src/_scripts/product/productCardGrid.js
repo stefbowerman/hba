@@ -11,11 +11,11 @@ export default class ProductCardGrid {
    * ProductDetail constructor
    *
    *
-   * @param {jQuery | HTMLElement} container
+   * @param {jQuery | HTMLElement} element
    * @param {Object} options
    */
-  constructor(container, options) {
-    this.$container = $(container);
+  constructor(el, options) {
+    this.$el = $(el);
 
     const defaults = {
       onProductCardClick: (e, card) => {},
@@ -27,7 +27,7 @@ export default class ProductCardGrid {
     this.revealed = false;
     this.timeouts = [];
 
-    this.productCards = $.map($(selectors.productCard, this.$container), el => new ProductCard(el, {
+    this.productCards = $.map($(selectors.productCard, this.$el), _el => new ProductCard(_el, {
       onClick: this.settings.onProductCardClick,
       onMouseenter: this.settings.onProductCardMouseenter,
       onMouseleave: this.settings.onProductCardMouseleave
@@ -48,14 +48,30 @@ export default class ProductCardGrid {
 
   // Filter is instance of collection filter
   filterBy(filter = null) {
+    const filterType = camelize(filter.type);
+    
     if (filter) {
-      const filterType = camelize(filter.type);
       this.productCards.forEach((card) => {
-        card[filterType] === filter.value ? card.filterIn() : card.filterOut();
+        if (card[filterType] === filter.value) {
+          card.unveil();
+          card.$el.parent().show();
+        }
+        else {
+          card.$el.parent().hide();
+        }
       });
     }
     else {
-      this.productCards.forEach(card => card.clearFilter());
+      this.productCards.forEach((card) => {
+        card.unveil();
+        card.$el.parent().show();
+      });
     }
+  }
+
+  setColumnCount(count) {
+    if (!(count === 2 || count === 4)) return;
+
+    this.$el.attr('data-columns', count);
   }
 }

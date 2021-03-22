@@ -30,8 +30,9 @@
   }
 
   @include has-hover {
-    &:hover,
-    &:focus {
+    &:hover
+    // , &:focus
+    {
       background-color: $black;
       color: $white;
     }

@@ -6,22 +6,10 @@
   margin-bottom: $grid-gutter-width/2;
   text-transform: uppercase;
   overflow-wrap: break-word;
+  @include stick-to-top;
   
   a {
     @include highlight-link;
-
-    &.is-active {
-      color: $white;
-      background-color: $black;
-    }
-  }
-
-  @include media-breakpoint-up(md) {
-    position: sticky;
-    top: $layout-top-padding-mobile;
-  }
-  @include media-breakpoint-up(lg) {
-    top: $layout-top-padding;
   }
 }
 

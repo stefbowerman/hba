@@ -18,12 +18,7 @@ $left-space: 9px;
     &.is-visible {
       opacity: 1;
       transition: opacity 50ms ease-out;
-    }
-
-    &.filter-out {
-      opacity: 0.01;
-      pointer-events: none;
-    }    
+    }   
   }
 
   &--preview {
@@ -52,16 +47,32 @@ $left-space: 9px;
 }
 
 .product-card__gallery-image {
+  height: 0;
+  
   &,
   img {
     width: 100%;
+  }
+
+  img[data-src] {
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+  }
+
+  &.is-loaded img[data-src] {
+    opacity: 1;
   }
 }
 
 .product-card__info {
   flex: 1; // Take up the remaining space - make sure all __info elements are the same height
-  padding: 20px 0 20px $left-space;
+  padding: 15px 0 15px $left-space;
   font-size: $font-size-sm;
+
+  @include media-breakpoint-up(md) {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 
   @include has-hover {
     .product-card:hover & {
