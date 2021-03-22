@@ -109,4 +109,11 @@
       border-bottom-color: transparent;
     }
   }
+
+  // Monospace italic looks terrible
+  i {
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 98%;
+  }
 }
