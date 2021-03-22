@@ -1,8 +1,8 @@
 <div class="layout-content-wrapper" data-section-id="{{ section.id }}" data-section-type="page">
   <div class="container">
     <div class="row">
-      <div class="col-md-2">
-        <div class="sidebar" style="margin-bottom: 15px;">
+      <div class="col-md-3 col-lg-2">
+        <div class="sidebar">
           {% assign sidebar_linklist = false %}
 
           {% comment %} Find the first menu containing the link that we're currently on {% endcomment %}
@@ -34,7 +34,7 @@
           </ul>
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-9 col-lg-10">
         {% render 'page-title' with page.title %}
 
         <div class="rte" style="max-width: 40em;">

@@ -155,6 +155,7 @@
 
   &.is-disabled {
     cursor: $cursor-disabled;
+    text-decoration: line-through;
 
     &:before,
     &:after {

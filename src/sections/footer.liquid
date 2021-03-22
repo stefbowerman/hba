@@ -1,7 +1,7 @@
 {%- capture footer_blocks_html -%}
   {% for block in section.blocks %}
     {%- capture column_classes -%}
-      col-5 col-sm-3 col-md-2
+      col-6 col-sm-3
     {%- endcapture -%}
 
     <div class="footer-block {{ column_classes | strip }}" {{ block.shopfy_attributes }}>

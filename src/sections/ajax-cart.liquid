@@ -4,12 +4,12 @@
       <div class="layout-content-wrapper">
         <div class="container">
           <div class="row">
-            <div class="col-md-7 col-lg-8">
+            <div class="col-md-9">
               <div class="ajax-cart__body" data-ajax-cart-body>
                 {% comment %} Filled in via JS {% endcomment %}
               </div>              
             </div>
-            <div class="col-5 offset-5 col-md-3 offset-md-0 col-lg-2">
+            <div class="col-6 offset-6 col-md-3 offset-md-9">
               <div class="ajax-cart__footer" data-ajax-cart-footer>
                 <div class="ajax-cart__footer-top">
                   {% if section.settings.checkout_text %}
@@ -51,13 +51,15 @@
     {{#if items}}
       <div class="row">
         {{#each items}}
-          <div class="ajax-cart__item col-md-5" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
+          <div class="ajax-cart__item col-md-6" data-key="{{ key }}" data-qty="{{ quantity }}" data-ajax-item>
             <div class="ajax-cart__item-child">
-              <img src="{{ image }}" class="ajax-cart__item-image">
+              <div class="ajax-cart__item-image">
+                <img src="{{ image }}" />
+              </div>
             </div>
             <div class="ajax-cart__item-child">
               <div class="ajax-cart__item-info">
-                <h3>{{ product_title }}</h3>
+                <h4>{{ product_title }}</h4>
                 <div>{{ price }}</div>
                 {{#if sku}}
                   <div>{{ sku }}</div>

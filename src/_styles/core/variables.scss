@@ -224,15 +224,16 @@ $largest-container-width: map-get($container-max-widths, last(map_keys($containe
 //
 // Set the number of columns and specify the width of the gutters.
 
-$grid-columns:                10 !default;
-$grid-gutter-width:           30px !default;
+$grid-columns:                12 !default;
+$grid-gutter-width:           2px !default;
 
-$outer-gutter-mobile:         20px;
-$outer-gutter:                $grid-gutter-width;
+$gap: 30px;
+$outer-gutter-mobile:         $gap * 2/3;
+$outer-gutter:                $gap;
 
 // Layout
 
-$layout-top-padding-mobile: 114px;
+$layout-top-padding-mobile: 95px;
 $layout-top-padding: 120px;
 
 
@@ -719,10 +720,10 @@ $zindex-video-background:           -1   !default;
 $zindex-dropdown:                   1000 !default;
 $zindex-sticky:                     1500 !default;
 $zindex-fixed:                      2000 !default;
+$zindex-reamaze:                    2002  !default;
 $zindex-ajax-cart:                  2006 !default;
 $zindex-header-nav:                 2020 !default;
 $zindex-header-cart:                2020 !default;
-$zindex-reamaze:                    2040  !default;
 $zindex-overlay:                    2050 !default;
 $zindex-header-logo:                2100 !default;
 $zindex-blowup:                     2450 !default;

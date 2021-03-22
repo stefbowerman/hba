@@ -3,7 +3,7 @@
 // -------------------------
 
 .sidebar {
-  margin-bottom: $grid-gutter-width/2;
+  margin-bottom: $spacer * 0.5;
   text-transform: uppercase;
   overflow-wrap: break-word;
   @include stick-to-top;

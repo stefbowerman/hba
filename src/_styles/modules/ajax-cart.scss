@@ -93,8 +93,15 @@ body.ajax-cart-open {
   }
 }
 
+.ajax-cart__item-image,
+.ajax-cart__item-info {
+  padding-right: $spacer;
+}
+
 .ajax-cart__item-image {
-  width: 100%;
+  img {
+    width: 100%;
+  }
 }
 
 .ajax-cart__item-info {
@@ -104,8 +111,8 @@ body.ajax-cart-open {
   align-items: flex-start;
   line-height: 1.35; // @TODO - Weird that this has different line height than the rest of the site?
 
-  h3 {
-    margin: 0;
+  h4 {
+    margin-bottom: $spacer * 0.25;
   }
 
   .btn {

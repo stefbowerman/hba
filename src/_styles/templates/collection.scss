@@ -3,11 +3,11 @@
 // -------------------------
 
 .control-bar {
-  margin-bottom: $grid-gutter-width * 0.5;
+  margin-bottom: $gap * 0.5;
   @include stick-to-top;
 
   @include media-breakpoint-up(md) {
-    margin-bottom: $grid-gutter-width * 1.5;
+    margin-bottom: $gap * 1.5;
   }
 }
 
