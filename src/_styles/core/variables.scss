@@ -309,6 +309,7 @@ $font-weight-bolder:          bolder !default;
 
 $font-weight-base:            $font-weight-normal !default;
 $line-height-base:            1.23 !default;
+$line-height-sm:              1.2;
 
 // Headings
 $headings-margin-bottom:      $spacer !default;
@@ -317,16 +318,16 @@ $headings-font-weight:        $font-weight-bold !default;
 $headings-line-height:        1.2 !default;
 $headings-color:              null !default;
 
-$h1-font-size:                $font-size-lg;
-$h2-font-size:                $font-size-lg;
-$h3-font-size:                $font-size-lg;
+$h1-font-size:                $font-size-md;
+$h2-font-size:                $font-size-md;
+$h3-font-size:                $font-size-md;
 $h4-font-size:                $font-size-sm;
 $h5-font-size:                $font-size-sm;
 $h6-font-size:                $font-size-xxs;
 
-$h1-letter-spacing:           0.08em !default;
-$h2-letter-spacing:           0.08em !default;
-$h3-letter-spacing:           0.08em !default;
+$h1-letter-spacing:           0 !default;
+$h2-letter-spacing:           0 !default;
+$h3-letter-spacing:           0 !default;
 $h4-letter-spacing:           0 !default;
 $h5-letter-spacing:           0 !default;
 $h6-letter-spacing:           0 !default;
@@ -338,9 +339,9 @@ $h4-line-height:              1.2 !default;
 $h5-line-height:              1.2 !default;
 $h6-line-height:              1.2 !default;
 
-$h1-font-family:              $font-family-monospace;
-$h2-font-family:              $font-family-monospace;
-$h3-font-family:              $font-family-monospace;
+// $h1-font-family:              $font-family-monospace;
+// $h2-font-family:              $font-family-monospace;
+// $h3-font-family:              $font-family-monospace;
 
 // p{1, 2, 3}
 $p1-font-size:                $font-size-lg;
@@ -355,9 +356,9 @@ $p1-letter-spacing:           0.08em !default;
 $p2-letter-spacing:           0.08em !default;
 $p3-letter-spacing:           0 !default;
 
-$p1-line-height:              1.4 !default;
-$p2-line-height:              1.4 !default;
-$p3-line-height:              1.4 !default;
+$p1-line-height:              $line-height-sm;
+$p2-line-height:              $line-height-sm;
+$p3-line-height:              $line-height-base;
 
 // Display
 $display1-size:               6rem !default;

@@ -1,19 +1,19 @@
 import $ from 'jquery';
-import { isTouch } from '../core/utils';
-import DesktopZoomController from './zoomController/desktop';
+import Typed from 'typed.js';
+import Swiper, { Pagination } from 'swiper';
 import TouchZoomController from './zoomController/touch';
 
+Swiper.use([Pagination])
+
 const selectors = {
-  productGallerySlideshow: '[data-product-gallery-slideshow]',
-  productGallerySlideshowSlides: '[data-product-gallery-slideshow-slide]',
-  productGalleryThumbnailsSlide: '[data-product-gallery-thumbnails-slide]',
-  initialSlide: '[data-initial-slide]'
+  slideshow: '[data-slideshow]',
+  slide: '[data-slide]',
+  pagination: '[data-pagination]',
+  paginationProgress: '[data-pagination-progress]',
+  paginationFile: '[data-pagination-file]',
+  zoomTrigger: '[data-zoom-trigger]'
 };
 
-const classes = {
-  slideshowSlideActive: 'is-active',
-  thumbnailSlideActive: 'is-active'
-};
 
 export default class ProductDetailGallery {
   /**
@@ -25,102 +25,124 @@ export default class ProductDetailGallery {
    */
   constructor(el) {
     this.$el = $(el);
-    this.$slideshow = this.$el.find(selectors.productGallerySlideshow);
-    this.$productGallerySlideshowSlides = this.$el.find(selectors.productGallerySlideshowSlides);
-    this.$thumbnailSlides = this.$el.find(selectors.productGalleryThumbnailsSlide);
+    this.$slideshow = $(selectors.slideshow, this.$el);
+    this.$slides = $(selectors.slide, this.$slideshow);
+    this.$pagination = $(selectors.pagination, this.$slideshow);
+    this.$paginationProgress = $(selectors.paginationProgress, this.$slideshow);
+    this.$paginationFile = $(selectors.paginationFile, this.$slideshow);
+    this.$zoomTrigger = $(selectors.zoomTrigger, this.$slideshow);
 
-    this.slideIndex = 0;
-    this.thumbnailsLoaded = false;
-    this.slideshowImagesLoaded = false;
-
-    this.desktopZoomController = new DesktopZoomController(this.$el);
-    this.touchZoomController   = new TouchZoomController(this.$el);
-
-    this[isTouch() ? 'touchZoomController' : 'desktopZoomController'].enable();
-
-    this.$thumbnailSlides.on(`${isTouch() ? 'touchstart' : 'click'}`, this.onThumbnailSlideClick.bind(this));
-
-    // Make sure everything is good for the initial slide
-    this.getSlide(this.slideIndex).addClass(classes.slideshowSlideActive);
-    this.$thumbnailSlides.eq(this.slideIndex).addClass(classes.thumbnailSlideActive);
-
-    if (this.desktopZoomController.enabled) {
-      this.desktopZoomController.initHoverZoom(this.getSlide(this.slideIndex));
+    this.touchZoomController = new TouchZoomController(this.$el);
+    this.touchZoomController.enable()
+    
+    this.currentSlideIndex = null
+    this.totalSlideCount = this.$slides.length
+    this.typers = {
+      paginationFile: null
     }
 
-    this.loadSlideshowImages();
-    this.loadThumbnails();
+    this.$zoomTrigger.on('click', this.onZoomTriggerClick.bind(this));
+
+    this.swiper = new Swiper(this.$slideshow.get(0), {
+      init: false,
+      loop: (this.totalSlideCount > 1),
+      speed: 700,
+      effect: 'slide',
+      simulateTouch: false,
+      watchOverflow: true,
+      pagination: {
+        el: document.createElement('span'),
+        type: 'custom',
+        renderCustom: (swiper, current, total) => {
+          this.onPaginationRender(current, total); // Use renderCustom for the 'current' calculation only
+          return '';
+        }
+      }
+    });
+
+    this.swiper.init();
+
+    this.loadImages(this.$el.find('img')); // This needs to happen *after* slideshow initialization because it dupes slides
   }
 
   destroy() {
-    this.desktopZoomController.destroyHoverZoom(this.getSlide(this.slideIndex));
+  
   }
 
-  getSlide(i) {
-    return this.$productGallerySlideshowSlides.eq(i);
+  getActiveSlide() {
+    return $(this.swiper.slides).filter(`[data-swiper-slide-index="${this.currentSlideIndex}"]`).first();
   }
 
   loadImages($images) {
     if ($images && $images.length) {
       $images.each((i, img) => {
         const $img = $(img);
+        
+        $img.on('load loaded', () => {
+          $img.addClass('is-loaded')
+          $img.attr('data-src', null);
+          $img.attr('data-srcset', null);        
+        });
+
+        $img.attr('srcset', $img.data('srcset'));
         $img.attr('src', $img.data('src'));
-        $img.attr('data-src', null);
       });
     }
   }
 
-  loadSlideshowImages() {
-    if (this.slideshowImagesLoaded) return;
-    this.loadImages(this.$slideshow.find('img'));
-    this.slideshowImagesLoaded = true;
-  }
+  updatePagination() {
+    const d = $.Deferred();
 
-  loadThumbnails() {
-    if (this.thumbnailsLoaded) return;
-    this.loadImages(this.$thumbnailSlides.find('img'));
-    this.thumbnailsLoaded = true;
-  }
+    const $slide = this.getActiveSlide();
+    const id = Number.parseInt($slide.data('id')).toString();
+    const fileName = `IMG_${id.slice(0, 10)}` 
 
-  slideTo(i) {
-    if (this.slideIndex === i) return;
+    if (this.$pagination.length === 0) {
+      d.resolve();
+    }
+    else {
+      this.$paginationProgress.text(`${this.currentSlideIndex + 1} — ${this.totalSlideCount}:`)
 
-    const previousIndex = this.slideIndex;
+      if (this.typers.paginationFile !== null) {
+        this.typers.paginationFile.destroy();
+      }
 
-    this.$productGallerySlideshowSlides.removeClass(classes.slideshowSlideActive);
-    this.getSlide(i).addClass(classes.slideshowSlideActive);
-    this.$thumbnailSlides.removeClass(classes.thumbnailSlideActive);
-    this.$thumbnailSlides.eq(i).addClass(classes.thumbnailSlideActive);
-
-    if (this.desktopZoomController.enabled) {
-      this.desktopZoomController.initHoverZoom(this.getSlide(i));
+      this.typers.paginationFile = new Typed(this.$paginationFile.get(0), {
+        strings: [fileName],
+        contentType: null,
+        typeSpeed: 10,
+        startDelay: 80,
+        showCursor: false,
+        onComplete: () => d.resolve()
+      }); 
     }
 
-    this.slideIndex = i;
-
-    this.onSlideToComplete(previousIndex, this.slideIndex);
+    return d;    
   }
 
   onBeforeReveal() {
-    // this.loadSlideshowImages();
-    // this.loadThumbnails();
+
   }
 
   onReveal() {
-    //
+  
   }
 
-  onSlideToComplete(previousIndex, currentIndex) {
-    this.$thumbnailSlides.removeClass(classes.thumbnailSlideActive);
-    this.$thumbnailSlides.eq(currentIndex).addClass(classes.thumbnailSlideActive);
+  onZoomTriggerClick(e) {
+    e.preventDefault();
+    
+    const $slide = this.getActiveSlide()
+    const src = $slide.find('a').attr('href')
 
-    if (this.desktopZoomController.enabled) {
-      this.desktopZoomController.destroyHoverZoom(this.getSlide(previousIndex));
-      this.desktopZoomController.initHoverZoom(this.getSlide(currentIndex));
-    }
+    this.touchZoomController.zoomIn(src)
   }
 
-  onThumbnailSlideClick(e) {
-    this.slideTo($(e.currentTarget).index());
+  onPaginationRender(current, total) {
+    const currentI = current-1
+
+    if (this.currentSlideIndex === currentI) return
+
+    this.currentSlideIndex = currentI
+    this.updatePagination()
   }
 }

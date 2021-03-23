@@ -62,24 +62,26 @@
   }
 }
 
-.btn-alt {
-  background-color: $white;
-  color: $black;
-
-  &:hover,
-  &:focus,
-  &.is-hovered,
-  &.is-active {
-    background-color: $black;
-    color: $white;
-  }
+.btn-primary {
+  background-color: $black;
+  color: $white;
 
   &:disabled {
+    &,
     &:hover {
       background-color: $white;
       color: $black;
     }
-  }  
+  }
+
+  @include has-hover {
+    &:hover {
+      &:not(:disabled) {
+        background-color: $black;
+        color: $white;
+      }
+    }
+  }
 }
 
 // Future-proof disabling of clicks on `<a>` elements

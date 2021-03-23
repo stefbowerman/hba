@@ -1,0 +1,83 @@
+// Form
+// --------------------------------------------------------
+
+.product-detail-price {
+  margin-bottom: $spacer;
+  @include p2;
+}
+
+.product-sku-display {
+  position: relative;
+
+  .product-sku {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.product-description {
+  margin-bottom: 18px;
+  max-width: 36em;
+
+  ul {
+    @include list-br;
+    margin-bottom: $paragraph-margin-bottom;
+  }
+
+  table {
+    margin-bottom: $paragraph-margin-bottom;
+
+    // First child contains longer text
+    th:first-child,
+    td:first-child {
+      width: 28%;
+    }
+  }
+}
+
+.product-size-guide {
+  margin: $spacer 0 $spacer*2;
+}
+
+.pdf-add-to-cart-form {
+  margin-top: 32px;
+}
+
+.pdf-submit-wrapper {
+  margin-top: 30px;
+  display: flex;
+}
+
+.pdf-status {
+  text-transform: uppercase;
+  padding-left: 8px;
+  display: none;
+
+  &.is-visible {
+    display: block;
+  }
+}
+
+.btn.option-value {
+  // &.is-active {
+  //   background-color: transparent;
+  // }
+
+  &.is-disabled {
+    cursor: $cursor-disabled;
+    text-decoration: line-through;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+}
+
+.pdf-back-in-stock {
+  display: flex;
+  align-items: stretch;
+}
+
+

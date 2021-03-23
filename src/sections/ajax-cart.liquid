@@ -2,7 +2,7 @@
   <div class="ajax-cart-container" data-ajax-cart-container>
     <form action="/cart" method="post" class="ajax-cart-form" novalidate>
       <div class="layout-content-wrapper">
-        <div class="container">
+        <div class="outer-container">
           <div class="row">
             <div class="col-md-9">
               <div class="ajax-cart__body" data-ajax-cart-body>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="ajax-cart__footer-bottom">
                   <div class="ajax-cart__footer-row">
-                    <button type="submit" name="checkout" class="btn btn-alt">
+                    <button type="submit" name="checkout" class="btn btn-primary">
                       {{ 'cart.general.proceed_to_checkout' | t }}
                     </button>
                   </div>
@@ -41,7 +41,7 @@
       {% else %}
         <p>{{ 'cart.general.empty' | t }}</p>
       {% endif %}
-      <a href="/" class="btn btn-alt" data-ajax-cart-close>Return to Shop</a>
+      <a href="/" class="btn" data-ajax-cart-close>Return to Shop</a>
     </div>    
   </div>
 </div>
@@ -68,7 +68,7 @@
                 {{#if multiple_quantities}}
                 <div>QTY {{ quantity }}</div>
                 {{/if}}
-                <a href="#" class="btn btn-alt" data-ajax-cart-item-remove>Remove</a>
+                <a href="#" class="btn btn" data-ajax-cart-item-remove>Remove</a>
               </div>
             </div>
           </div>

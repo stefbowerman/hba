@@ -2,7 +2,7 @@
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 
 <div
-  class="layout-content-wrapper __flush-top__"
+  class="layout-content-wrapper flush-top"
   data-section-id="{{ section.id }}"
   data-section-type="product"
   itemscope
@@ -16,22 +16,43 @@
 
   {% render 'page-title' with product.title %}
 
-  <div class="product-detail" data-product-detail>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-5">
-          {% render 'product-detail-gallery',
-                      product: product,
-                      current_variant: current_variant
-          %}
-        </div>
-        
-        <div class="col-md-5">
-          {% render 'product-detail-form',
-                      product: product,
-                      current_variant: current_variant
-          %}
-        </div>
+  <div class="outer-container">
+    <div class="product-detail" data-product-detail>
+      <div class="product-detail__gallery-area">
+        {% render 'product-detail-gallery',
+                   product: product,
+                   current_variant: current_variant
+        %}
+      </div>
+
+      <div class="product-detail__thumbs-area">
+        {% comment %}
+          {% assign photo_thumb_dimension = '200x' %}
+
+          {% if product.images.size > 1 %}
+            <div class="product-gallery__thumbnails" style="display: none;">
+              {% for image in product.images limit: 5 %}
+                {% assign padding_bottom = image.height | times: 100 | divided_by: image.width | append: '%' %}
+
+                <div
+                  class="product-gallery__thumbnails-slide"
+                  data-product-gallery-thumbnails-slide
+                >
+                  <div class="product-gallery__thumbnails-slide-image" style="padding-bottom: {{ padding_bottom }}">
+                    <img src="{{ image.src | img_url: photo_thumb_dimension }}" alt="{{ image.alt | escape }}">
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endcomment %}
+      </div>
+
+      <div class="product-detail__form-area">
+        {% render 'product-detail-form',
+                    product: product,
+                    current_variant: current_variant
+        %}
       </div>
     </div>
   </div>

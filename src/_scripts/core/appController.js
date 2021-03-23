@@ -99,6 +99,16 @@ export default class AppController {
       this.doRoute('/challenge');
     });
 
+    this.router.on('/search', (params, query) => {
+      let url = `/search`
+
+      if (query) {
+        url += `?${query}`;
+      }
+
+      this.doRoute(url, 'search');
+    });    
+
     this.router.notFound((params) => {
       // called when there is path specified but
       // there is no route matching

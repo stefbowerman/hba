@@ -2,14 +2,23 @@
 //
 
 @if $enable-grid-classes {
-  .container {
+  .outer-container {
     @include make-container($outer-gutter-mobile*2);
 
     @include media-breakpoint-up(lg) {
       padding-left: $outer-gutter;
       padding-right: $outer-gutter;
     }
+  }
 
+  .anti-outer-container {
+    margin-right: -$outer-gutter-mobile;
+    margin-left: -$outer-gutter-mobile;
+  }
+
+  .container {
+    @include make-container();
+    
     & & {
       @include make-container();
     }

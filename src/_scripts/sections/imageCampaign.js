@@ -1,10 +1,10 @@
 import $ from 'jquery';
-import Swiper, { Navigation, EffectFade } from 'swiper';
+import Swiper, { EffectFade } from 'swiper';
 import { isTouch, clamp } from '../core/utils';
 import { getBreakpointMinWidth } from '../core/breakpoints';
 import BaseSection from './base';
 
-Swiper.use([Navigation, EffectFade]);
+Swiper.use([EffectFade]);
 
 export default class ImageCampaignSection extends BaseSection {
   constructor(container) {

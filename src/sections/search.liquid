@@ -21,10 +21,7 @@
       {% endif %}
     {% endcapture %}
 
-    {% include 'page-header',
-                ph_title: title,
-                ph_subtitle: subtitle
-    %}
+    {% render 'page-title' with title %}
 
     {% if search.performed %}
       {% if search.results.size > 0 %}
@@ -49,7 +46,7 @@
         {% endif %}
 
       {% else %}    
-       <p class="p1 text-center">No search results found</p>
+       <p class="text-center">No search results found</p>
       {% endif %}
 
     {% endif %}

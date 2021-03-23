@@ -1,7 +1,6 @@
 // jQuery
 import $ from 'jquery';
 import { throttle } from 'throttle-debounce';
-import 'jquery-zoom';
 import 'imagesloaded';
 import './lib/jquery-unveil.custom';
 

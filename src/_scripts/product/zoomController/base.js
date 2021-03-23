@@ -5,7 +5,7 @@ import {
 } from '../../core/utils';
 
 const selectors = {
-  galleryImageLink: '[data-gallery-image-link]'
+  imageLink: '[data-image-link]'
 };
 
 const $window = $(window);
@@ -49,7 +49,7 @@ export default class BaseZoomController {
   }
 
   addEventListeners() {
-    this.$el.on(this.events.CLICK, selectors.galleryImageLink, this.onGalleryImageLinkClick.bind(this));
+    this.$el.on(this.events.CLICK, selectors.imageLink, this.onImageLinkClick.bind(this));
   }
 
   removeEventListeners() {
@@ -80,7 +80,7 @@ export default class BaseZoomController {
     }
   }
 
-  onGalleryImageLinkClick(e) {
+  onImageLinkClick(e) {
     e.preventDefault();
     this.zoomIn($(e.currentTarget).attr('href'));
   }

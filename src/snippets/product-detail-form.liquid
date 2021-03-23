@@ -61,7 +61,7 @@
   {% assign back_in_stock_enabled_for_product = true %}
 {% endif %}
 
-<div data-product-detail-form>
+<div class="product-detail-form" data-product-detail-form>
   <h3 data-title>
     {{ product.title }}
 
@@ -188,7 +188,7 @@
             <button
               type="submit"
               name="add"
-              class="btn"
+              class="btn btn-primary"
               data-add-to-cart
               {% if selection_required or current_variant.available == false %}disabled="disabled"{% endif %}>
                 <span data-add-to-cart-text>

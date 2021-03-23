@@ -13,54 +13,79 @@
 
 {% endcomment -%}
 
-{% assign photo_thumb_dimension = '200x' %}
-{% assign photo_main_dimension  = '900x' %}
 {% assign photo_zoom_dimension  = '1300x' %}
-{% assign MAX_PHOTOS = 5 %}
 
 {% comment %} Defaults {% endcomment %}
 {% assign current_variant = current_variant | default: product.selected_or_first_available_variant %}
 
-{% comment %} Make one gallery for all the images {% endcomment %}
-<div class="product-gallery" data-product-gallery>
-  <div id="slideshow-{{ product.id }}" class="product-gallery__slideshow" data-product-gallery-slideshow>
-    {% for image in product.images limit: MAX_PHOTOS %}
-      {% assign padding_bottom = image.height | times: 100 | divided_by: image.width | append: '%' %}
-      {% assign src_attr = 'data-src' %}
-
-      {% if forloop.first %}
-        {% assign src_attr = 'src' %}
-      {% endif %}
-
-      <div class="product-gallery__slideshow-slide" data-product-gallery-slideshow-slide>
-        <a href="{{ image | img_url: photo_zoom_dimension }}" data-gallery-image-link>
-          <div class="product-gallery__slideshow-slide-image" style="padding-bottom: {{ padding_bottom }}"> 
-            <img {{ src_attr }}="{{ image | img_url: photo_main_dimension }}" alt="{{ image.alt | escape }}">
+<div class="product-gallery" data-product-gallery> 
+  <div class="product-gallery__slideshow">
+    <div class="swiper-container" data-slideshow>
+      <div class="swiper-wrapper">
+        {% for image in product.images %}
+          <div
+            class="product-gallery__slideshow-slide swiper-slide"
+            data-slide
+            data-id="{{ image.id }}"
+          >
+            <a href="{{ image | img_url: photo_zoom_dimension }}" data-image-link>
+              <div
+                class="product-gallery__slideshow-slide-image"
+                style="padding-bottom: {{ 1 | divided_by: image.aspect_ratio | times: 100 | append: '%' }}"
+              >
+                <img
+                  data-src="{{ image | img_url: '400x' }}"
+                  data-srcset="
+                    {{ image | img_url: '400x' }}  400w,
+                    {{ image | img_url: '600x' }}  600w,
+                    {{ image | img_url: '800x' }}  800w,
+                    {{ image | img_url: '1200x' }} 1200w,
+                    {{ image | img_url: '1600x' }} 1600w,
+                    {{ image | img_url: '1800x' }} 1800w,
+                  "
+                  alt="{{ image.alt | escape }}"
+                />
+              </div>
+            </a>
           </div>
-        </a>
+        {% endfor %}
+      </div>
+
+      <div class="product-gallery__slideshow-footer">
+        <span class="product-gallery__slideshow-pagination" data-pagination>
+          <span data-pagination-progress></span>
+          <span data-pagination-file></span>
+        </span>
+        <span class="btn" data-zoom-trigger>Zoom +</span>
+      </div>
+    </div>   
+  </div>
+
+  <div class="product-gallery__scroller">
+    {% for image in product.images %}
+      <div class="product-gallery__scroller-image">
+        <img
+          data-src="{{ image | img_url: '400x' }}"
+          data-srcset="
+            {{ image | img_url: '400x' }}  400w,
+            {{ image | img_url: '600x' }}  600w,
+            {{ image | img_url: '800x' }}  800w,
+            {{ image | img_url: '1200x' }} 1200w,
+            {{ image | img_url: '1600x' }} 1600w,
+            {{ image | img_url: '1800x' }} 1800w,
+          "
+          alt="{{ image.alt | escape }}"
+        />
       </div>
     {% endfor %}
   </div>
-  {% if product.images.size > 1 %}
-    <div id="slideshow-thumbs-{{ product.id }}" class="product-gallery__thumbnails">
-      {% for image in product.images limit: MAX_PHOTOS %}
-        {% assign padding_bottom = image.height | times: 100 | divided_by: image.width | append: '%' %}
 
-        <div class="product-gallery__thumbnails-slide"
-             data-product-gallery-thumbnails-slide
-        >
-          <div class="product-gallery__thumbnails-slide-image" style="padding-bottom: {{ padding_bottom }}">
-            <img data-src="{{ image.src | img_url: photo_thumb_dimension }}" alt="{{ image.alt | escape }}">
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
 
   <div class="blowup" data-blowup>
     <div class="blowup__scroll">
       <img class="blowup__image" data-blowup-image alt="Product image zoom" />
     </div>
+
     <div class="blowup__helper" data-blowup-close>
       <button class="btn is-active">Close Zoom</button>
     </div>
