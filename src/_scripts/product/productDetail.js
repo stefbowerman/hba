@@ -36,27 +36,7 @@ export default class ProductDetail {
     });
   }
 
-  onBeforeReveal() {
-    this.gallery.onBeforeReveal();
-  }
-
-  // Called when the fade in animation *starts*
-  onReveal() {
-    this.gallery.onReveal();
-    this.form.onReveal();
-  }
-
-  // Called when the fade in animation *completes*
-  onRevealed() {
-    this.form.onRevealed();
-  }
-
-  onHidden() {
-    this.form.onHidden();
-  }
-
   destroy() {
     this.form.destroy();
-    this.gallery.destroy();
   }
 }

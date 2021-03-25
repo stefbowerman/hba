@@ -11,17 +11,7 @@ $left-space: 9px;
 }
 
 .product-card {
- 
-  .js & {
-    opacity: 0.01;
-
-    &.is-visible {
-      opacity: 1;
-      transition: opacity 50ms ease-out;
-    }   
-  }
-
-  &--preview {
+   &--preview {
     cursor: $cursor-disabled;
   }
 }
@@ -30,6 +20,12 @@ $left-space: 9px;
   position: relative;
   display: flex;
   flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.85, 0.06, 0.54, 0.96);
+
+  .product-card.is-loaded & {
+    opacity: 1;
+  }
 }
 
 .product-card__badge {
@@ -56,10 +52,9 @@ $left-space: 9px;
 
   img[data-src] {
     opacity: 0;
-    transition: opacity 300ms ease-out;
   }
 
-  &.is-loaded img[data-src] {
+  .product-card.is-loaded & img {
     opacity: 1;
   }
 }

@@ -100,7 +100,7 @@ export default class AppController {
     });
 
     this.router.on('/search', (params, query) => {
-      let url = `/search`
+      let url = '/search';
 
       if (query) {
         url += `?${query}`;
@@ -234,8 +234,10 @@ export default class AppController {
 
     // let now = Date.now();
 
-    // $oldViewContent.one('transitionend', (e) => {
-    $newViewContent.addClass('transition-in-active');
+    // Wait for DOM to Update
+    setTimeout(() => {
+      $newViewContent.addClass('transition-in-active');  
+    }, 32);
 
     // I don't know what's going on
     // $newViewContent.one('transitionend') was firing because of child product cards transitioning in?

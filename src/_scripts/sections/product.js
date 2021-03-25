@@ -12,4 +12,8 @@ export default class ProductSection extends BaseSection {
 
     this.productDetail = new ProductDetail($(selectors.productDetail, this.$container));
   }
+
+  onUnload() {
+    this.productDetail.destroy();
+  }
 }

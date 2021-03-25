@@ -7,8 +7,7 @@ const selectors = {
 };
 
 const classes = {
-  mainLoaded: 'is-loaded',
-  visible: 'is-visible'
+  loaded: 'is-loaded'
 };
 
 export default class ProductCard {
@@ -27,6 +26,7 @@ export default class ProductCard {
     };
 
     this.$el = $(el);
+    this.$gallery = $(selectors.gallery, this.$el);
     this.$mainLazyImg = $(selectors.mainLazyImg, this.$el);
 
     if (this.$el === undefined || !this.$el.is(selectors.el)) {
@@ -36,7 +36,6 @@ export default class ProductCard {
 
     this.settings = $.extend({}, defaults, options);
 
-    // @TODO - create these props from this.$el.get(0).dataSet?
     this.id            = this.$el.data('id');
     this.productType   = this.$el.data('product-type');
     this.sale          = this.$el.data('sale');
@@ -50,27 +49,18 @@ export default class ProductCard {
     });
 
     // Unveil plugin to lazy load main product card images
-    this.$mainLazyImg.unveil(200, function() {
-      const $img = $(this);
-      $img.on('load', () => {
-        $img.parents(selectors.gallery).addClass(classes.mainLoaded);
-      });
-    });
-  }
-
-  destroy() {
-    //
+    this.$mainLazyImg
+      .on('load', () => {
+        this.onUnveiled();
+      })
+      .unveil(200);
   }
 
   unveil() {
     this.$mainLazyImg.trigger('unveil');
   }
 
-  show() {
-    this.$el.addClass(classes.visible);  
-  }
-
-  hide() {
-    this.$el.removeClass(classes.visible);
+  onUnveiled() {
+    this.$el.addClass(classes.loaded);
   }
 }

@@ -1,5 +1,10 @@
 import $ from 'jquery';
-import { getQueryParams } from '../core/utils';
+import {
+  getQueryParams,
+  getQueryString,
+  getUrlWithUpdatedQueryStringParameter,
+  getUrlWithRemovedQueryStringParameter
+} from '../core/utils';
 import BaseSection from './base';
 import Filter from '../collection/filter';
 import FilterController from '../collection/filterController';
@@ -22,6 +27,7 @@ export default class CollectionSection extends BaseSection {
   constructor(container) {
     super(container, 'collection');
 
+    this.baseUrl         = this.$container.data('base-url');
     this.queryFilterKey  = 'filter';
     this.filtersOpen     = false;
 
@@ -32,6 +38,7 @@ export default class CollectionSection extends BaseSection {
     this.filterController = new FilterController({
       onChange: this.onFilterControllerChange.bind(this)
     });
+
     this.productCardGrid  = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
       onProductCardClick: this.onProductCardClick.bind(this)
     });
@@ -55,21 +62,27 @@ export default class CollectionSection extends BaseSection {
       }
     }
 
-    // @TODO - Finish this... add to localstorage?
-    const savedColCount = parseInt(window.HBA.collectionColumnCount) || 4;
-
-    if (savedColCount > 0) {
-      this.$gridToggles.filter(`[data-column-count="${savedColCount}"]`).addClass(classes.gridToggleActive);
-      this.productCardGrid.setColumnCount(savedColCount);
-      window.HBA.collectionColumnCount = savedColCount;
-    }
+    this.$gridToggles
+      .filter(`[data-column-count="${window.HBA.collectionColCount}"]`)
+      .addClass(classes.gridToggleActive);
+    this.productCardGrid.setColumnCount(window.HBA.collectionColCount);
 
     this.productCardGrid.reveal();
   }
 
-  onUnload() {
-    this.productCardGrid.destroy();
-  }
+  get urlForState() {
+    const baseUrl = this.baseUrl + getQueryString();
+    let url;
+
+    if (this.filterController.activeFilter) {
+      url = getUrlWithUpdatedQueryStringParameter(this.queryFilterKey, this.filterController.activeFilter.queryParam, baseUrl);
+    }
+    else {
+      url = getUrlWithRemovedQueryStringParameter(this.queryFilterKey, baseUrl);
+    }
+
+    return url;
+  }  
 
   onFilterClick(e) {
     e.preventDefault();
@@ -77,9 +90,26 @@ export default class CollectionSection extends BaseSection {
   }
 
   onFilterControllerChange() {
-    this.productCardGrid.filterBy(this.filterController.activeFilter);
+    const { activeFilter } = this.filterController;
 
-    this.$filtersToggle.toggleClass(classes.filtersToggleActive, !!this.filterController.activeFilter);
+    this.productCardGrid.$el.fadeOut({
+      duration: 200,
+      easing: 'easeInCubic',
+      complete: () => { 
+        this.productCardGrid.filterBy(activeFilter);
+        this.$filtersToggle.toggleClass(classes.filtersToggleActive, !!activeFilter);
+        
+        window.HBA.appController
+          .pauseRouter()
+          .navigate(this.urlForState)
+          .resumeRouter();
+
+        this.productCardGrid.$el.fadeIn({
+          duration: 350,
+          easing: 'easeOutCubic'
+        });
+      }
+    });
   }
 
   onFiltersToggleClick(e) {
@@ -100,11 +130,9 @@ export default class CollectionSection extends BaseSection {
     const $toggle = $(e.currentTarget);
     const columnCount = $toggle.data('column-count');
 
-    // @TODO - Just testing this
-    window.HBA.collectionColumnCount = columnCount;
+    if (columnCount === window.HBA.collectionColumnCount) return;
 
-    // @TODO - Better set method so this can be called programatically
-    // if (this.columnCount == this.productCardGrid.columnCount ) return..
+    window.HBA.collectionColumnCount = columnCount;
 
     this.productCardGrid.$el.fadeOut({
       duration: 200,
@@ -120,7 +148,7 @@ export default class CollectionSection extends BaseSection {
           easing: 'easeOutCubic',
           start: () => {
             // @TODO - productcard grid needs to trigger unveil lookup everytime it fades in and out
-            $(window).trigger('lookup');
+            $(window).trigger('lookup.unveil');
           }
         });
       }

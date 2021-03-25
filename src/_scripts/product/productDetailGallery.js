@@ -3,7 +3,7 @@ import Typed from 'typed.js';
 import Swiper, { Pagination } from 'swiper';
 import TouchZoomController from './zoomController/touch';
 
-Swiper.use([Pagination])
+Swiper.use([Pagination]);
 
 const selectors = {
   slideshow: '[data-slideshow]',
@@ -33,13 +33,13 @@ export default class ProductDetailGallery {
     this.$zoomTrigger = $(selectors.zoomTrigger, this.$slideshow);
 
     this.touchZoomController = new TouchZoomController(this.$el);
-    this.touchZoomController.enable()
+    this.touchZoomController.enable();
     
-    this.currentSlideIndex = null
-    this.totalSlideCount = this.$slides.length
+    this.currentSlideIndex = null;
+    this.totalSlideCount = this.$slides.length;
     this.typers = {
       paginationFile: null
-    }
+    };
 
     this.$zoomTrigger.on('click', this.onZoomTriggerClick.bind(this));
 
@@ -65,10 +65,6 @@ export default class ProductDetailGallery {
     this.loadImages(this.$el.find('img')); // This needs to happen *after* slideshow initialization because it dupes slides
   }
 
-  destroy() {
-  
-  }
-
   getActiveSlide() {
     return $(this.swiper.slides).filter(`[data-swiper-slide-index="${this.currentSlideIndex}"]`).first();
   }
@@ -79,7 +75,7 @@ export default class ProductDetailGallery {
         const $img = $(img);
         
         $img.on('load loaded', () => {
-          $img.addClass('is-loaded')
+          $img.addClass('is-loaded');
           $img.attr('data-src', null);
           $img.attr('data-srcset', null);        
         });
@@ -91,17 +87,12 @@ export default class ProductDetailGallery {
   }
 
   updatePagination() {
-    const d = $.Deferred();
-
     const $slide = this.getActiveSlide();
     const id = Number.parseInt($slide.data('id')).toString();
-    const fileName = `IMG_${id.slice(0, 10)}` 
+    const fileName = `IMG_${id.slice(0, 10)}`;
 
-    if (this.$pagination.length === 0) {
-      d.resolve();
-    }
-    else {
-      this.$paginationProgress.text(`${this.currentSlideIndex + 1} — ${this.totalSlideCount}:`)
+    if (this.$pagination.length) {
+      this.$paginationProgress.text(`${this.currentSlideIndex + 1} — ${this.totalSlideCount}:`);
 
       if (this.typers.paginationFile !== null) {
         this.typers.paginationFile.destroy();
@@ -112,37 +103,26 @@ export default class ProductDetailGallery {
         contentType: null,
         typeSpeed: 10,
         startDelay: 80,
-        showCursor: false,
-        onComplete: () => d.resolve()
+        showCursor: false
       }); 
     }
-
-    return d;    
-  }
-
-  onBeforeReveal() {
-
-  }
-
-  onReveal() {
-  
   }
 
   onZoomTriggerClick(e) {
     e.preventDefault();
     
-    const $slide = this.getActiveSlide()
-    const src = $slide.find('a').attr('href')
+    const $slide = this.getActiveSlide();
+    const src = $slide.find('a').attr('href');
 
-    this.touchZoomController.zoomIn(src)
+    this.touchZoomController.zoomIn(src);
   }
 
   onPaginationRender(current, total) {
-    const currentI = current-1
+    const currentI = current-1;
 
-    if (this.currentSlideIndex === currentI) return
+    if (this.currentSlideIndex === currentI) return;
 
-    this.currentSlideIndex = currentI
-    this.updatePagination()
+    this.currentSlideIndex = currentI;
+    this.updatePagination();
   }
 }

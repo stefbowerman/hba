@@ -44,7 +44,8 @@ Animations.initialize();
 Breakpoints.initialize();
 
 window.HBA = {
-  appController: null
+  appController: null,
+  collectionColCount: 4 // Default column count, user can change this over the life of their visit
 };
 
 ((Modernizr) => {

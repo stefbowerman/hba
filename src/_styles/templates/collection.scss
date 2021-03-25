@@ -4,7 +4,6 @@
 
 .control-bar {
   margin-bottom: $gap * 0.5;
-  @include stick-to-top;
 
   @include media-breakpoint-up(md) {
     margin-bottom: $gap * 1.5;
@@ -13,12 +12,7 @@
 
 .control-bar__row {
   display: flex;
-  // justify-content: space-between;
   justify-content: flex-end;
-
-  // @include media-breakpoint-up(md) {
-  //   justify-content: flex-end;    
-  // }
 }
 
 .control-bar__row-item {

@@ -25,32 +25,28 @@ export default class ProductCardGrid {
 
     this.settings = $.extend({}, defaults, options);
     this.revealed = false;
-    this.timeouts = [];
 
     this.productCards = $.map($(selectors.productCard, this.$el), _el => new ProductCard(_el, {
       onClick: this.settings.onProductCardClick,
       onMouseenter: this.settings.onProductCardMouseenter,
       onMouseleave: this.settings.onProductCardMouseleave
     }));
-  }
 
-  destroy() {
-    $.each(this.productCards, (k, card) =>  card.destroy());
-    $.each(this.timeouts, (i, timeout) => clearTimeout(timeout));
+    this.$el.css('visibility', 'none'); // wait for reveal
   }
 
   reveal() {
     if (this.revealed) return;
 
-    this.productCards.forEach(card => card.show());
+    this.$el.css('visibility', '');
     this.revealed = true;
   }
 
   // Filter is instance of collection filter
   filterBy(filter = null) {
-    const filterType = camelize(filter.type);
-    
     if (filter) {
+      const filterType = camelize(filter.type);
+
       this.productCards.forEach((card) => {
         if (card[filterType] === filter.value) {
           card.unveil();
