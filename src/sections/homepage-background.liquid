@@ -1,0 +1,55 @@
+<div data-section-id="{{ section.id }}" data-section-type="homepage-background">
+  {% assign src = section.settings.video_file_url %}
+
+  <div class="homepage-background">
+    {% if src != blank %}
+      {% assign video_type = '' %}
+
+      {% if src contains '.mp4' %}
+        {% assign video_type = 'mp4' %}
+      {% elsif src contains '.og' %}
+        {% assign video_type = 'ogg' %}
+      {% elsif src contains '.avi' %}
+        {% assign video_type = 'avi' %}
+      {% elsif src contains '.webm' %}
+        {% assign video_type = 'webm' %}
+      {% endif %}
+
+      {% if video_type == '' %}
+        <!-- ALERT: Your video is invalid -->
+      {% else %}
+        <div class="video-background" data-video-background>
+          <video muted playsinline>
+            <source src="{{ src }}" type="video/{{ video_type }}" />
+          </video>
+          {% if section.settings.video_poster_image != blank %}
+            <img data-src="{{ section.settings.video_poster_image | img_url: '2000x' }}" />
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Homepage Background",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Info",
+        "info": "This section works almost identically as the background media section except that this is only visible on the homepage.  You shouldn't be using videos with both sections at the same time."
+      },
+      {
+        "type": "url",
+        "id": "video_file_url",
+        "label": "Video File URL"
+      },
+      {
+        "type": "image_picker",
+        "id": "video_poster_image",
+        "label": "Video Poster Image"
+      }
+    ]
+  }
+{% endschema %}

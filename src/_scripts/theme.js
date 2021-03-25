@@ -31,6 +31,7 @@ import HeaderSection   from './sections/header';
 import FooterSection   from './sections/footer';
 import AJAXCartSection from './sections/ajaxCart';
 import BackgroundMedia from './sections/backgroundMedia';
+import HomepageBackground from './sections/homepageBackground';
 
 /* eslint-disable */
 
@@ -55,6 +56,7 @@ window.HBA = {
   const sections = {
     header:   new HeaderSection($('[data-section-type="header"]')),
     footer:   new FooterSection($('[data-section-type="footer"]')),
+    homepageBackground: new HomepageBackground($('[data-section-type="homepage-background"]')),
     ajaxCart: new AJAXCartSection($('[data-section-type="ajax-cart"]')),
     backgroundMedia: new BackgroundMedia($('[data-section-type="background-media"]'))
   };
@@ -78,8 +80,12 @@ window.HBA = {
       sections.ajaxCart.close();
       deferred.resolve();
     },
-    onRouteStart: (url) => {
+    onRouteStart: (url, type) => {
       sections.footer.newsletterForm && sections.footer.newsletterForm.hideFormContents();
+
+      if (type !== 'index') {
+        sections.homepageBackground.hide();
+      }      
     },
     onViewChangeStart: (url, newView) => {
       // console.log('onViewChangeStart');
@@ -93,12 +99,12 @@ window.HBA = {
     },
     onViewReady: (view) => {
       // console.log('onViewReady');
-      // console.log(view);
 
       if (view.type === 'index') {
-        //
+        sections.homepageBackground.show();
       }
-      else if (view.type === 'cart') {
+      
+      if (view.type === 'cart') {
         sections.ajaxCart.open();
       }
     }

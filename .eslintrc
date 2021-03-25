@@ -66,6 +66,7 @@
     "object-shorthand": ["error", "consistent-as-needed"],
     "operator-linebreak": ["error", "after"],
     "no-new": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "semi": ["warn"]
   }
 }
