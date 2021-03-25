@@ -166,8 +166,5 @@ window.HBA = {
     }
   }
 
-  // Add "development mode" class for CSS hook
-  $body.addClass('development-mode');
-
   credits();
 })(Modernizr);
