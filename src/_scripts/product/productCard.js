@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { isTouch } from '../core/utils';
 
 const selectors = {
   el: '[data-product-card]',
@@ -22,7 +23,9 @@ export default class ProductCard {
     const defaults = {
       onClick:      () => {},
       onMouseenter: () => {},
-      onMouseleave: () => {}
+      onMouseleave: () => {},
+      onTouchStart: () => {},
+      onTouchend:   () => {}
     };
 
     this.$el = $(el);
@@ -40,13 +43,20 @@ export default class ProductCard {
     this.productType   = this.$el.data('product-type');
     this.sale          = this.$el.data('sale');
     this.isPreview     = !!this.$el.data('preview');
+    this.isTouch       = isTouch();
+
+    /* eslint-disable */
 
     // Events
     this.$el.on({
       click:      e => this.settings.onClick(e, this),
-      mouseenter: e => this.settings.onMouseenter(e, this),
-      mouseleave: e => this.settings.onMouseleave(e, this)
+      mouseenter: e => { !this.isTouch && this.settings.onMouseenter(e, this); },
+      mouseleave: e => { !this.isTouch && this.settings.onMouseleave(e, this); },
+      touchstart: e => {  this.isTouch && this.settings.onTouchstart(e, this); },
+      touchend:   e => {  this.isTouch && this.settings.onTouchend(e, this); },
     });
+
+    /* eslint-enable */
 
     // Unveil plugin to lazy load main product card images
     this.$mainLazyImg

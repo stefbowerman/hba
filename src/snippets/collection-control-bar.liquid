@@ -26,6 +26,27 @@
   {% endif %}
 
   {% if c %}
+    {% capture crumb_home %}
+      <span class="crumb">
+        <a href="/">root</a>
+      </span>
+    {% endcapture %}
+
+    {%- capture crumb_collection -%}
+      <span class="crumb">
+        <a href="/collections/{{ c.handle }}">{{ c.handle }}</a>
+      </span>
+    {%- endcapture -%}
+
+    {%- capture crumb_collection_tag -%}
+      {% if current_tags %}
+        <span class="crumb">
+          <a href="/collections/{{ c.handle }}/{{ current_tags }}">{{ current_tags }}</a>
+        </span>
+      {% endif %}
+    {%- endcapture -%}
+
+
     {%- capture filters -%}
       {%- comment -%} Collect product types + sale item check {%- endcomment -%}
       {% assign sale_items = false %}
@@ -66,11 +87,12 @@
           <li>
             <a
               href="#"
+              class="btn"
               data-filter
               data-type="sale"
               data-value="true"
             >
-              /sale
+              Sale
             </a>
           </li>
         </ul>
@@ -79,33 +101,36 @@
   
     <div class="control-bar">     
       <div class="control-bar__row">
-        {% comment %}
-        <ul class="sidebar-menu">
-          <li><a href="{{ c.url }}/lookbook" {% if is_lookbook %}class="is-active"{% endif %}>/Lookbook</a></li>
-        </ul>
-        {% endcomment %}
-
-        <div class="control-bar__row-item d-none d-lg-block">
-          Grid:
-          <a href="#" data-grid-toggle data-column-count="2">2</a>
-          <a href="#" data-grid-toggle data-column-count="4">4</a>
-        </div>
-        
-        {% comment %}
-        <!-- Do we actually want this?  The only useful sort is price -->
-        <div class="control-bar__row-item">
-        <a href="#" data-sort-toggle>Sort +</a>
-        </div>
-        {% endcomment %}
-
-        {% if filters != blank and show_filters %}
-          <div class="control-bar__row-item">
-            <a href="#" data-filters-toggle>Filter</a>
+        <div class="control-bar__group">
+          <div class="control-bar__item">
+            <div class="breadcrumbs">
+              {{ crumb_home | strip }}{{ crumb_collection | strip }}{{ crumb_collection_tag | strip }}
+            </div>
           </div>
-        {% endif %}
+        </div>
+
+        <div class="control-bar__group">
+          {% unless is_lookbook %}
+            <div class="control-bar__item">
+              <a href="/collections/{{ c.handle }}/lookbook">/Lookbook</a>
+            </div>
+
+            <div class="control-bar__item d-none d-lg-block">
+              /Grid:
+              <a href="#" data-grid-toggle data-column-count="2">2</a>
+              <a href="#" data-grid-toggle data-column-count="4">4</a>
+            </div>            
+
+            {% if filters != blank and show_filters %}
+              <div class="control-bar__item">
+                <a href="#" data-filters-toggle>/Filter</a>
+              </div>
+            {% endif %}
+          {% endunless %}
+        </div>
       </div>
 
-      {% if filters != blank and show_filters %}
+      {% if filters != blank and show_filters and is_lookbook == false %}
         <div class="control-bar__filters" data-filter-container>
           {{ filters }}
         </div>

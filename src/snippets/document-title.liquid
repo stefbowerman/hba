@@ -36,10 +36,10 @@
         &ndash; {{ collection.title }}
       {% endif %}
     {% elsif template.name == "collection" %}
-      {% if current_tags contains 'lookbook' %}
-        Lookbook &ndash; 
-      {% endif %}
       {{ collection.title }}
+      {% if current_tags contains 'lookbook' %}
+        &ndash; Lookbook
+      {% endif %}      
     {% else %}
       {{ page_title }}
     {% endif %}

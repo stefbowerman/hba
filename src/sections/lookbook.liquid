@@ -28,6 +28,7 @@
         <div class="lookbook-card">
           {% render 'product-card',
                      product: p,
+                     show_info: 0,
                      linkable: 0,
           %}
 
@@ -52,17 +53,18 @@
 
   {% render 'page-title' with page_title_text %}
 
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-2">
-        {% render 'collection-sidebar', collection_handle: collection.handle %}
-      </div>
-      <div class="col-md-7 col-lg-6">
+  <div class="outer-container">
+    {% render 'collection-control-bar',
+               collection_handle: collection.handle
+    %}
+
+    <div class="row justify-content-center">
+      <div class="col-sm-8 col-xxl-9">
         <div class="content-grid content-grid--lookbook" data-product-card-grid>
           {{ content_grid_html }}
         </div>
       </div>
-      <div class="d-none d-md-block col-md-3 col-lg-2">
+      <div class="d-none d-sm-block col-sm-4 col-xxl-3">
         <div class="lookbook-sidebar">
           {{ details_html }}
         </div>

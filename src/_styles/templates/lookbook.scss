@@ -1,13 +1,49 @@
 .lookbook-sidebar {
+  padding-left: $spacer;
+
+  @include media-breakpoint-up(xxl) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
   .lookbook-product-details {
     & + .lookbook-product-details {
-      margin-top: 30px;
+      margin-top: 20px;
+
+      @include media-breakpoint-up(md) {
+        margin-top: 70px;
+      }
+
+      @include media-breakpoint-up(lg) {
+        margin-top: 120px;
+      }
+
+      @include media-breakpoint-up(xl) {
+        margin-top: 20px;
+      }
+
+      @include media-breakpoint-up(xxl) {
+        // margin-top: 85px;
+        // margin-top: 5vw;
+        margin-top: 15px; // let flex justify-content space between space everything out correctly...
+      }      
     }
   }
 }
 
 .lookbook-product-details {
   &.highlighted {
+    //
+  }
+}
+
+.lookbook-product-details__content {
+  display: inline-block;
+  margin-top: $content-grid-spacing;
+
+  .lookbook-product-details.highlighted & {
     color: $white;
     background-color: $black;
   }
@@ -16,46 +52,29 @@
 .lookbook-card {
   display: flex;
 
-  @include media-breakpoint-down(sm) {
-    .product-card__sku {
-      display: none;
-    }
-
+  @include media-breakpoint-down(xs) {
     .product-card {
       flex: 1;
-      padding-right: $outer-gutter-mobile/2;
+      padding-right: $spacer;
     }
 
     .lookbook-product-details {
       flex: 1;
-      padding-left: $outer-gutter-mobile/2;
     }    
   }
 
-  .lookbook-product-details {
-    margin-bottom: 30px;
-    
-    @include media-breakpoint-up(md) {
+  .lookbook-product-details {   
+    @include media-breakpoint-up(sm) {
       display: none;
     }
   }
 }
 
-// .lookbook-product-details__content {
-//   .js & {
-//     display: none;
-//   }
-// }
-
 .lookbook-product-details__top {
-  margin-bottom: 1rem;
+  margin-bottom: $spacer;
 
   h6 {
     margin: 0;
-  }
-
-  .sku {
-    font-size: 10px;
   }
 }
 

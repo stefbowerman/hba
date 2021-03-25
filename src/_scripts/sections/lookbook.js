@@ -16,28 +16,43 @@ export default class LookbookSection extends BaseSection {
   constructor(container) {
     super(container, 'lookbook');
 
-    // @TODO - Do this better, create card + detail pairs in the contructor ??
     this.$details = $(selectors.details, this.$container);
 
     this.productCardGrid = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
       onProductCardMouseenter: this.onProductCardMouseenter.bind(this),
       onProductCardMouseleave: this.onProductCardMouseleave.bind(this),
+      onProductCardTouchstart: this.onProductCardTouchstart.bind(this),
+      onProductCardTouchend:   this.onProductCardTouchend.bind(this)
     });
 
     this.productCardGrid.reveal();
   }
 
+  highlightCard(card) {
+    this.$details
+      .filter((i, el) => $(el).data('id') === card.id)
+      .addClass(classes.detailsHighlighted);
+  }
+
+  unhighlightCards() {
+    this.$details
+      .filter(`.${classes.detailsHighlighted}`)
+      .removeClass(classes.detailsHighlighted);    
+  }
+
   onProductCardMouseenter(e, card) {
-    this.$details.filter((i, el) => $(el).data('id') === card.id).addClass(classes.detailsHighlighted);
+    this.highlightCard(card);
   }
 
   onProductCardMouseleave(e, card) {
-    this.$details
-      .filter(`.${classes.detailsHighlighted}`)
-      .removeClass(classes.detailsHighlighted);
+    this.unhighlightCards();
   }
 
-  onUnload() {
-    this.productCardGrid.destroy();
+  onProductCardTouchstart(e, card) {
+    this.highlightCard(card);
+  }
+
+  onProductCardTouchend(e, card) {
+    this.unhighlightCards();
   }
 }

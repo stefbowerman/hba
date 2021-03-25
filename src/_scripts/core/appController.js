@@ -256,7 +256,7 @@ export default class AppController {
       this.settings.onViewReady(this.currentView);
 
       this.isTransitioning = false;
-    }, 800);      
+    }, 650);      
     // });
 
     // setTimeout(() => {

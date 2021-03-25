@@ -12,15 +12,27 @@
 
 .control-bar__row {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
-.control-bar__row-item {
+.control-bar__group {
+  display: flex;
+  
+  &:last-child {
+    justify-content: flex-end;
+  }
+}
+
+.control-bar__item {
   text-transform: uppercase;
 
-  @include media-breakpoint-up(md) {
-    margin-left: 50px;
-    margin-left: 4.5vw;
+  & + & {
+    margin-left: $spacer*2;
+
+    @include media-breakpoint-up(md) {
+      margin-left: 50px;
+      margin-left: 4.5vw;
+    }
   }
 
   a {
@@ -37,15 +49,15 @@
   margin: 0;
   padding: 0;
 
-  &:not(:last-child) {
-    margin-bottom: $spacer;
-  }
-
   .control-bar__filters & {
-    padding-top: $spacer;
+    padding-top: $spacer * 0.5;
     text-align: right;
     max-width: 75%;
     margin-left: auto;
+
+    &:first-child {
+      padding-top: $spacer * 1.5;
+    }
 
     @include media-breakpoint-up(md) {
       max-width: 35rem;

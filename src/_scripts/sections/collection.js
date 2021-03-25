@@ -95,9 +95,11 @@ export default class CollectionSection extends BaseSection {
     this.productCardGrid.$el.fadeOut({
       duration: 200,
       easing: 'easeInCubic',
+      start: () => {
+        this.$filtersToggle.toggleClass(classes.filtersToggleActive, !!activeFilter);
+      },
       complete: () => { 
         this.productCardGrid.filterBy(activeFilter);
-        this.$filtersToggle.toggleClass(classes.filtersToggleActive, !!activeFilter);
         
         window.HBA.appController
           .pauseRouter()
@@ -115,12 +117,13 @@ export default class CollectionSection extends BaseSection {
   onFiltersToggleClick(e) {
     e.preventDefault();
 
-    if (this.filtersOpen) {
-      this.$filtersContainer.slideUp(150);
-    }
-    else {
-      this.$filtersContainer.slideDown(150);
-    }
+    const slideOptions = {
+      easing: 'easeOutCubic',
+      duration: 250
+    };
+
+    this.$filtersContainer.stop(true, true); // In case any animations are running
+    this.$filtersContainer[this.filtersOpen ? 'slideUp' : 'slideDown'](slideOptions);
 
     this.filtersOpen = !this.filtersOpen;
   }

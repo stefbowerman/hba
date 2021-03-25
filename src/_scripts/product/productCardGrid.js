@@ -21,6 +21,8 @@ export default class ProductCardGrid {
       onProductCardClick: (e, card) => {},
       onProductCardMouseenter: () => {},
       onProductCardMouseleave: () => {},
+      onProductCardTouchstart: () => {},
+      onProductCardTouchend: () => {}
     };
 
     this.settings = $.extend({}, defaults, options);
@@ -29,7 +31,9 @@ export default class ProductCardGrid {
     this.productCards = $.map($(selectors.productCard, this.$el), _el => new ProductCard(_el, {
       onClick: this.settings.onProductCardClick,
       onMouseenter: this.settings.onProductCardMouseenter,
-      onMouseleave: this.settings.onProductCardMouseleave
+      onMouseleave: this.settings.onProductCardMouseleave,
+      onTouchstart: this.settings.onProductCardTouchstart,
+      onTouchend: this.settings.onProductCardTouchend
     }));
 
     this.$el.css('visibility', 'none'); // wait for reveal

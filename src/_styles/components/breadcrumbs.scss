@@ -3,23 +3,13 @@
 // -----------------------------------------------------------------------------
 
 .breadcrumbs {
-  margin-bottom: 1rem;
-
-  @include media-breakpoint-up(md) {
-    min-height: 30px; // 2 lines of text
-  }
-
   .crumb {
     display: inline-block;
 
     &:before {
       content: '/';
       display: inline-block;
-      margin-right: -8px;
-    }    
-
-    &.is-hidden {
-      display: none;
+      margin-right: -7px;
     }
   }  
 }

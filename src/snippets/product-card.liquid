@@ -7,6 +7,7 @@
 
   {% render 'product-card',
               product: { product } - required
+              show_info: { boolean } - optional, defaults to true
               show_sold_out: { boolean } - optional, defaults to false
               linkable: { boolean } - optional, defaults to true
               preview: { boolean } - optional, default to false
@@ -16,6 +17,10 @@
 {% endcomment -%}
 
 {% comment %} Defaults {% endcomment %}
+{% if show_info == blank %}
+  {% assign show_info = true %}
+{% endif %}
+
 {% if show_sold_out == blank %}
   {% assign show_sold_out = false %}
 {% endif %}
@@ -102,18 +107,20 @@
           </div>
         {% endif %}
 
-        <div class="product-card__info">
-          <div class="product-card__title">
-            {{ product.title }}
+        {% if show_info == true %}
+          <div class="product-card__info">
+            <div class="product-card__title">
+              {{ product.title }}
+            </div>
+            <div class="product-card__price">
+              {% if product.available %}
+                {{ product.price | money }}
+              {% else %}
+                Sold Out
+              {% endif %}
+            </div>
           </div>
-          <div class="product-card__price">
-            {% if product.available %}
-              {{ product.price | money }}
-            {% else %}
-              Sold Out
-            {% endif %}
-          </div>
-        </div>
+        {% endif %}
       </div>
     {% if linkable == true %}</a>{% endif %}      
   </div>
