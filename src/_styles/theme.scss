@@ -56,6 +56,7 @@
 // @import 'components/video-player';
 @import 'components/newsletter-form';
 @import 'components/overlay';
+@import 'components/reamaze';
 
 /**
  * MODULES
@@ -88,26 +89,16 @@
 // @import 'templates/challenge.scss';
 @import 'templates/password.scss';
 
-html {
-  padding-bottom: 0 !important; // Shopify admin bar messes this up
-}
 
+// Global Transitions
 html.js {
   body.is-loading {
     opacity: 0;
-    transition: opacity 1s cubic-bezier(0.33, 0.01, 0.49, 1.02) 0.25s;
+    transition: opacity 1s cubic-bezier(0.33, 0.01, 0.49, 1.02) 0.15s;
   }
 
   body.is-loaded {
     opacity: 1;
-  }
-}
-
-.development-mode {
-  /* stylelint-disable-next-line selector-max-id */
-  #preview-bar-iframe,
-  .shopify-preview-bar {
-    display: none;
   }
 }
 
@@ -117,7 +108,6 @@ html.js {
 
   &.transition-in {
     position: fixed;
-    // position: absolute;
     top: 0;
     left: 0;
     height: 100%;
@@ -138,73 +128,13 @@ html.js {
   }
 }
 
-// Adjust reamaze styling
-#reamaze-widget {
-  bottom: $outer-gutter-mobile !important;
-  right: $outer-gutter-mobile !important;
-  z-index: $zindex-reamaze !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  height: auto !important;
-  transition-duration: 0s !important;
-
-  @include media-breakpoint-up(md) {
-    bottom: $footer-padding-bottom-desktop;
-  }
-
-  @include media-breakpoint-up(lg) {
-    right: $outer-gutter !important;
-  }
-
-  &:hover {
-    transform: none !important;
-    background-color: $black !important;
-    color: $white !important;
-  }
-
-  &#reamaze-widget:hover {
-    box-shadow: none !important;
-  }
+// Fix Shopify preview stuff
+html {
+  padding-bottom: 0 !important; // Shopify admin bar messes this up
 }
 
-#reamaze-widget-icon {
-  display: none !important;
-}
-
-#reamaze-widget-label {
-  padding: 0 8px 2px !important;
-
-  &:before,
-  &:after {
-    position: absolute;
-    top: -2px;
-  }
-
-  &:before {
-    content: '[';
-    left: 1px;
-  }
-
-  &:after {
-    content: ']';
-    right: 1px;
-  }   
-}
-
-.rmz-label-text {
-  position: relative;
-  font-family: $font-family-base !important;
-  color: $body-color !important;
-  text-transform: uppercase;
-  font-size: $font-size-sm !important;
-  line-height: $line-height-base !important;
-
-  &:after {
-    content: '?';
-  }
-
-  #reamaze-widget:hover & {
-    color: $white !important;
-  }
+/* stylelint-disable-next-line selector-max-id */
+#preview-bar-iframe,
+.shopify-preview-bar {
+  display: none;
 }

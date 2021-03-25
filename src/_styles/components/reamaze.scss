@@ -1,0 +1,73 @@
+// -------------------------
+// Reamazee app widget
+// -------------------------
+
+#reamaze-widget {
+  bottom: $outer-gutter-mobile !important;
+  right: $outer-gutter-mobile !important;
+  z-index: $zindex-reamaze !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  height: auto !important;
+  transition-duration: 0s !important;
+
+  @include media-breakpoint-up(md) {
+    bottom: $footer-padding-bottom-desktop;
+  }
+
+  @include media-breakpoint-up(lg) {
+    right: $outer-gutter !important;
+  }
+
+  &:hover {
+    transform: none !important;
+    background-color: $black !important;
+    color: $white !important;
+  }
+
+  &#reamaze-widget:hover {
+    box-shadow: none !important;
+  }
+}
+
+#reamaze-widget-icon {
+  display: none !important;
+}
+
+#reamaze-widget-label {
+  padding: 0 8px 2px !important;
+
+  &:before,
+  &:after {
+    position: absolute;
+    top: -2px;
+  }
+
+  &:before {
+    content: '[';
+    left: 1px;
+  }
+
+  &:after {
+    content: ']';
+    right: 1px;
+  }   
+}
+
+.rmz-label-text {
+  position: relative;
+  font-family: $font-family-base !important;
+  color: $body-color !important;
+  font-size: $font-size-base !important;
+  line-height: $line-height-base !important;
+  text-transform: uppercase;
+
+  &:after {
+    content: '?';
+  }
+
+  #reamaze-widget:hover & {
+    color: $white !important;
+  }
+}
