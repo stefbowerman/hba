@@ -133,11 +133,14 @@ body.ajax-cart-open {
     padding-left: 5%;
   }
 
-  // Below this screen size, the footer isn't fixed so it collapses up to the top which we don't want
-  @include media-breakpoint-down(sm) {
-    .is-empty & {
+  .is-empty & {
+    // pointer-events: none;
+    // opacity: 0;
+
+    // Below this screen size, the footer isn't fixed so it collapses up to the top which we don't want
+    // @include media-breakpoint-down(sm) {
       display: none;
-    }
+    // }
   }  
 }
 

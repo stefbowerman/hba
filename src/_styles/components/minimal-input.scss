@@ -4,49 +4,15 @@
 
 .minimal-input-box {
   display: flex;
-  align-items: flex-end;
+  align-items: end;
+
+  .btn {
+    position: relative;
+    top: 1px;
+  }
 }
 
 .minimal-input-box__input {
   @extend .form-control;
   text-transform: uppercase;
-  // padding: 0 30px 0 0;
-  // border-width: 0 0 2px;
-  // height: $minimal-input-height;
-
-  // &,
-  // &:focus {
-  //   background-color: transparent;
-  // }
 }
-
-.minimal-input-box__submit {
-  // position: absolute;
-  // top: -7px;
-  // bottom: 0;
-  // right: 0;
-  // padding: 0;
-  // width: 30px;
-  // text-align: right;
-  // cursor: pointer;
-}
-
-// White form controls for placement on dark backgrounds
-// .minimal-input-box--inverted {
-
-//   .minimal-input-box__input {
-//     color: $white;
-
-//     &:focus {
-//       color: $white;
-//       border-color: $white;
-//     }
-//   }
-
-
-//   .minimal-input-box__submit {
-//     svg {
-//       fill: $white;
-//     }
-//   }
-// }

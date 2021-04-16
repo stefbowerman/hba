@@ -1,10 +1,17 @@
 // Form
 // --------------------------------------------------------
 
+.product-detail-price,
+.product-sku-display,
+.pdf-status {
+  font-family: $font-family-monospace;
+}
+
 .product-detail-price {
   margin-bottom: $spacer;
   @include p2;
 }
+  
 
 .product-sku-display {
   position: relative;
@@ -17,6 +24,7 @@
 }
 
 .product-description {
+  margin-top: 24px;
   margin-bottom: 18px;
   max-width: 36em;
 
@@ -79,5 +87,3 @@
   display: flex;
   align-items: stretch;
 }
-
-

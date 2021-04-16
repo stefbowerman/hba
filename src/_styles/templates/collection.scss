@@ -30,6 +30,7 @@
 .control-bar {
   position: relative;
   z-index: 1; // Push above any surrounding content (collection hero, grid, etc..)
+  font-family: $font-family-monospace;
   // margin-bottom: $gap * 0.5;
 
   // @include media-breakpoint-up(md) {

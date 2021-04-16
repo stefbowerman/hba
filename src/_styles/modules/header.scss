@@ -59,6 +59,7 @@
 
   ul {
     @include list-unstyled;
+    font-family: $font-family-monospace;
     margin: 0;
     text-transform: uppercase;
   }

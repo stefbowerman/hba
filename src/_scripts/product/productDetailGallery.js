@@ -34,7 +34,7 @@ export default class ProductDetailGallery {
 
     this.touchZoomController = new TouchZoomController(this.$el);
     this.touchZoomController.enable();
-    
+
     this.currentSlideIndex = null;
     this.totalSlideCount = this.$slides.length;
     this.typers = {
@@ -66,18 +66,24 @@ export default class ProductDetailGallery {
   }
 
   getActiveSlide() {
-    return $(this.swiper.slides).filter(`[data-swiper-slide-index="${this.currentSlideIndex}"]`).first();
+    const $slides = $(this.swiper.slides);
+
+    if ($slides.length === 1) {
+      return $slides.first();
+    }
+
+    return $slides.filter(`[data-swiper-slide-index="${this.currentSlideIndex}"]`).first();
   }
 
   loadImages($images) {
     if ($images && $images.length) {
       $images.each((i, img) => {
         const $img = $(img);
-        
+
         $img.on('load loaded', () => {
           $img.addClass('is-loaded');
           $img.attr('data-src', null);
-          $img.attr('data-srcset', null);        
+          $img.attr('data-srcset', null);
         });
 
         $img.attr('srcset', $img.data('srcset'));
@@ -104,13 +110,13 @@ export default class ProductDetailGallery {
         typeSpeed: 10,
         startDelay: 80,
         showCursor: false
-      }); 
+      });
     }
   }
 
   onZoomTriggerClick(e) {
     e.preventDefault();
-    
+
     const $slide = this.getActiveSlide();
     const src = $slide.find('a').attr('href');
 
@@ -118,7 +124,7 @@ export default class ProductDetailGallery {
   }
 
   onPaginationRender(current, total) {
-    const currentI = current-1;
+    const currentI = current - 1;
 
     if (this.currentSlideIndex === currentI) return;
 

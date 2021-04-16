@@ -130,7 +130,7 @@ $enable-deprecation-messages:                 true !default;
 // variables. Mostly focused on spacing.
 // You can add more entries to the $spacers map, should you need more variation.
 
-$spacer: 1rem !default;
+$spacer: 0.8rem !default;
 $spacers: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $spacers: map-merge(
@@ -182,7 +182,7 @@ $emphasized-link-hover-darken-percentage: 15% !default;
 //
 // Style p element.
 
-$paragraph-margin-bottom:   1rem !default;
+$paragraph-margin-bottom:   0.8rem !default;
 
 
 // Grid breakpoints
@@ -290,7 +290,7 @@ $embed-responsive-aspect-ratios: join(
 
 $font-family-sans-serif:      'Helvetica Neue LT', 'Helvetica Neue', Helvetica, -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
 $font-family-monospace:       'HBA Mono', monospace;
-$font-family-base:            $font-family-monospace !default;
+$font-family-base:            $font-family-sans-serif !default;
 // stylelint-enable value-keyword-case
 
 $font-size-base:              (13/16) * 1rem !default; // Assumes the browser default, 1rem = `16px`
@@ -418,7 +418,7 @@ $table-caption-color:         $text-muted !default;
 
 $input-btn-padding-y:         .375rem !default;
 $input-btn-padding-x:         .75rem !default;
-$input-btn-font-family:       null !default;
+$input-btn-font-family:       $font-family-monospace !default;
 $input-btn-font-size:         $font-size-base !default;
 $input-btn-line-height:       $line-height-base !default;
 

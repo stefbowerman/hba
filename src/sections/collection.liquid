@@ -12,8 +12,14 @@
       {% if block.settings.collection_hero_enabled %}
         {% assign collection_hero_color = block.settings.collection_hero_color %}
         {% assign year = 'now' | date: "%Y" %}
-        {% assign footer_primary_text = '&copy;' | append: year %}
-        {% assign footer_secondary_text = 'Hood By Air.-' | append: collection.title %}
+        
+        {%- capture footer_primary_text -%}
+          <small>&copy;<strong>{{ year }}</strong></small>
+        {%- endcapture -%}
+
+        {%- capture footer_secondary_text -%}
+          <strong>Hood By Air. - {{ collection.title }}</strong>
+        {%- endcapture -%}
 
         {% render 'collection-hero'
                    primary_image: block.settings.primary_image,

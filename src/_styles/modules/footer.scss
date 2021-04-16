@@ -56,6 +56,10 @@
   margin-bottom: 3px;
 }
 
+.footer-block__body {
+  font-family: $font-family-monospace;
+}
+
 .footer-menu {
   @extend .list-unstyled;
   margin-bottom: 19px;

@@ -12,13 +12,15 @@
             <div class="col-6 offset-6 col-md-3 offset-md-9">
               <div class="ajax-cart__footer" data-ajax-cart-footer>
                 <div class="ajax-cart__footer-top">
-                  {% if section.settings.checkout_text %}
+                  {% if section.settings.checkout_text != blank %}
                     <div class="ajax-cart__footer-row">
                       {{ section.settings.checkout_text }}
                     </div>
                   {% endif %}                  
                   <div class="ajax-cart__footer-row">
-                    Sub total: <span data-ajax-cart-total-price></span>
+                    <span class="text-monospace">
+                      Sub total: <span data-ajax-cart-total-price></span>
+                    </span>
                   </div>
                 </div>
                 <div class="ajax-cart__footer-bottom">
@@ -60,15 +62,17 @@
             <div class="ajax-cart__item-child">
               <div class="ajax-cart__item-info">
                 <h4>{{ product_title }}</h4>
-                <div>{{ price }}</div>
-                {{#if sku}}
-                  <div>{{ sku }}</div>
-                {{/if}}
-                <div>{{ variant_title }}</div>
-                {{#if multiple_quantities}}
-                <div>QTY {{ quantity }}</div>
-                {{/if}}
-                <a href="#" class="btn btn" data-ajax-cart-item-remove>Remove</a>
+                <div class="text-monospace">
+                  <div>{{ price }}</div>
+                  {{#if sku}}
+                    <div>{{ sku }}</div>
+                  {{/if}}
+                  <div>{{ variant_title }}</div>
+                  {{#if multiple_quantities}}
+                  <div>QTY {{ quantity }}</div>
+                  {{/if}}
+                </div>
+                <a href="#" class="btn" data-ajax-cart-item-remove>Remove</a>
               </div>
             </div>
           </div>
