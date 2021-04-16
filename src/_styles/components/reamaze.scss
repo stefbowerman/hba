@@ -10,7 +10,6 @@
   border-radius: 0 !important;
   background: transparent !important;
   height: auto !important;
-  transition-duration: 0s !important;
 
   @include media-breakpoint-up(md) {
     bottom: $footer-padding-bottom-desktop;
@@ -29,6 +28,18 @@
   &#reamaze-widget:hover {
     box-shadow: none !important;
   }
+
+  // Only show the widget when we've scrolled on the page
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease-out !important;
+
+  body.is-scrolled & {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition-duration: 0.5s !important;
+    transition-timing-function: ease-in !important;
+  }  
 }
 
 #reamaze-widget-icon {
