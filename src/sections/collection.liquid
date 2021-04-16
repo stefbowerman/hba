@@ -5,6 +5,31 @@
 
 {% endcomment -%}
 
+{% assign collection_hero_color = '' %}
+{% capture collection_hero %}
+  {% for block in section.blocks %}
+    {% if block.type == 'collection_settings' and block.settings.collection == collection.handle %}
+      {% if block.settings.collection_hero_enabled %}
+        {% assign collection_hero_color = block.settings.collection_hero_color %}
+        {% assign year = 'now' | date: "%Y" %}
+        {% assign footer_primary_text = '&copy;' | append: year %}
+        {% assign footer_secondary_text = 'Hood By Air.-' | append: collection.title %}
+
+        {% render 'collection-hero'
+                   primary_image: block.settings.primary_image,
+                   primary_video_file_url: block.settings.primary_video_file_url,
+                   secondary_image: block.settings.secondary_image,
+                   secondary_video_file_url: block.settings.secondary_video_file_url,
+                   footer_primary_text: footer_primary_text,
+                   footer_secondary_text: footer_secondary_text
+        %}
+      {% endif %}
+
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+
 {% paginate collection.products by 600 %}
   {% assign content_grid_html = '' %}
 
@@ -35,18 +60,32 @@
 {% endpaginate %}
 
 <div
-  class="layout-content-wrapper"
   data-section-id="{{ section.id }}"
   data-section-type="collection"
   data-base-url="{{ collection.url }}"
 >
   {% render 'page-title' with collection.title %}
   
-  <div class="outer-container">
-    {% render 'collection-control-bar',
-               collection_handle: collection.handle
-    %}
-    
+  <div
+    class="collection-header{% if collection_hero != blank %} has-hero{% endif %}"
+    {% if collection_hero != blank %}
+      style="background-color: {{ collection_hero_color }}"
+    {% endif %}
+  >
+    <div class="outer-container">
+      <div class="layout-content-wrapper">
+        <div class="collection-header__content">
+          {% render 'collection-control-bar',
+                     collection_handle: collection.handle
+          %}
+
+          {{ collection_hero }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="outer-container" style="margin-top: 30px;">
     {% if content_grid_html != blank %}
       <div class="content-grid" data-product-card-grid>
         {{ content_grid_html }}
@@ -58,6 +97,55 @@
 {% schema %}
   {
     "name": "Collection",
-    "settings": []
+    "settings": [],
+    "blocks": [
+      {
+        "type": "collection_settings",
+        "name": "Collection Settings",
+        "settings": [
+          {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection",
+            "info": "Select which collection these settings apply to"
+          },
+          {
+            "type": "header",
+            "content": "Collection Hero"
+          },
+          {
+            "type": "checkbox",
+            "id": "collection_hero_enabled",
+            "label": "Enabled",
+            "default": false
+          },
+          {
+            "id": "collection_hero_color",
+            "type": "color",
+            "label": "Color"
+          },
+          {
+            "id": "primary_image",
+            "type": "image_picker",
+            "label": "Primary Image"
+          },
+          {
+            "id": "primary_video_file_url",
+            "type": "url",
+            "label": "Primary Image Video File URL"
+          },
+          {
+            "id": "secondary_image",
+            "type": "image_picker",
+            "label": "Secondary Image"
+          },
+          {
+            "id": "secondary_video_file_url",
+            "type": "url",
+            "label": "Secondary Image Video File URL"
+          }
+        ]
+       }
+     ]
   }
 {% endschema %}

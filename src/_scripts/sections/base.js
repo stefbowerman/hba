@@ -1,4 +1,9 @@
 import $ from 'jquery';
+import AmbientVideo from '../ui/ambientVideo';
+
+const selectors = {
+  ambientVideo: '[data-ambient-video]'
+};
 
 export default class BaseSection {
   constructor(container, name) {
@@ -10,19 +15,23 @@ export default class BaseSection {
 
     this.events = {
       SCROLL: `scroll${this.namespace}`,
-      CLICK:  `click${this.namespace}`,
+      CLICK: `click${this.namespace}`,
       RESIZE: `resize${this.namespace}`,
       MOUSEENTER: `mouseenter${this.namespace}`,
       MOUSELEAVE: `mouseleave${this.namespace}`
     };
+
+    $(selectors.ambientVideo, this.$container).each((i, el) => {
+      new AmbientVideo(el);
+    });
   }
 
   onUnload(e) {
-    
+
   }
 
   onSelect(e) {
-    
+
   }
 
   onDeselect(e) {

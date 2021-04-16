@@ -1,12 +1,13 @@
 {%- comment %}
 
-  Collection Sidebar
+  Collection Control Bar
   ------------------------------------------------------------------------------
 
   Usage:
 
-  {% include 'collection-sidebar',
-              collection_handle: { string } %}
+  {% render 'collection-control-bar',
+             collection_handle: { string }
+  %}
 
 {% endcomment -%}
 
@@ -131,8 +132,10 @@
       </div>
 
       {% if filters != blank and show_filters and is_lookbook == false %}
-        <div class="control-bar__filters" data-filter-container>
-          {{ filters }}
+        <div class="control-bar__row">
+          <div class="control-bar__filters" data-filter-container>
+            {{ filters }}
+          </div>
         </div>
       {% endif %}
     </div>

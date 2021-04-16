@@ -1,0 +1,34 @@
+{%- comment %}
+
+  Ambient Video
+  ------------------------------------------------------------------------------
+
+  Usage:
+
+  {% render 'ambient-video',
+             url: { string }
+  %}
+
+{% endcomment -%}
+
+{% if url != blank %}
+  {% assign video_type = '' %}
+
+  {% if url contains '.mp4' %}
+    {% assign video_type = 'mp4' %}
+  {% elsif url contains '.og' %}
+    {% assign video_type = 'ogg' %}
+  {% elsif url contains '.avi' %}
+    {% assign video_type = 'avi' %}
+  {% elsif url contains '.webm' %}
+    {% assign video_type = 'webm' %}
+  {% endif %}
+
+  {% if video_type == '' %}
+    {% comment %} ALERT: Your video is invalid {% endcomment %}
+  {% else %}
+    <video class="ambient-video" muted playsinline autoplay loop data-ambient-video>
+      <source src="{{ url }}" type="video/{{ video_type }}" />
+    </video>
+  {% endif %}            
+{% endif %}
