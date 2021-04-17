@@ -1,4 +1,14 @@
 <div data-section-id="{{ section.id }}" data-section-type="homepage-background">
+  
+  {% if section.settings.custom_theme_color_enabled %}
+    <style>
+      body.template-index {
+        --body-color: {{ section.settings.custom_theme_color }};
+        --link-color: {{ section.settings.custom_theme_color }};
+      }
+    </style>
+  {% endif %}
+  
   {% assign src = section.settings.video_file_url %}
 
   <div class="homepage-background">
@@ -33,11 +43,26 @@
 
 {% schema %}
   {
-    "name": "Homepage Background",
+    "name": "Homepage",
     "settings": [
       {
         "type": "header",
-        "content": "Info",
+        "content": "Custom Theme Color"
+      },      
+      {
+        "type": "checkbox",
+        "id": "custom_theme_color_enabled",
+        "label": "Enabled",
+        "default": false
+      },
+      {
+        "id": "custom_theme_color",
+        "type": "color",
+        "label": "Color"
+      },
+      {
+        "type": "header",
+        "content": "Background Video",
         "info": "This section works almost identically as the background media section except that this is only visible on the homepage.  You shouldn't be using videos with both sections at the same time."
       },
       {

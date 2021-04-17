@@ -4,7 +4,8 @@
   position: relative;
   display: inline-block;
   text-transform: uppercase;
-  color: $body-color;
+  color: $link-color;
+  color: var(--link-color, $link-color);
   font-family: $btn-font-family;
   vertical-align: middle;
   user-select: none;
@@ -32,7 +33,6 @@
 
   @include has-hover {
     &:hover
-    // , &:focus
     {
       background-color: $black;
       color: $white;
@@ -52,7 +52,8 @@
     @include has-hover {
       &:hover,
       &:focus {
-        color: $body-color;
+        color: $link-color;
+        color: var(--link-color, $link-color);
         background-color: transparent;
       }
     }

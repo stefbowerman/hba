@@ -2,6 +2,16 @@
 // Header
 // -------------------------
 
+header {
+
+  // When the ajax cart is open, the site flips back to white
+  // Make sure the header is visible
+  body.ajax-cart-open & {
+    --#{'body-color'}: $body-color !important;
+    --#{'link-color'}: $link-color !important;
+  }
+}
+
 .header-logo {
   display: block;
   position: fixed;

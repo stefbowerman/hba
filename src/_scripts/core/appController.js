@@ -14,14 +14,13 @@ export default class AppController {
       viewContentSelector: '.view-content',
       viewConstructors: {},
       redirectTimeoutMs: 5000,
-      onSameRoute: () => {},
+      onSameRoute: () => { },
       onBeforeRouteStart: d => d.resolve(),
-      onRouteStart: (url, type) => {},
+      onRouteStart: (url, type) => { },
       onViewTransitionOutDone: (url, d) => d.resolve(), // eslint-disable-line brace-style
-      onViewChangeStart: () => {},
-      onViewChangeComplete: () => {},
-      onViewReady: () => {},
-      onInitialViewReady: () => {}
+      onViewChangeStart: () => { },
+      onViewReady: () => { },
+      onInitialViewReady: () => { }
     };
 
     this.router = new Navigo(window.location.origin, false, '#!');
@@ -107,7 +106,7 @@ export default class AppController {
       }
 
       this.doRoute(url, 'search');
-    });    
+    });
 
     this.router.notFound((params) => {
       // called when there is path specified but
@@ -175,16 +174,12 @@ export default class AppController {
 
       // Transition out as soon as the link is clicked?  Need to add min time before viewchage to allow the transitoin to complete?
       this.$viewContainer.one('transitionend', () => {
-        // transitionDeferred.resolve();
         this.settings.onViewTransitionOutDone(url, transitionDeferred);
       });
-      
+
       this.$viewContainer.find(this.settings.viewContentSelector).addClass('transition-out');
 
-      // Let the current view do it's 'out' transition and then apply the loading state
-      // this.currentView.beforeTransitionOut(() => {
-      //   this.settings.onViewTransitionOutDone(url, transitionDeferred);
-      // });
+      this.onTransitionStart();
 
       // Once AJAX *and* css animations are done, trigger the callback
       $.when(ajaxDeferred, transitionDeferred).done((response) => {
@@ -194,11 +189,8 @@ export default class AppController {
   }
 
   doViewChange(AJAXResponse, ViewConstructor, type, url) {
-    // Kill the current view
-    this.currentView.destroy();
-
     const $responseHtml = $(document.createElement('html'));
-    
+
     $responseHtml.get(0).innerHTML = AJAXResponse;
 
     const $responseHead = $responseHtml.find('head');
@@ -207,13 +199,18 @@ export default class AppController {
     // Do DOM updates
     this.setDocumentTitle($responseHead.find('title').text());
 
-    const $oldViewContent = this.$viewContainer.find(this.settings.viewContentSelector);
+    const $currentViewContent = this.$viewContainer.find(this.settings.viewContentSelector);
     const $newViewContent = $responseBody.find(this.settings.viewContentSelector);
 
     $newViewContent.addClass('transition-in'); // This is what hides it from view, needed before we append to DOM
 
     // Here's where we append the new dom, transition out the old dom, and then do cleanup
     this.$viewContainer.append($newViewContent);
+
+    // Kill the current view
+    // This has to happen *before* we instantiate the new view
+    // Otherwise their respective load / unload methods will conflict
+    this.currentView.destroy();
 
     const newView = new ViewConstructor($newViewContent, type);
 
@@ -222,7 +219,7 @@ export default class AppController {
 
     // Update the body ID
     $body.attr('id', $responseBody.attr('id'));
-    
+
     // Update the body class
     $body.removeClass((i, currentClasses) => {
       return currentClasses.split(' ').map(classname => (classname.match(TEMPLATE_REGEX)) || classname.match(THEME_REGEX)).join(' ');
@@ -232,36 +229,24 @@ export default class AppController {
       return $responseBody.attr('class').split(' ').map(classname => (classname.match(TEMPLATE_REGEX)) || classname.match(THEME_REGEX)).join(' ');
     });
 
-    // let now = Date.now();
-
     // Wait for DOM to Update
     setTimeout(() => {
-      $newViewContent.addClass('transition-in-active');  
+      $newViewContent.addClass('transition-in-active');
     }, 32);
 
     // I don't know what's going on
     // $newViewContent.one('transitionend') was firing because of child product cards transitioning in?
     setTimeout(() => {
-      // window.scrollTo && window.scrollTo(0, 0);
       $newViewContent.removeClass('transition-in transition-in-active');
-      $oldViewContent.remove();
 
-      // this.settings.onViewChangeDOMUpdatesComplete($responseHead, $responseBody);
+      $currentViewContent.remove();
+
+      this.settings.onViewReady(newView);
 
       this.currentView = newView;
 
-      this.settings.onViewChangeComplete(this.currentView);
-
-      // Is there a callback for this?
-      this.settings.onViewReady(this.currentView);
-
-      this.isTransitioning = false;
-    }, 650);      
-    // });
-
-    // setTimeout(() => {
-    //   $oldViewContent.addClass('transition-out');
-    // }, 20);
+      this.onTransitionEnd();
+    }, 650);
   }
 
   navigate(url) {
@@ -278,6 +263,16 @@ export default class AppController {
     }
 
     return this;
+  }
+
+  onTransitionStart() {
+    $body.addClass('is-transitioning');
+    this.isTransitioning = true;
+  }
+
+  onTransitionEnd() {
+    $body.removeClass('is-transitioning');
+    this.isTransitioning = false;
   }
 
   setDocumentTitle(title) {

@@ -6,11 +6,13 @@
 {% endcomment -%}
 
 {% assign collection_hero_color = '' %}
+{% assign collection_hero_text_color = '' %}
 {% capture collection_hero %}
   {% for block in section.blocks %}
     {% if block.type == 'collection_settings' and block.settings.collection == collection.handle %}
       {% if block.settings.collection_hero_enabled %}
         {% assign collection_hero_color = block.settings.collection_hero_color %}
+        {% assign collection_hero_text_color = block.settings.collection_hero_text_color %}
         {% assign year = 'now' | date: "%Y" %}
         
         {%- capture footer_primary_text -%}
@@ -69,14 +71,17 @@
   data-section-id="{{ section.id }}"
   data-section-type="collection"
   data-base-url="{{ collection.url }}"
+  data-has-hero="{% if collection_hero != blank %}true{% else %}false{% endif %}"
+  data-hero-theme="{{ collection_hero_text_color }}"
 >
   {% render 'page-title' with collection.title %}
   
   <div
-    class="collection-header{% if collection_hero != blank %} has-hero{% endif %}"
+    class="collection-header text-theme-color{% if collection_hero != blank %} has-hero{% endif %}"
     {% if collection_hero != blank %}
       style="background-color: {{ collection_hero_color }}"
     {% endif %}
+    data-collection-header
   >
     <div class="outer-container">
       <div class="layout-content-wrapper">
@@ -129,6 +134,16 @@
             "id": "collection_hero_color",
             "type": "color",
             "label": "Color"
+          },
+          {
+            "type": "select",
+            "id": "collection_hero_text_color",
+            "label": "Text Color",
+            "options": [
+              { "value": "light", "label": "Black" },
+              { "value": "dark", "label": "White" }
+            ],
+            "default": "light"
           },
           {
             "id": "primary_image",

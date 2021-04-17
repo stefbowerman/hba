@@ -50,8 +50,10 @@ body {
   font-weight: $font-weight-base;
   line-height: $line-height-base;
   color: $body-color;
+  color: var(--body-color, $body-color);
   text-align: left; // 3
   background-color: $body-bg; // 2
+  background-color: var(--body-bg, $body-bg);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -182,13 +184,13 @@ sup { top: -.5em; }
 //
 
 a {
-  color: $link-color;
+  color: var(--link-color, $link-color);
   text-decoration: $link-decoration;
   background-color: transparent; // Remove the gray background on active links in IE 10.
 
   // make nested svg icons inside anchor tags to be the same color
   svg {
-    fill: $link-color;
+    fill: var(--link-color, $link-color);
   }
 
   @include has-hover {

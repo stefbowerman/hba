@@ -15,6 +15,7 @@ const classes = {
 export default class HomepagebackgroundSection extends BaseSection {
   constructor(container) {
     super(container, 'homepage-background');
+
     this.$el = $(selectors.homepageBackground, this.$container);
 
     this.videoBackgroundQueue = new VideoBackgroundQueue();

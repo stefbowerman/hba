@@ -56,7 +56,8 @@ const setViewportHeightProperty = () => {
   document.documentElement.style.setProperty('--viewport-height', v);
 };
 
-((Modernizr) => {
+(() => {
+  const $window = $(window);
   const $body = $(document.body);
 
   // Instantiate sections that live *outside* of content_for_layout
@@ -80,10 +81,9 @@ const setViewportHeightProperty = () => {
 
     },
     onInitialViewReady: (view) => {
-      // console.log('onInitialViewReady');
+      //
     },
     onBeforeRouteStart: (deferred) => {
-      // console.log('onBeforeRouteStart');
       sections.ajaxCart.close();
       deferred.resolve();
     },
@@ -95,18 +95,13 @@ const setViewportHeightProperty = () => {
       }
     },
     onViewChangeStart: (url, newView) => {
-      // console.log('onViewChangeStart');
+      //
     },
     onViewTransitionOutDone: (url, deferred) => {
       window.scrollTo && window.scrollTo(0, 0);
       deferred.resolve();
     },
-    onViewChangeComplete: (newView) => {
-      // console.log('onViewChangeComplete');
-    },
     onViewReady: (view) => {
-      // console.log('onViewReady');
-
       if (view.type === 'index') {
         sections.homepageBackground.show();
       }
@@ -114,6 +109,23 @@ const setViewportHeightProperty = () => {
       if (view.type === 'cart') {
         sections.ajaxCart.open();
       }
+    }
+  });
+
+  // Add window events - these need to be created before starting the appcontroller
+  $window.on({
+    SET_GLOBAL_THEME_COLOR: ({ color }) => {
+      const { style } = document.body;
+      const val = color || null;
+
+      style.setProperty('--body-color', val);
+      style.setProperty('--link-color', val);
+    },
+    SET_HEADER_THEME: ({ theme }) => {
+      sections.header.setTheme(theme);
+    },
+    RESET_HEADER_THEME: () => {
+      sections.header.setTheme(null);
     }
   });
 
@@ -176,4 +188,4 @@ const setViewportHeightProperty = () => {
   }
 
   credits();
-})(Modernizr);
+})();

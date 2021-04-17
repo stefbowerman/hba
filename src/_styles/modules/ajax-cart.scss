@@ -21,11 +21,13 @@ body.ajax-cart-open {
   opacity: 0;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
-  transition: opacity $transition-duration-slow $transition-timing-function-overlay-opacity-in;
+  transition: opacity $transition-duration-base cubic-bezier(0, 0, 0.32, 0.89);
 
   &.is-open {
     pointer-events: auto;
     opacity: 1;
+    transition-duration: $transition-duration-medium;
+    transition-timing-function: $transition-timing-function-hard-in;
   }
 
   .layout-content-wrapper {

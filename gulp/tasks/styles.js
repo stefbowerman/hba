@@ -35,17 +35,17 @@ const stylePipeline = (src) => {
 
   return gulp.src(paths.src)
     .pipe(sass(sassOptions))
-    .on('error', function(error) {
+    .on('error', function (error) {
       log.error(`${colors.bold.red('SCSS Compilation Error')}: ${error.message}`);
       this.emit('end');
     })
     .pipe(postcss(postcssPlugins))
     .pipe(rename({
-      extname: '.scss.liquid'
-    }))    
+      extname: '.css.liquid'
+    }))
     .pipe(gulp.dest(paths.dest))
     .pipe(debug())
-    .pipe(size({showFiles: true, title: 'CSS: size of'}));
+    .pipe(size({ showFiles: true, title: 'CSS: size of' }));
 }
 
 // Run stylepipeline for each entry point file

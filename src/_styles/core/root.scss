@@ -1,0 +1,50 @@
+$color-variables: (
+  'body-bg': $body-bg,
+  'body-color': $body-color,
+  'link-color': $link-color,
+);
+
+$dark-color-variables: (
+  'body-bg': $black,
+  'body-color': $white,
+  'link-color': $white,
+);
+
+:root {
+  @each $color, $value in $color-variables {
+    --#{$color}: #{$value};
+  }
+}
+
+// This is the same as default root vars
+// .theme-light {
+  
+// }
+
+.theme-dark {
+  @each $color, $value in $dark-color-variables {
+    --#{$color}: #{$value};
+  }
+}
+
+// Things responding to theme colors
+.text-theme-color {
+  color: $body-color;
+  color: var(--body-color, $body-color);
+}
+
+body.is-transitioning {
+  a,
+  a svg {
+    transition-duration: $view-transition-timing-duration-in;
+    transition-timing-function: $view-transition-timing-function-in;
+  }
+
+  a {
+    transition-property: color;
+  }
+
+  a svg {
+    transition-property: fill;
+  }
+}

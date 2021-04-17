@@ -17,6 +17,7 @@
 @import 'core/functions';
 @import 'core/variables';
 @import 'core/mixins';
+@import 'core/root';
 @import 'core/reboot';
 @import 'core/fonts';
 @import 'core/type';
@@ -120,13 +121,13 @@ html.js {
 
     &.transition-in-active {
       opacity: 1;
-      transition: opacity 0.65s cubic-bezier(0.85, 0.06, 0.54, 0.96);
+      transition: opacity $view-transition-timing-duration-in $view-transition-timing-function-in;
     }
   }
 
   &.transition-out {
     opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.3, 0.46, 0.17, 0.9);
+    transition: opacity $view-transition-timing-duration-out $view-transition-timing-function-out;
   }
 }
 
