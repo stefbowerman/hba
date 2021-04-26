@@ -66,7 +66,7 @@
       {% assign product_types_array = product_types | split: '$$' | uniq %}
 
       {% if product_types_array.size > 0 %}
-        <ul class="filter-menu">
+        <ul class="filter-menu" data-filter-menu>
           {% for type in product_types_array %}
             <li>
               <a
@@ -84,7 +84,7 @@
       {% endif %}
 
       {% if sale_items %}
-        <ul class="filter-menu">
+        <ul class="filter-menu" data-filter-menu>
           <li>
             <a
               href="#"
@@ -100,7 +100,7 @@
       {% endif %}      
     {%- endcapture -%}
   
-    <div class="control-bar">     
+    <div class="control-bar" data-collection-control-bar>     
       <div class="control-bar__row">
         <div class="control-bar__group">
           <div class="control-bar__item">
@@ -118,8 +118,8 @@
 
             <div class="control-bar__item d-none d-lg-block">
               /Grid:
-              <a href="#" data-grid-toggle data-column-count="2">2</a>
-              <a href="#" data-grid-toggle data-column-count="4">4</a>
+              <a href="#" class="control-bar__grid-link" data-grid-toggle data-column-count="2">2</a>
+              <a href="#" class="control-bar__grid-link" data-grid-toggle data-column-count="4">4</a>
             </div>            
 
             {% if filters != blank and show_filters %}
@@ -133,8 +133,10 @@
 
       {% if filters != blank and show_filters and is_lookbook == false %}
         <div class="control-bar__row">
-          <div class="control-bar__filters" data-filter-container>
-            {{ filters }}
+          <div class="control-bar__group">
+            <div class="control-bar__filters" data-filter-container>
+              {{ filters }}
+            </div>
           </div>
         </div>
       {% endif %}

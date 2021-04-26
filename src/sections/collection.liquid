@@ -5,13 +5,12 @@
 
 {% endcomment -%}
 
-{% assign collection_hero_color = '' %}
 {% assign collection_hero_text_color = '' %}
+
 {% capture collection_hero %}
   {% for block in section.blocks %}
     {% if block.type == 'collection_settings' and block.settings.collection == collection.handle %}
       {% if block.settings.collection_hero_enabled %}
-        {% assign collection_hero_color = block.settings.collection_hero_color %}
         {% assign collection_hero_text_color = block.settings.collection_hero_text_color %}
         {% assign year = 'now' | date: "%Y" %}
         
@@ -24,12 +23,16 @@
         {%- endcapture -%}
 
         {% render 'collection-hero'
+                   block: block,
                    primary_image: block.settings.primary_image,
                    primary_video_file_url: block.settings.primary_video_file_url,
+                   primary_max_width: block.settings.primary_max_width,
                    secondary_image: block.settings.secondary_image,
                    secondary_video_file_url: block.settings.secondary_video_file_url,
+                   secondary_max_width: block.settings.secondary_max_width,
                    footer_primary_text: footer_primary_text,
-                   footer_secondary_text: footer_secondary_text
+                   footer_secondary_text: footer_secondary_text,
+                   background_color: block.settings.collection_hero_color
         %}
       {% endif %}
 
@@ -71,32 +74,29 @@
   data-section-id="{{ section.id }}"
   data-section-type="collection"
   data-base-url="{{ collection.url }}"
-  data-has-hero="{% if collection_hero != blank %}true{% else %}false{% endif %}"
   data-hero-theme="{{ collection_hero_text_color }}"
 >
   {% render 'page-title' with collection.title %}
-  
-  <div
-    class="collection-header text-theme-color{% if collection_hero != blank %} has-hero{% endif %}"
-    {% if collection_hero != blank %}
-      style="background-color: {{ collection_hero_color }}"
-    {% endif %}
-    data-collection-header
-  >
-    <div class="outer-container">
-      <div class="layout-content-wrapper">
-        <div class="collection-header__content">
-          {% render 'collection-control-bar',
-                     collection_handle: collection.handle
-          %}
 
-          {{ collection_hero }}
-        </div>
+  {% if collection_hero != blank %}
+    {{ collection_hero }}
+
+    <div class="outer-container">
+      {% render 'collection-control-bar',
+                 collection_handle: collection.handle
+      %}
+    </div>
+  {% else %}
+    <div class="layout-content-wrapper">
+      <div class="outer-container">
+        {% render 'collection-control-bar',
+                   collection_handle: collection.handle
+        %}
       </div>
     </div>
-  </div>
+  {% endif %}
 
-  <div class="outer-container" style="margin-top: 30px;">
+  <div class="outer-container">
     {% if content_grid_html != blank %}
       <div class="content-grid" data-product-card-grid>
         {{ content_grid_html }}
@@ -156,6 +156,16 @@
             "label": "Primary Image Video File URL"
           },
           {
+            "type": "range",
+            "id": "primary_max_width",
+            "min": 200,
+            "max": 1200,
+            "step": 50,
+            "unit": "px",
+            "label": "Max Width",
+            "default": 1200
+          },
+          {
             "id": "secondary_image",
             "type": "image_picker",
             "label": "Secondary Image"
@@ -164,6 +174,16 @@
             "id": "secondary_video_file_url",
             "type": "url",
             "label": "Secondary Image Video File URL"
+          },
+          {
+            "type": "range",
+            "id": "secondary_max_width",
+            "min": 200,
+            "max": 1200,
+            "step": 50,
+            "unit": "px",
+            "label": "Max Width",
+            "default": 1200
           }
         ]
        }

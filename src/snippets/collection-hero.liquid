@@ -6,48 +6,66 @@
   Usage:
 
   {% render 'collection-hero',
+             block: { block } - optional
              primary_image: { image } - optional
              primary_video_file_url: { string } - optional
+             primary_max_width: { number } - optional
              secondary_image: { image } - optional,
              secondary_video_file_url: { string } - optional
+             secondary_max_width: { number } - optional
              footer_primary_text: { string } - optional
              footer_secondary_text: { string } - optional
+             background_color: { string } - optional
   %}
 
 {% endcomment -%}
+<div
+  class="collection-hero text-theme-color"
+  {% if background_color != blank %}
+    style="background-color: {{ background_color }}"
+  {% endif %}
+  data-collection-hero
+  {% if block %}
+    {{ block.shopify_attributes }}
+  {% endif %}
+>
+  <div class="outer-container">
+    <div class="layout-content-wrapper">
+      <div class="collection-hero__content">
+        <div class="collection-hero__body">
+          <div class="row">
+            <div class="col-md-5 offset-md-1 col-xl-4">
+              <div class="collection-hero__body-media" {% if primary_max_width != blank %}style="max-width: {{ primary_max_width }}px"{% endif %}>
+                <div class="collection-hero__body-media-content collection-hero__body-media-content--primary">
+                  {% if primary_image %}
+                    <img src="{{ primary_image | img_url: '800x' }}" />
+                  {% endif %}
+                  {% if primary_video_file_url %}
+                    {% render 'ambient-video', url: primary_video_file_url %}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 offset-md-1 col-xl-5 col-xxl-7 offset-xxl-0">
+              <div class="collection-hero__body-media" {% if secondary_max_width != blank %}style="max-width: {{ secondary_max_width }}px"{% endif %}>
+                <div class="collection-hero__body-media-content collection-hero__body-media-content--secondary">                  
+                  {% if secondary_image %}
+                    <img src="{{ secondary_image | img_url: '1200x' }}" />
+                  {% endif %}
+                  {% if secondary_video_file_url %}
+                    {% render 'ambient-video', url: secondary_video_file_url %}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div class="collection-hero">
-  <div class="collection-hero__body">
-    <div class="row">
-      <div class="col-md-4 offset-md-1">
-        <div class="collection-hero__body-media">
-          <div class="collection-hero__body-media-content collection-hero__body-media-content--primary">
-            {% if primary_image %}
-              <img src="{{ primary_image | img_url: '800x' }}" />
-            {% endif %}
-            {% if primary_video_file_url %}
-              {% render 'ambient-video', url: primary_video_file_url %}
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-5 offset-md-1">
-        <div class="collection-hero__body-media">
-          <div class="collection-hero__body-media-content collection-hero__body-media-content--secondary">                  
-            {% if secondary_image %}
-              <img src="{{ secondary_image | img_url: '1200x' }}" />
-            {% endif %}
-            {% if secondary_video_file_url %}
-              {% render 'ambient-video', url: secondary_video_file_url %}
-            {% endif %}
-          </div>
-        </div>
+        <div class="collection-hero__footer">
+          <span>{{ footer_primary_text }}</span>
+          <span>{{ footer_secondary_text }}</span>
+        </div>            
       </div>
     </div>
   </div>
-
-  <div class="collection-hero__footer">
-    <span>{{ footer_primary_text }}</span>
-    <span>{{ footer_secondary_text }}</span>
-  </div>            
-</div>
+</div>        

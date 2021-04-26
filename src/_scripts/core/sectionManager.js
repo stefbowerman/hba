@@ -7,7 +7,8 @@ const SECTION_ID_ATTR = 'data-section-id';
 const $document = $(document);
 
 export default class SectionManager {
-  constructor() {
+  constructor($el) {
+    this.$el = $el; // Element to scope section registration to
     this.constructors = {};
     this.instances = [];
 
@@ -56,7 +57,7 @@ export default class SectionManager {
 
     this.constructors[type] = constructor;
 
-    $(`[${SECTION_TYPE_ATTR}=${type}]`).each((index, container) => {
+    $(`[${SECTION_TYPE_ATTR}=${type}]`, this.$el).each((index, container) => {
       this.load(container, constructor);
     });
   }

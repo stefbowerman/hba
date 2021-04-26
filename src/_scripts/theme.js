@@ -114,13 +114,6 @@ const setViewportHeightProperty = () => {
 
   // Add window events - these need to be created before starting the appcontroller
   $window.on({
-    SET_GLOBAL_THEME_COLOR: ({ color }) => {
-      const { style } = document.body;
-      const val = color || null;
-
-      style.setProperty('--body-color', val);
-      style.setProperty('--link-color', val);
-    },
     SET_HEADER_THEME: ({ theme }) => {
       sections.header.setTheme(theme);
     },

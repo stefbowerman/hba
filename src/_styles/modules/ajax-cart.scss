@@ -169,7 +169,7 @@ body.ajax-cart-open {
   
   pointer-events: none;
   opacity: 0;
-  transition: opacity $transition-duration-slow $transition-timing-function-overlay-opacity-in;
+  transition: opacity $transition-duration-slow $transition-timing-function-hard-in;
 
   .is-open.is-empty & {
     pointer-events: auto;

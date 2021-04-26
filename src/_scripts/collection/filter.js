@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 export default class Filter {
-  constructor(el, type, value, active) {
+  constructor(el) {
     this.$el    = $(el);
     this.type   = this.$el.data('type');
     this.value  = this.$el.data('value');

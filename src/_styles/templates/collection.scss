@@ -2,18 +2,20 @@
 // Collection page
 // -------------------------
 
-.collection-header {
+.collection-hero {
+  height: 100vh;
+  height: var(#{'--viewport-height'}, 100vh);
+  min-height: 600px;
+  margin-bottom: 100px;
 
-  &.has-hero {
-    height: 100vh;
-    height: var(#{'--viewport-height'}, 100vh);
-    min-height: 600px;
-
-    .outer-container,
-    .layout-content-wrapper {
-      height: 100%;
-    }    
+  @include media-breakpoint-up(md) {
+    margin-bottom: $gap * 1.5;
   }
+
+  .outer-container,
+  .layout-content-wrapper {
+    height: 100%;
+  }    
 
   .layout-content-wrapper {
     display: flex;
@@ -21,17 +23,55 @@
   }
 }
 
-.collection-header__content {
+.collection-hero__content {
   height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+.collection-hero__body {
+  flex: 1;
+  padding-bottom: $gap * 1.5;
+
+  .row {
+    height: 100%;
+  }
+}
+
+.collection-hero__body-media {
+  position: relative;
+  height: 100%;
+  margin: 0 auto; // Add max-width via theme editor
+}
+
+.collection-hero__body-media-content {
+  @include stretch-within;
+  
+  img,
+  .ambient-video {
+    object-fit: contain;
+    object-position: center;
+  }
+
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.collection-hero__footer {
+  display: flex;
+  justify-content: space-between;
+  padding: $outer-gutter*0.5 0;
+  text-transform: uppercase;
 }
 
 .control-bar {
   position: relative;
   z-index: 1; // Push above any surrounding content (collection hero, grid, etc..)
   font-family: $font-family-monospace;
-  // margin-bottom: $gap * 0.5;
+  margin-bottom: $gap;
 
   // @include media-breakpoint-up(md) {
   //   margin-bottom: $gap * 1.5;
@@ -45,6 +85,7 @@
 }
 
 .control-bar__group {
+  width: 100%;
   display: flex;
   
   &:last-child {
@@ -69,15 +110,12 @@
   }
 }
 
+.control-bar__grid-link {
+  padding: 0 2px; // Make them a little easier to click
+}
+
 .control-bar__filters {
   display: none; // shown via js
-
-  .control-bar__row > & {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
 }
 
 .filter-menu {
@@ -104,59 +142,9 @@
     display: inline-block;
     margin-bottom: 4px;
   }
-}
 
-.collection-hero {
-  height: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.collection-hero__body {
-  flex: 1;
-  margin-top: -14px; // Line it up with the top of the filter bar
-  padding-bottom: $gap * 1.5;
-
-  .row {
-    height: 100%;
+  .btn {
+    vertical-align: top;
+    text-align: left;
   }
-}
-
-.collection-hero__body-media {
-  position: relative;
-  height: 100%;
-}
-
-.collection-hero__body-media-content {
-  @include stretch-within;
-
-  &--secondary {
-    padding: $gap*1.5 0;
-  }
-  
-  img,
-  .ambient-video {
-    object-fit: contain;
-    object-position: top;
-  }
-
-  img {
-    height: 100%;
-    width: 100%;
-  }
-
-  &--secondary {
-    img,
-    .ambient-video {
-      object-position: center;
-    }
-  }
-}
-
-.collection-hero__footer {
-  display: flex;
-  justify-content: space-between;
-  padding: $outer-gutter*0.5 0;
-  text-transform: uppercase;
 }

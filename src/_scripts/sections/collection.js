@@ -8,22 +8,16 @@ import {
   getScrollY
 } from '../core/utils';
 import BaseSection from './base';
+import ControlBar from '../collection/controlBar';
 import Filter from '../collection/filter';
 import FilterController from '../collection/filterController';
 import ProductCardGrid from '../product/productCardGrid';
 
 const selectors = {
-  header: '[data-collection-header]',
+  hero: '[data-collection-hero]',
+  controlBar: '[data-collection-control-bar]',
   productCardGrid: '[data-product-card-grid]',
-  filter: '[data-filter]',
-  filterContainer: '[data-filter-container]',
-  filtersToggle: '[data-filters-toggle]',
-  gridToggle: '[data-grid-toggle]'
-};
-
-const classes = {
-  gridToggleActive: 'is-active',
-  filtersToggleActive: 'is-active'
+  filter: '[data-filter]'
 };
 
 const $window = $(window);
@@ -33,40 +27,39 @@ export default class CollectionSection extends BaseSection {
     super(container, 'collection');
 
     this.baseUrl = this.$container.data('base-url');
-    this.hasHero = this.$container.data('has-hero');
     this.heroTheme = this.$container.data('hero-theme');
     this.heroThemeClass = `theme-${this.heroTheme}`;
     this.queryFilterKey = 'filter';
-    this.filtersOpen = false;
     this.boundOnScroll = throttle(100, this.onScroll.bind(this));
     this.boundOnResize = throttle(250, this.onResize.bind(this));
     this.dimensions = {
-      headerHeight: 0
+      heroHeight: 0
     };
 
-    this.$header = $(selectors.header, this.$container);
-    this.$filtersContainer = $(selectors.filterContainer, this.$container);
-    this.$filtersToggle = $(selectors.filtersToggle, this.$container);
-    this.$gridToggles = $(selectors.gridToggle, this.$container);
+    this.$hero = $(selectors.hero, this.$container);
+    this.$filters = $(selectors.filter, this.$container);
+
+    this.controlBar = new ControlBar($(selectors.controlBar, this.$container).first(), {
+      onGridToggleClick: this.onGridToggleClick.bind(this),
+      onFilterClick: this.onFilterClick.bind(this)
+    });
+
+    this.productCardGrid = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
+      onProductCardClick: this.onProductCardClick.bind(this)
+    });    
 
     this.filterController = new FilterController({
       onChange: this.onFilterControllerChange.bind(this)
     });
 
-    this.productCardGrid = new ProductCardGrid($(selectors.productCardGrid, this.$container), {
-      onProductCardClick: this.onProductCardClick.bind(this)
-    });
-
-    $(selectors.filter, this.$container).each((i, el) => {
+    this.$filters.each((i, el) => {
       this.filterController.registerFilter(new Filter(el));
     });
 
-    this.$container.on('click', selectors.filter, this.onFilterClick.bind(this));
-    this.$filtersToggle.on('click', this.onFiltersToggleClick.bind(this));
-    this.$gridToggles.on('click', this.onGridToggleClick.bind(this));
-
-    $window.on('reisze', this.boundOnResize);
-    $window.on('scroll', this.boundOnScroll);
+    $window.on({
+      resize: this.boundOnResize,
+      scroll: this.boundOnScroll
+    });
 
     // When we load the page, check for filter tag parameters in the URL
     const queryParams = getQueryParams();
@@ -79,25 +72,27 @@ export default class CollectionSection extends BaseSection {
       }
     }
 
-    this.$gridToggles
-      .filter(`[data-column-count="${window.HBA.collectionColCount}"]`)
-      .addClass(classes.gridToggleActive);
-    this.productCardGrid.setColumnCount(window.HBA.collectionColCount);
-
     this.onResize();
     this.onScroll();
 
     if (this.hasHero) {
-      this.$header.addClass(this.heroThemeClass);
+      this.$hero.addClass(this.heroThemeClass);
     }
-
+    
+    this.productCardGrid.setColumnCount(window.HBA.collectionColCount);
     this.productCardGrid.reveal();
   }
 
   onUnload() {
+    $window.off({
+      scroll: this.boundOnScroll,
+      resize: this.boundOnResize
+    });
     $window.trigger($.Event('RESET_HEADER_THEME'));
-    $window.off('scroll', this.boundOnScroll);
-    $window.off('resize', this.boundOnResize);
+  }
+
+  get hasHero() {
+    return this.$hero.length > 0;
   }
 
   get urlForState() {
@@ -115,7 +110,7 @@ export default class CollectionSection extends BaseSection {
   }
 
   setDimensions() {
-    this.dimensions.headerHeight = this.$header.outerHeight();
+    this.dimensions.heroHeight = this.$hero.outerHeight();
   }
 
   onResize() {
@@ -127,16 +122,15 @@ export default class CollectionSection extends BaseSection {
 
     let theme = null;
 
-    if (getScrollY() <= this.dimensions.headerHeight) {
+    if (getScrollY() <= this.dimensions.heroHeight) {
       theme = this.heroTheme;
     }
 
     $window.trigger($.Event('SET_HEADER_THEME', { theme }));
   }
 
-  onFilterClick(e) {
-    e.preventDefault();
-    this.filterController.toggleFilterByEl($(e.currentTarget));
+  onFilterClick($filterEl) {
+    this.filterController.toggleFilterByEl($filterEl);
   }
 
   onFilterControllerChange() {
@@ -146,7 +140,7 @@ export default class CollectionSection extends BaseSection {
       duration: 200,
       easing: 'easeInCubic',
       start: () => {
-        this.$filtersToggle.toggleClass(classes.filtersToggleActive, !!activeFilter);
+        this.controlBar.setFiltersToggleActive(!!activeFilter)
       },
       complete: () => {
         this.productCardGrid.filterBy(activeFilter);
@@ -164,25 +158,7 @@ export default class CollectionSection extends BaseSection {
     });
   }
 
-  onFiltersToggleClick(e) {
-    e.preventDefault();
-
-    const slideOptions = {
-      easing: 'easeOutCubic',
-      duration: 250
-    };
-
-    this.$filtersContainer.stop(true, true); // In case any animations are running
-    this.$filtersContainer[this.filtersOpen ? 'slideUp' : 'slideDown'](slideOptions);
-
-    this.filtersOpen = !this.filtersOpen;
-  }
-
-  onGridToggleClick(e) {
-    e.preventDefault();
-    const $toggle = $(e.currentTarget);
-    const columnCount = $toggle.data('column-count');
-
+  onGridToggleClick($toggle, columnCount) {
     if (columnCount === window.HBA.collectionColumnCount) return;
 
     window.HBA.collectionColumnCount = columnCount;
@@ -191,8 +167,7 @@ export default class CollectionSection extends BaseSection {
       duration: 200,
       easing: 'easeInCubic',
       start: () => {
-        this.$gridToggles.removeClass(classes.gridToggleActive);
-        $toggle.addClass(classes.gridToggleActive);
+        this.controlBar.setSelectedGridToggle($toggle)
       },
       complete: () => {
         this.productCardGrid.setColumnCount(columnCount);
