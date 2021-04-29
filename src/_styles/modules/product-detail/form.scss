@@ -24,12 +24,12 @@
 }
 
 .product-description {
-  margin-top: 24px;
+  margin-top: 18px;
   margin-bottom: 18px;
   max-width: 36em;
 
   ul {
-    @include list-br;
+    // @include list-br;
     margin-bottom: $paragraph-margin-bottom;
   }
 

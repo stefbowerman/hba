@@ -65,9 +65,7 @@
   {% endfor %}
 
   {% capture badge_text %}
-    {% if product.available == false and show_sold_out == true %}
-      Sold Out
-    {% elsif is_new %}
+    {% if is_new %}
       New
     {% endif %}
   {% endcapture %}
@@ -86,7 +84,7 @@
           <span class="product-card__badge">
             {{ badge_text }}
           </span>
-        {% endif %}        
+        {% endif %}  
 
         {% if product.featured_image %}
           <div class="product-card__gallery">
