@@ -140,7 +140,7 @@ export default class CollectionSection extends BaseSection {
       duration: 200,
       easing: 'easeInCubic',
       start: () => {
-        this.controlBar.setFiltersToggleActive(!!activeFilter)
+        this.controlBar.setFiltersToggleActive(!!activeFilter);
       },
       complete: () => {
         this.productCardGrid.filterBy(activeFilter);
@@ -167,7 +167,7 @@ export default class CollectionSection extends BaseSection {
       duration: 200,
       easing: 'easeInCubic',
       start: () => {
-        this.controlBar.setSelectedGridToggle($toggle)
+        this.controlBar.setSelectedGridToggle($toggle);
       },
       complete: () => {
         this.productCardGrid.setColumnCount(columnCount);

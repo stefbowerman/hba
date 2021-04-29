@@ -9,35 +9,37 @@
     </style>
   {% endif %}
   
-  {% assign src = section.settings.video_file_url %}
-
   <div class="homepage-background">
-    {% if src != blank %}
-      {% assign video_type = '' %}
+    {% for block in section.blocks %}
+      {% assign src = block.settings.video_file_url %}
 
-      {% if src contains '.mp4' %}
-        {% assign video_type = 'mp4' %}
-      {% elsif src contains '.og' %}
-        {% assign video_type = 'ogg' %}
-      {% elsif src contains '.avi' %}
-        {% assign video_type = 'avi' %}
-      {% elsif src contains '.webm' %}
-        {% assign video_type = 'webm' %}
-      {% endif %}
+      {% if src != blank %}
+        {% assign video_type = '' %}
 
-      {% if video_type == '' %}
-        <!-- ALERT: Your video is invalid -->
-      {% else %}
-        <div class="video-background" data-video-background>
-          <video muted playsinline>
-            <source src="{{ src }}" type="video/{{ video_type }}" />
-          </video>
-          {% if section.settings.video_poster_image != blank %}
-            <img data-src="{{ section.settings.video_poster_image | img_url: '2000x' }}" />
-          {% endif %}
-        </div>
+        {% if src contains '.mp4' %}
+          {% assign video_type = 'mp4' %}
+        {% elsif src contains '.og' %}
+          {% assign video_type = 'ogg' %}
+        {% elsif src contains '.avi' %}
+          {% assign video_type = 'avi' %}
+        {% elsif src contains '.webm' %}
+          {% assign video_type = 'webm' %}
+        {% endif %}
+
+        {% if video_type == '' %}
+          <!-- ALERT: Your video is invalid -->
+        {% else %}
+          <div class="video-background" data-video-background>
+            <video muted playsinline>
+              <source src="{{ src }}" type="video/{{ video_type }}" />
+            </video>
+            {% if block.settings.video_poster_image != blank %}
+              <img data-src="{{ block.settings.video_poster_image | img_url: '1600x' }}" />
+            {% endif %}
+          </div>
+        {% endif %}
       {% endif %}
-    {% endif %}
+    {% endfor %}
   </div>
 </div>
 
@@ -64,16 +66,24 @@
         "type": "header",
         "content": "Background Video",
         "info": "This section works almost identically as the background media section except that this is only visible on the homepage.  You shouldn't be using videos with both sections at the same time."
-      },
+      }
+    ],
+    "blocks": [
       {
-        "type": "url",
-        "id": "video_file_url",
-        "label": "Video File URL"
-      },
-      {
-        "type": "image_picker",
-        "id": "video_poster_image",
-        "label": "Video Poster Image"
+        "type": "background_video",
+        "name": "Background Video",
+        "settings": [
+          {
+            "type": "url",
+            "id": "video_file_url",
+            "label": "Video File URL"
+          },
+          {
+            "type": "image_picker",
+            "id": "video_poster_image",
+            "label": "Video Poster Image"
+          }
+        ]
       }
     ]
   }

@@ -86,10 +86,15 @@
 
 // RTE styling for long form content
 @mixin article-content {
-  // margin-bottom: $grid-gutter-width;
+  line-height: 1.4; // Slightly larger than default body line-height
 
   h1, h2, h3, h4, h5, h6 {
-    margin: $spacer*2 0 $spacer*1.5;
+    margin: $spacer*3 0 $spacer*1.5;
+  }
+
+  h4, h5, h6 {
+    margin-top: $spacer * 2;
+    margin-bottom: $spacer;
   }
 
   p + p {
@@ -110,10 +115,31 @@
     }
   }
 
-  // Monospace italic looks terrible
-  i {
-    font-style: normal;
-    text-transform: uppercase;
-    font-size: 98%;
+  ul,
+  ol {
+    margin: $grid-gutter-width 0;
+    padding-left: 1em; // $spacer*2;
+
+    ul, ol {
+      margin: 3px 0 6px;
+    }
   }
+
+  li:not(:last-child) {
+    margin-bottom: 1px;
+  }
+
+  // Match the styles from RTE nested lists
+  ul {
+    list-style: disc outside;
+
+    ul {
+      list-style: circle outside;
+
+      /* stylelint-disable-next-line selector-max-type */
+      ul {
+        list-style: square outside;
+      }
+    }
+  }  
 }

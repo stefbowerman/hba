@@ -34,9 +34,9 @@
       <div class="collection-hero__content">
         <div class="collection-hero__body">
           <div class="row">
-            <div class="col-md-5 offset-md-1 col-xl-4">
+            <div class="collection-hero__body-col-primary col-md-5 offset-md-1 col-xl-5 col-xxl-4">
               <div class="collection-hero__body-media" {% if primary_max_width != blank %}style="max-width: {{ primary_max_width }}px"{% endif %}>
-                <div class="collection-hero__body-media-content collection-hero__body-media-content--primary">
+                <div class="collection-hero__body-media-content">
                   {% if primary_image %}
                     <img src="{{ primary_image | img_url: '800x' }}" />
                   {% endif %}
@@ -46,9 +46,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4 offset-md-1 col-xl-5 col-xxl-7 offset-xxl-0">
+            <div class="collection-hero__body-col-secondary col-md-4 offset-md-1 col-xl-5 col-xxl-7 offset-xxl-0">
               <div class="collection-hero__body-media" {% if secondary_max_width != blank %}style="max-width: {{ secondary_max_width }}px"{% endif %}>
-                <div class="collection-hero__body-media-content collection-hero__body-media-content--secondary">                  
+                <div class="collection-hero__body-media-content">
                   {% if secondary_image %}
                     <img src="{{ secondary_image | img_url: '1200x' }}" />
                   {% endif %}
@@ -58,6 +58,10 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="collection-hero__side-icon">
+            {% render 'icon-worldwide' %}
           </div>
         </div>
 

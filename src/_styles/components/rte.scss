@@ -12,34 +12,6 @@
   table {
     table-layout: fixed;
   }
-
-  ul,
-  ol {
-    margin: $grid-gutter-width 0;
-    padding-left: $spacer*2;
-
-    ul, ol {
-      margin: 6px 0;
-    }
-  }
-
-  li:not(:last-child) {
-    margin-bottom: 2px;
-  }
-
-  // Match the styles from RTE nested lists
-  ul {
-    list-style: disc outside;
-
-    ul {
-      list-style: circle outside;
-
-      /* stylelint-disable-next-line selector-max-type */
-      ul {
-        list-style: square outside;
-      }
-    }
-  }
 }
 
 .text-center.rte,

@@ -60,7 +60,7 @@ export default class ControlBar {
 
   onFilterClick(e) {
     e.preventDefault();
-    this.settings.onFilterClick($(e.currentTarget))
+    this.settings.onFilterClick($(e.currentTarget));
   }
 
   onFiltersToggleClick(e) {
@@ -73,7 +73,7 @@ export default class ControlBar {
       duration: this.filtersOpen ? 200 : 100
     };
     
-    this.$filters.css('opacity', 0)
+    this.$filters.css('opacity', 0);
 
     this.$filtersContainer.stop(true, true); // In case any animations are running
 
@@ -109,8 +109,8 @@ export default class ControlBar {
               });
             }, delay)
           );
-        })
-      }
+        });
+      };
 
       this.$filtersContainer.slideDown(slideOptions);
     }
