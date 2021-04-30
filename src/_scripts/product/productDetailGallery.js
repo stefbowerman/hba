@@ -10,7 +10,6 @@ const selectors = {
   slide: '[data-slide]',
   pagination: '[data-pagination]',
   paginationProgress: '[data-pagination-progress]',
-  paginationFile: '[data-pagination-file]',
   zoomTrigger: '[data-zoom-trigger]'
 };
 
@@ -29,7 +28,6 @@ export default class ProductDetailGallery {
     this.$slides = $(selectors.slide, this.$slideshow);
     this.$pagination = $(selectors.pagination, this.$slideshow);
     this.$paginationProgress = $(selectors.paginationProgress, this.$slideshow);
-    this.$paginationFile = $(selectors.paginationFile, this.$slideshow);
     this.$zoomTrigger = $(selectors.zoomTrigger, this.$slideshow);
 
     this.touchZoomController = new TouchZoomController(this.$el);
@@ -37,9 +35,6 @@ export default class ProductDetailGallery {
 
     this.currentSlideIndex = null;
     this.totalSlideCount = this.$slides.length;
-    this.typers = {
-      paginationFile: null
-    };
 
     this.$zoomTrigger.on('click', this.onZoomTriggerClick.bind(this));
 
@@ -93,24 +88,8 @@ export default class ProductDetailGallery {
   }
 
   updatePagination() {
-    const $slide = this.getActiveSlide();
-    const id = Number.parseInt($slide.data('id')).toString();
-    const fileName = `IMG_${id.slice(0, 10)}`;
-
     if (this.$pagination.length) {
-      this.$paginationProgress.text(`${this.currentSlideIndex + 1} — ${this.totalSlideCount}:`);
-
-      if (this.typers.paginationFile !== null) {
-        this.typers.paginationFile.destroy();
-      }
-
-      this.typers.paginationFile = new Typed(this.$paginationFile.get(0), {
-        strings: [fileName],
-        contentType: null,
-        typeSpeed: 10,
-        startDelay: 80,
-        showCursor: false
-      });
+      this.$paginationProgress.text(`${this.currentSlideIndex + 1} — ${this.totalSlideCount}`);
     }
   }
 
