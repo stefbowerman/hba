@@ -1,4 +1,9 @@
-/* Style sheet for transaction notifications */
+/* 
+  Style sheet for transaction notifications
+  
+  - After making changes, run 'gulp notifications' which will output a minified version to notifications.min.css
+  - Copy and paste that 
+*/
 
 @font-face {
   font-family: 'HBA Mono';
@@ -16,9 +21,28 @@
   font-style:normal;
 }
 
+@font-face {
+  font-family: 'Helvetica Neue LT';
+  src: url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/HelveticaNeueLTStd-Roman_ad97960c-16fe-428f-88ea-58fd3b2c8ffb.woff?v=1619805690') format("woff"),
+       url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/HelveticaNeueLTStd-Roman_fd6c7421-2fd5-441e-844c-d294d4c1354a.woff2?v=1619805690') format("woff2");
+  font-weight:400;
+  font-style:normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue LT';
+  src: url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/HelveticaNeueLTStd-Bd_e0b2e780-6866-4bf2-9918-e21b5ad3b8da.woff?v=1619805690') format("woff"),
+       url('//cdn.shopify.com/s/files/1/0276/2168/7409/files/HelveticaNeueLTStd-Bd_40d8a19b-416d-4731-8947-b044bce5c73b.woff2?v=1619805690') format("woff2");
+  font-weight:700;
+  font-style:normal;
+}
+
+$font-family-sans-serif:      'Helvetica Neue LT', 'Helvetica Neue', Helvetica, -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
+$font-family-monospace:       'HBA Mono', monospace;
+
 body, .body {
-  background-color: #000;
-  color: #FFF;
+  background-color: #FFF;
+  color: #000;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -47,33 +71,46 @@ body, .body {
   font-size: 13px;
   line-height: 1.23;
   font-weight: 400;
-  color: #FFF;
-  font-family: 'HBA Mono', Monaco, Courier, monospace;
+  color: #000;
+  font-family: $font-family-sans-serif;
+}
+
+.order-list__item-price,
+.order-list__item-variant,
+.order-list__item-quantity,
+.order-list__item-sku,
+.order-list__item-refunded,
+.subtotal-line__title span,
+.subtotal-line__title small,
+.subtotal-line__value strong,
+.customer-info__item p,
+.customer-info__item-content span,
+.customer-info__item-content strong,
+.button__cell {
+  font-family: $font-family-monospace;
+  font-size: 12px;
 }
 
 h1, h2, h3, h4, h5, h6,
 .order-list__item-title {
-  font-family: Helvetica, -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.2;
   font-weight: bold;
   text-transform: uppercase;
-  color: #FFF;
+  color: #000;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
 }
 
 h1, h2, h3, h4 {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 h5 {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 h6 {
-  font-size: 10px;
-}
-
-.content__cell p {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .content__cell,
@@ -83,6 +120,8 @@ h6 {
 
 .button__cell {
   text-align: left;
+  border-radius: 0px;
+  padding: 0;
 }
 
 .button__text {
@@ -90,11 +129,12 @@ h6 {
   font-size: 12px;
   text-transform: uppercase;
   padding: 0;
+  color: #000;
 }
 
 .button__text:hover {
-  background-color: #FFF !important;
-  color: #000 !important;
+  background-color: #000 !important;
+  color: #FFF !important;
 }
 
 .order-list__product-image {
@@ -111,6 +151,11 @@ h6 {
   }
 }
 
+.order-list__item-title {
+  display: inline-block;
+  margin-bottom: 3px;
+}
+
 .order-list__product-description-cell {
   vertical-align: top;
 }
@@ -125,6 +170,10 @@ h6 {
   small {
     font-size: 11px;
   }
+}
+
+.subtotal-line__discount {
+  display: none;
 }
 
 .subtotal-line .subtotal-line__title,
@@ -155,8 +204,8 @@ h6 {
   }
   
   a {
-    color: #FFF;
-    border-bottom: 1px solid #FFF;
+    color: #000;
+    border-bottom: 1px solid #000;
   }
 }
 
